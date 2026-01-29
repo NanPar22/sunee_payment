@@ -1,0 +1,353 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model kaon_channel {
+  id          Int      @id @default(autoincrement())
+  channCode   String   @db.VarChar(200)
+  channName   String   @db.VarChar(500)
+  isstatus    String   @default(dbgenerated("(Y)")) @db.VarChar(1)
+  person      String   @db.VarChar(500)
+  dates       DateTime @db.DateTime(0)
+  updatedby   String   @db.VarChar(500)
+  updateddate DateTime @db.DateTime(0)
+  description String   @db.Text
+}
+
+model kaon_chashier {
+  id          Int      @id @default(autoincrement())
+  code        String   @db.VarChar(200)
+  name        String   @db.VarChar(500)
+  isstatus    String   @default(dbgenerated("(Y)")) @db.VarChar(1)
+  person      String   @db.VarChar(500)
+  dates       DateTime @db.DateTime(0)
+  updatedby   String   @db.VarChar(500)
+  updateddate DateTime @db.DateTime(0)
+  description String   @db.Text
+  progCode    String   @db.VarChar(20)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model kaon_checklistlog {
+  id         Int       @id @default(autoincrement())
+  userid     String    @db.VarChar(20)
+  billerid   String    @db.VarChar(20)
+  progCode   String    @db.VarChar(100)
+  terminalno String    @db.VarChar(50)
+  saleman    String    @db.VarChar(100)
+  docno      String    @db.VarChar(50)
+  prodCode   String    @db.VarChar(10)
+  comCode    String    @db.VarChar(10)
+  command    String    @db.VarChar(20)
+  bankCode   String    @db.VarChar(3)
+  bankRef    String    @db.VarChar(20)
+  tranxId    String    @db.VarChar(2020)
+  dateTime   DateTime  @db.DateTime(0)
+  effDate    DateTime  @db.Date
+  sumtotal   Float     @default(0.00)
+  amount     Decimal   @default(0.00) @db.Decimal(18, 2)
+  balance    Decimal   @default(0.00) @db.Decimal(18, 2)
+  channel    String    @db.VarChar(20)
+  cusName    String    @db.VarChar(500)
+  ref1       String    @db.VarChar(20)
+  ref2       String    @db.VarChar(20)
+  ref3       String    @db.VarChar(20)
+  ref4       String    @db.VarChar(20)
+  respCode   Int
+  respMsg    String    @db.VarChar(100)
+  respDate   DateTime? @db.DateTime(0)
+  info       String    @db.VarChar(50)
+  print1     String    @db.VarChar(40)
+  print2     String    @db.VarChar(40)
+  print3     String    @db.VarChar(40)
+  print4     String    @db.VarChar(40)
+  print5     String    @db.VarChar(40)
+  print6     String    @db.VarChar(40)
+  print7     String    @db.VarChar(40)
+  clientbyid String    @db.VarChar(100)
+  createdate DateTime  @db.DateTime(0)
+  createby   String    @db.VarChar(300)
+  user       String    @db.VarChar(20)
+  password   String    @db.VarChar(20)
+  tender_id  String    @db.VarChar(4)
+  PaymentID  String    @db.VarChar(255)
+  qrContent  String    @db.VarChar(255)
+  expireDate DateTime? @db.Date
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model kaon_checklistlog_approval {
+  id         Int       @id @default(autoincrement())
+  userid     String    @db.VarChar(20)
+  billerid   String    @db.VarChar(20)
+  progCode   String    @db.VarChar(100)
+  terminalno String    @db.VarChar(50)
+  saleman    String    @db.VarChar(100)
+  docno      String    @db.VarChar(20)
+  prodCode   String    @db.VarChar(10)
+  comCode    String    @db.VarChar(10)
+  command    String    @db.VarChar(20)
+  bankCode   String    @db.VarChar(3)
+  bankRef    String    @db.VarChar(20)
+  tranxId    String    @db.VarChar(2020)
+  dateTime   DateTime  @db.DateTime(0)
+  effDate    DateTime  @db.Date
+  sumtotal   Float     @default(0.00)
+  amount     Decimal   @default(0.00) @db.Decimal(18, 2)
+  balance    Decimal   @default(0.00) @db.Decimal(18, 2)
+  channel    String    @db.VarChar(20)
+  cusName    String    @db.VarChar(500)
+  ref1       String    @db.VarChar(20)
+  ref2       String    @db.VarChar(20)
+  ref3       String    @db.VarChar(20)
+  ref4       String    @db.VarChar(20)
+  respCode   Int
+  respMsg    String    @db.VarChar(100)
+  respDate   DateTime? @db.DateTime(0)
+  info       String    @db.VarChar(50)
+  print1     String    @db.VarChar(40)
+  print2     String    @db.VarChar(40)
+  print3     String    @db.VarChar(40)
+  print4     String    @db.VarChar(40)
+  print5     String    @db.VarChar(40)
+  print6     String    @db.VarChar(40)
+  print7     String    @db.VarChar(40)
+  clientbyid String    @db.VarChar(100)
+  createdate DateTime  @db.DateTime(0)
+  createby   String    @db.VarChar(300)
+  user       String    @db.VarChar(20)
+  password   String    @db.VarChar(20)
+  tender_id  String    @db.VarChar(4)
+  PaymentID  String    @db.VarChar(255)
+  qrContent  String    @db.VarChar(255)
+  expireDate DateTime? @db.Date
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model kaon_checklistlog_bak {
+  id         Int       @id @default(autoincrement())
+  userid     String    @db.VarChar(20)
+  billerid   String    @db.VarChar(20)
+  progCode   String    @db.VarChar(100)
+  terminalno String    @db.VarChar(50)
+  saleman    String    @db.VarChar(100)
+  docno      String    @db.VarChar(20)
+  prodCode   String    @db.VarChar(10)
+  comCode    String    @db.VarChar(10)
+  command    String    @db.VarChar(20)
+  bankCode   String    @db.VarChar(3)
+  bankRef    String    @db.VarChar(20)
+  tranxId    String    @db.VarChar(2020)
+  dateTime   DateTime  @db.DateTime(0)
+  effDate    DateTime  @db.Date
+  sumtotal   Float     @default(0.00)
+  amount     Decimal   @default(0.00) @db.Decimal(18, 2)
+  balance    Decimal   @default(0.00) @db.Decimal(18, 2)
+  channel    String    @db.VarChar(20)
+  cusName    String    @db.VarChar(500)
+  ref1       String    @db.VarChar(20)
+  ref2       String    @db.VarChar(20)
+  ref3       String    @db.VarChar(20)
+  ref4       String    @db.VarChar(20)
+  respCode   Int
+  respMsg    String    @db.VarChar(100)
+  respDate   DateTime? @db.DateTime(0)
+  info       String    @db.VarChar(50)
+  print1     String    @db.VarChar(40)
+  print2     String    @db.VarChar(40)
+  print3     String    @db.VarChar(40)
+  print4     String    @db.VarChar(40)
+  print5     String    @db.VarChar(40)
+  print6     String    @db.VarChar(40)
+  print7     String    @db.VarChar(40)
+  clientbyid String    @db.VarChar(100)
+  createdate DateTime  @db.DateTime(0)
+  createby   String    @db.VarChar(300)
+  user       String    @db.VarChar(20)
+  password   String    @db.VarChar(20)
+  tender_id  String    @db.VarChar(4)
+  PaymentID  String    @db.VarChar(255)
+  qrContent  String    @db.VarChar(255)
+  expireDate DateTime? @db.Date
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model kaon_checklistlog_data {
+  rec_id     Int       @id @default(autoincrement())
+  id         Int
+  userid     String    @db.VarChar(20)
+  billerid   String    @db.VarChar(20)
+  progCode   String    @db.VarChar(100)
+  terminalno String    @db.VarChar(50)
+  saleman    String    @db.VarChar(100)
+  docno      String    @db.VarChar(20)
+  prodCode   String    @db.VarChar(10)
+  comCode    String    @db.VarChar(10)
+  command    String    @db.VarChar(20)
+  bankCode   String    @db.VarChar(3)
+  bankRef    String    @db.VarChar(20)
+  tranxId    String    @db.VarChar(2020)
+  dateTime   DateTime  @db.DateTime(0)
+  effDate    DateTime  @db.Date
+  sumtotal   Float     @default(0.00)
+  amount     Decimal   @default(0.00) @db.Decimal(18, 2)
+  balance    Decimal   @default(0.00) @db.Decimal(18, 2)
+  channel    String    @db.VarChar(20)
+  cusName    String    @db.VarChar(500)
+  ref1       String    @db.VarChar(20)
+  ref2       String    @db.VarChar(20)
+  ref3       String    @db.VarChar(20)
+  ref4       String    @db.VarChar(20)
+  respCode   Int
+  respMsg    String    @db.VarChar(100)
+  respDate   DateTime? @db.DateTime(0)
+  info       String    @db.VarChar(50)
+  print1     String    @db.VarChar(40)
+  print2     String    @db.VarChar(40)
+  print3     String    @db.VarChar(40)
+  print4     String    @db.VarChar(40)
+  print5     String    @db.VarChar(40)
+  print6     String    @db.VarChar(40)
+  print7     String    @db.VarChar(40)
+  clientbyid String    @db.VarChar(100)
+  createdate DateTime  @db.DateTime(0)
+  createby   String    @db.VarChar(300)
+  user       String    @db.VarChar(20)
+  password   String    @db.VarChar(20)
+  tender_id  String    @db.VarChar(4)
+  PaymentID  String    @db.VarChar(255)
+  qrContent  String    @db.VarChar(255)
+  expireDate DateTime? @db.Date
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model kaon_checklistlog_inquiry {
+  id         Int       @id @default(autoincrement())
+  userid     String    @db.VarChar(20)
+  billerid   String    @db.VarChar(20)
+  progCode   String    @db.VarChar(100)
+  terminalno String    @db.VarChar(50)
+  saleman    String    @db.VarChar(100)
+  docno      String    @db.VarChar(20)
+  prodCode   String    @db.VarChar(10)
+  comCode    String    @db.VarChar(10)
+  command    String    @db.VarChar(20)
+  bankCode   String    @db.VarChar(3)
+  bankRef    String    @db.VarChar(20)
+  tranxId    String    @db.VarChar(2020)
+  dateTime   DateTime  @db.DateTime(0)
+  effDate    DateTime  @db.Date
+  sumtotal   Float     @default(0.00)
+  amount     Decimal   @default(0.00) @db.Decimal(18, 2)
+  balance    Decimal   @default(0.00) @db.Decimal(18, 2)
+  channel    String    @db.VarChar(20)
+  cusName    String    @db.VarChar(500)
+  ref1       String    @db.VarChar(20)
+  ref2       String    @db.VarChar(20)
+  ref3       String    @db.VarChar(20)
+  ref4       String    @db.VarChar(20)
+  respCode   Int
+  respMsg    String    @db.VarChar(100)
+  respDate   DateTime? @db.DateTime(0)
+  info       String    @db.VarChar(50)
+  print1     String    @db.VarChar(40)
+  print2     String    @db.VarChar(40)
+  print3     String    @db.VarChar(40)
+  print4     String    @db.VarChar(40)
+  print5     String    @db.VarChar(40)
+  print6     String    @db.VarChar(40)
+  print7     String    @db.VarChar(40)
+  clientbyid String    @db.VarChar(100)
+  createdate DateTime  @db.DateTime(0)
+  createby   String    @db.VarChar(300)
+  user       String    @db.VarChar(20)
+  password   String    @db.VarChar(20)
+  tender_id  String    @db.VarChar(4)
+  PaymentID  String    @db.VarChar(255)
+  qrContent  String    @db.VarChar(255)
+  expireDate DateTime? @db.Date
+}
+
+model kaon_program {
+  id          Int      @id @default(autoincrement())
+  progCode    String   @db.VarChar(200)
+  progName    String   @db.VarChar(500)
+  prodCode    String   @db.VarChar(10)
+  comCode     String   @db.VarChar(10)
+  isstatus    String   @default(dbgenerated("(Y)")) @db.VarChar(1)
+  person      String   @db.VarChar(500)
+  dates       DateTime @db.DateTime(0)
+  updatedby   String   @db.VarChar(500)
+  updateddate DateTime @db.DateTime(0)
+  description String   @db.Text
+}
+
+model kaon_reference {
+  id          Int      @id @default(autoincrement())
+  refno1      String   @db.VarChar(15)
+  progcode    String   @db.VarChar(500)
+  zoneid      String   @db.VarChar(200)
+  isstatus    String   @default(dbgenerated("(Y)")) @db.VarChar(1)
+  person      String   @db.VarChar(500)
+  dates       DateTime @db.DateTime(0)
+  updatedby   String   @db.VarChar(500)
+  updateddate DateTime @db.DateTime(0)
+  description String   @db.Text
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model kaon_servicepoint {
+  id              Int       @id @default(autoincrement())
+  SPID            String?   @db.VarChar(8)
+  p_refer1        String    @db.VarChar(15)
+  Name            String?   @db.VarChar(500)
+  Detail          String?   @db.VarChar(500)
+  Location        String?   @db.VarChar(500)
+  Remark          String?   @db.VarChar(500)
+  ServiceType     String?   @db.VarChar(1)
+  ZoneID          String?   @db.VarChar(2)
+  UserName        String?   @db.VarChar(50)
+  Password        String?   @db.VarChar(50)
+  IsStatus        String?   @db.VarChar(1)
+  Person          String?   @db.VarChar(500)
+  Dates           DateTime? @db.DateTime(0)
+  UpdatedBy       String?   @db.VarChar(500)
+  UpdatedDate     DateTime? @db.DateTime(0)
+  ServiceTypeName String?   @db.VarChar(50)
+}
+
+model kaon_servicepoint123 {
+  id              Int       @id @default(autoincrement())
+  SPID            String?   @db.VarChar(50)
+  Name            String?   @db.VarChar(500)
+  Detail          String?   @db.VarChar(500)
+  Location        String?   @db.VarChar(500)
+  Remark          String?   @db.VarChar(500)
+  ServiceType     String?   @db.VarChar(1)
+  ZoneID          String?   @db.VarChar(1)
+  UserName        String?   @db.VarChar(50)
+  Password        Int?
+  IsStatus        String?   @db.VarChar(1)
+  Person          String?   @db.VarChar(500)
+  Dates           DateTime? @db.DateTime(0)
+  UpdatedBy       String?   @db.VarChar(500)
+  UpdatedDate     DateTime? @db.DateTime(0)
+  ServiceTypeName String?   @db.VarChar(500)
+}
+
+model kaon_user {
+  id          Int      @id @default(autoincrement())
+  code        String   @db.VarChar(200)
+  name        String   @db.VarChar(500)
+  isstatus    String   @default(dbgenerated("(Y)")) @db.VarChar(1)
+  person      String   @db.VarChar(500)
+  dates       DateTime @db.DateTime(0)
+  updatedby   String   @db.VarChar(500)
+  updateddate DateTime @db.DateTime(0)
+  description String   @db.Text
+}

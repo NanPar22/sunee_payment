@@ -2,7 +2,7 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #ffffff;
 }
 
 @theme inline {
@@ -14,7 +14,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #ffffff;
     --foreground: #ededed;
   }
 }
@@ -24,3 +24,42 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.font-main {
+  @apply text-[#0F172A] ;
+}
+
+
+.shadow {
+  @apply shadow-[2px_3px_3px_2px_rgba(179,229,252,0.5)];
+}
+
+.shadow-sidebar {
+  @apply shadow-[1px_1px_2px_1px_rgba(0,0,70,0.5)];
+}๐
+
+.shadow-input {
+  @apply shadow-[0.5px_0.5px_1px_0.5px_rgba(179,229,252,0.5)];
+}
+
+.btn-logout{
+  @apply  hover:bg-[#cdebff]  hover:text-[#0F172A] font-semibold  w-full rounded-md border border-[#009FE3] 
+   transform transition-transform duration-300 ease-in-out hover:scale-105;
+}
+
+.btn{
+  @apply  hover:bg-[#cdebff]  hover:text-[#0F172A] font-semibold  w-full rounded-md border border-[#009FE3] px-2 py-1
+   transform transition-transform duration-300 ease-in-out hover:scale-105;
+}
+
+.btn-main {
+  @apply bg-[#0F172A]/80 hover:bg-[#0F172A]  text-white font-bold text-xl rounded-[14px] px-4 py-3
+  transform transition-transform duration-300 ease-in-out hover:scale-105;
+}
+
+.transform {
+  @apply transform transition-transform duration-300 ease-in-out hover:scale-105;
+}
+
+
