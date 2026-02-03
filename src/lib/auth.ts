@@ -12,6 +12,7 @@ export async function loginUser(username: string, password: string) {
         id: true,
         UserName: true,
         Password: true,
+        SPID: true,
         ServiceTypeName: true,
       },
     });
@@ -21,6 +22,7 @@ export async function loginUser(username: string, password: string) {
     }
 
     if (!user.Password || !user.UserName) {
+      await comparePassword(password, "$2a$10$abcdefghijklmnopqrstuv"); // fake hash
       return null;
     }
 
@@ -38,6 +40,7 @@ export async function loginUser(username: string, password: string) {
       id: user.id,
       username: user.UserName,
       role: user.ServiceTypeName ?? "user",
+      spid: user.SPID || undefined,
     });
 
     return {
@@ -45,6 +48,7 @@ export async function loginUser(username: string, password: string) {
         id: user.id,
         username: user.UserName,
         role: user.ServiceTypeName ?? "user",
+        spid: user.SPID,
       },
       token,
     };

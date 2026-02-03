@@ -1,66 +1,61 @@
-// hooks/useTable.ts
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react";
 
 export type Column<T> = {
-  key: keyof T
-  label: string
-  sortable?: boolean
-}
+  key: keyof T;
+  label: string;
+  sortable?: boolean;
+};
 
-export function useTable<T>(
-  data: T[],
-  columns: Column<T>[],
-  initialPageSize: number = 5
-) {
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(initialPageSize)
-  const [sortKey, setSortKey] = useState<keyof T | null>(null)
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc")
+type UseTableProps<T> = {
+  data: T[];
+  columns: Column<T>[];
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  onPageSizeChange: (size: number) => void;
+  onSort?: (key: keyof T, order: "asc" | "desc") => void;
+};
 
-  // sorting
-  const sortedData = useMemo(() => {
-    if (!sortKey) return data
-    return [...data].sort((a, b) => {
-      if (a[sortKey] < b[sortKey]) return sortOrder === "asc" ? -1 : 1
-      if (a[sortKey] > b[sortKey]) return sortOrder === "asc" ? 1 : -1
-      return 0
-    })
-  }, [data, sortKey, sortOrder])
+export function useTable<T>({
+  data,
+  columns,
+  page,
+  pageSize,
+  totalPages,
+  onPageChange,
+  onPageSizeChange,
+  onSort,
+}: UseTableProps<T>) {
+  const [sortKey, setSortKey] = useState<keyof T | null>(null);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  // pagination
-  const totalPages = Math.max(
-    1,
-    Math.ceil(sortedData.length / pageSize)
-  )
+  const handleSort = (key: keyof T) => {
+    let nextOrder: "asc" | "desc" = "asc";
 
-  const paginatedData = useMemo(() => {
-    const start = (page - 1) * pageSize
-    return sortedData.slice(start, start + pageSize)
-  }, [sortedData, page, pageSize])
-
-  const onSort = (key: keyof T) => {
     if (sortKey === key) {
-      setSortOrder(prev => (prev === "asc" ? "desc" : "asc"))
-    } else {
-      setSortKey(key)
-      setSortOrder("asc")
+      nextOrder = sortOrder === "asc" ? "desc" : "asc";
     }
-  }
+
+    setSortKey(key);
+    setSortOrder(nextOrder);
+    onSort?.(key, nextOrder); // 🔥 ส่งไปให้ backend
+  };
 
   useEffect(() => {
-    setPage(1)
-  }, [data, pageSize])
+    onPageChange(1);
+  }, [pageSize]);
 
   return {
     columns,
-    data: paginatedData,
+    data,
     page,
-    pageSize,        // ✅ เพิ่ม
+    pageSize,
     totalPages,
-    setPage,
-    setPageSize,     // ✅ เพิ่ม
-    onSort,
+    setPage: onPageChange,
+    setPageSize: onPageSizeChange,
+    onSort: handleSort,
     sortKey,
     sortOrder,
-  }
+  };
 }

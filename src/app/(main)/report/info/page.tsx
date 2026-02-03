@@ -9,7 +9,6 @@ import { Table } from "@/app/components/layout/Table"
 import { useTable } from "@/hooks/useTable"
 
 type Row = {
-    saleman: string
     docno: string
     ref1: string
     ref2: string
@@ -28,11 +27,21 @@ export default function TrackingPage() {
     const [page, setPage] = useState(1)
     const [pageSize, setPageSize] = useState(10)
 
+
+
     // data state
     const [data, setData] = useState<Row[]>([])
     const [totalPages, setTotalPages] = useState(1)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
+
+    // ✅ เพิ่ม useEffect ตรงนี้
+    useEffect(() => {
+        const saved = localStorage.getItem("infoPageSize")
+        if (saved) {
+            setPageSize(Number(saved))
+        }
+    }, [])
 
     // 🔥 fetch GET list
     useEffect(() => {
@@ -50,7 +59,12 @@ export default function TrackingPage() {
                 if (from) params.set("from", from)
                 if (to) params.set("to", to)
 
-                const res = await fetch(`/api/report/list?${params.toString()}`)
+                const res = await fetch(`/api/report/info?${params.toString()}`
+                    ,
+                    {
+                        credentials: "include", // 👈 เพิ่มบรรทัดนี้
+                    }
+                )
                 if (!res.ok) throw new Error("โหลดข้อมูลไม่สำเร็จ")
 
                 const json = await res.json()
@@ -69,7 +83,6 @@ export default function TrackingPage() {
     const table = useTable({
         data,
         columns: [
-            { key: "saleman", label: "Saleman" },
             { key: "dateTime", label: "Date Time" },
             { key: "ref1", label: "Ref 1" },
             { key: "ref2", label: "Ref 2" },
@@ -123,7 +136,11 @@ export default function TrackingPage() {
                     pageSize={pageSize}
                     totalPages={totalPages}
                     onPageChange={setPage}
-                    onPageSizeChange={setPageSize}
+                    onPageSizeChange={(size) => {
+                        setPageSize(size)
+                        setPage(1) // กลับหน้าแรก (แนะนำ)
+                        localStorage.setItem("infoPageSize", String(size))
+                    }}
                 />
             </div>
         </div>

@@ -1,7 +1,5 @@
 // components/Table.tsx
 
-import { Pagination } from "../ui/Pagination"
-
 type TableProps<T> = {
     table: {
         columns: {
@@ -10,11 +8,6 @@ type TableProps<T> = {
             sortable?: boolean
         }[]
         data: T[]
-        page: number
-        pageSize: number
-        totalPages: number
-        setPage: (page: number) => void
-        setPageSize: (size: number) => void
         onSort: (key: keyof T) => void
         sortKey: keyof T | null
         sortOrder: "asc" | "desc"
@@ -22,25 +15,14 @@ type TableProps<T> = {
 }
 
 export function Table<T extends object>({ table }: TableProps<T>) {
-    const {
-        columns,
-        data,
-        page,
-        pageSize,
-        totalPages,
-        setPage,
-        setPageSize,
-        onSort,
-        sortKey,
-        sortOrder,
-    } = table
+    const { columns, data, onSort, sortKey, sortOrder } = table
 
-    console.log("TABLE RENDER", { page, totalPages }) // 👈 เพิ่ม
+    console.log("TABLE RENDER") // ยัง debug ได้ตามปกติ
 
     return (
-        <div className="space-y-4 flex flex-col  justify-between h-full    ">
-            <table className="w-full  bg-amber-400  rounded-lg shadow-sm overflow-hidden    ">
-                <thead className="bg-blue-600   ">
+        <div className="space-y-4 h-full overflow-y-auto rounded-lg shadow-sm ">
+            <table className="w-full bg-amber-400  ">
+                <thead className="bg-blue-600  ">
                     <tr>
                         {columns.map(col => (
                             <th
@@ -66,9 +48,14 @@ export function Table<T extends object>({ table }: TableProps<T>) {
                         ))}
                     </tr>
                 </thead>
-                <tbody className="">
+
+                <tbody>
                     {data.map((row, i) => (
-                        <tr key={i} className={`  text-black hover:bg-gray-50 px-1  ${i % 2 === 0 ? "bg-white" : "bg-blue-50"}`}>
+                        <tr
+                            key={i}
+                            className={`text-black hover:bg-gray-50 ${i % 2 === 0 ? "bg-white" : "bg-blue-50"
+                                }`}
+                        >
                             {columns.map(col => (
                                 <td key={String(col.key)} className="px-4 py-1.5">
                                     {String(row[col.key])}
@@ -78,14 +65,6 @@ export function Table<T extends object>({ table }: TableProps<T>) {
                     ))}
                 </tbody>
             </table>
-
-            <Pagination
-                page={page}
-                pageSize={pageSize}
-                totalPages={totalPages}
-                onPageChange={setPage}
-                onPageSizeChange={setPageSize}
-            />
         </div>
     )
 }

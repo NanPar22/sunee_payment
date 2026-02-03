@@ -1,28 +1,53 @@
-'use client'
+"use client"
 
-import { useDateRange } from "@/hooks/useDateRange"
+import { useMemo, useState } from "react"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
+type DateRangePickerProps = {
+  onChange?: (from?: string, to?: string) => void
+}
 
-export default function DateRangePicker() {
-  const {
-    startDate,
-    endDate,
-    setStart,
-    setEnd,
-    clear,
-    isComplete,
-  } = useDateRange()
+export default function DateRangePicker({ onChange }: DateRangePickerProps) {
+  // 👉 default range (คำนวณครั้งเดียว)
+  const defaultRange = useMemo(() => {
+    const start = new Date()
+    const end = new Date()
+    end.setDate(start.getDate() + 1)
+    return { start, end }
+  }, [])
+
+  const [startDate, setStartDate] = useState<Date | null>(defaultRange.start)
+  const [endDate, setEndDate] = useState<Date | null>(defaultRange.end)
+
+  const emitChange = (start: Date | null, end: Date | null) => {
+    const from = start ? start.toISOString().slice(0, 10) : undefined
+    const to = end ? end.toISOString().slice(0, 10) : undefined
+    onChange?.(from, to)
+  }
+
+  const setStart = (date: Date | null) => {
+    setStartDate(date)
+    if (date && endDate && endDate < date) {
+      setEndDate(null)
+      emitChange(date, null)
+    } else {
+      emitChange(date, endDate)
+    }
+  }
+
+  const setEnd = (date: Date | null) => {
+    setEndDate(date)
+    emitChange(startDate, date)
+  }
 
   return (
     <div className="w-full h-6 flex items-center gap-4">
-      <label className="text-sm font-semibold font-main text-blue-900">
+      <label className="text-sm font-semibold text-blue-900">
         ช่วงวันที่
       </label>
 
-      {/* Start Date */}
-      <div className="relative h-6 px-0.5 flex justify-center items-center border border-blue-600 font-semibold text-blue-600 rounded-sm ">
+      <div className="relative h-6 px-0.5 flex items-center border border-blue-600 text-blue-600 rounded-sm">
         <DatePicker
           selectsRange
           startDate={startDate}
@@ -35,22 +60,9 @@ export default function DateRangePicker() {
           placeholderText="เลือกช่วงวันที่"
           dateFormat="dd/MM/yyyy"
           monthsShown={2}
-          isClearable={false}
           shouldCloseOnSelect={false}
-          className="w-50 h-6 text-center placeholder:text-center flex items-center justify-center rounded-sm p-2 focus:outline-none focus:ring-0"
+          className="h-6 text-center rounded-sm p-2 focus:outline-none"
         />
-        {/* Action */}
-          {/* {isComplete && (
-            <div className="flex justify-center items-center ">
-              <button
-                type="button"
-                onClick={clear}
-                className="text-xs text-red-500 self-end bg-red-200 h-4 p-1 border text-center rounded-sm flex items-center justify-center"
-              >
-                X
-              </button>
-            </div>
-          )} */}
       </div>
     </div>
   )

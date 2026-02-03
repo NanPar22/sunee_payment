@@ -1,54 +1,59 @@
-import { prisma } from "@/lib/prisma"
+import { prisma } from "@/lib/prisma";
 
-type GetSalesParams = {
-  page: number
-  pageSize: number
-  from?: string
-  to?: string
-  keyword?: string
-}
+export type GetReportParams = {
+  page: number;
+  pageSize: number;
+  search?: string;
+  dateFrom?: Date;
+  dateTo?: Date;
+  spid?: string;
+};
 
-export async function getSalesReport(params: GetSalesParams) {
-  const { page, pageSize, from, to, keyword } = params
+export async function getReport(params: GetReportParams) {
+  const { page, pageSize, search, dateFrom, dateTo , spid} = params;
 
-  const where: any = {}
+  const where: any = {};
 
-  if (from && to) {
-    where.dateTime = {
-      gte: new Date(from),
-      lte: new Date(to),
-    }
+  if (spid) {
+    where.saleman = spid;
   }
 
-  if (keyword) {
+  // 🔍 search
+  if (search) {
     where.OR = [
-      { docno: { contains: keyword } },
-      { ref1: { contains: keyword } },
-    ]
+      { saleman: { contains: search } },
+      { docno: { contains: search } },
+      { ref1: { contains: search } },
+      { ref2: { contains: search } },
+      { cusName: { contains: search } },
+    ];
   }
 
-  const [data, total] = await Promise.all([
-    prisma.kaon_checklistlog.findMany({
-      where,
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-      orderBy: { dateTime: "desc" },
-      select: {
-        dateTime: true,
-        ref1: true,
-        ref2: true,
-        docno: true,
-        amount: true,
-        channel: true,
-        respCode: true,
-      },
-    }),
-    prisma.kaon_checklistlog.count({ where }),
-  ])
+  // 📅 date from / to (ใช้ field ให้ตรงกับ schema)
+  if (dateFrom || dateTo) {
+    where.dateTime = {};
+    if (dateFrom) where.dateTime.gte = dateFrom;
+    if (dateTo) where.dateTime.lte = dateTo;
+  }
+
+  // ดึงข้อมูล
+  const items = await prisma.kaon_checklistlog.findMany({
+    where,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+    orderBy: { dateTime: "desc" },
+  });
+
+  // นับจำนวนทั้งหมด
+  const total = await prisma.kaon_checklistlog.count({
+    where,
+  });
 
   return {
-    data,
+    items,
     total,
+    page,
+    pageSize,
     totalPages: Math.ceil(total / pageSize),
-  }
+  };
 }

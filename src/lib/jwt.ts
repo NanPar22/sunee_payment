@@ -4,6 +4,7 @@ export interface JwtPayload {
   id: number;
   role: string;
   username: string;
+  spid?: string;  
 }
 
 const JWT_SECRET = process.env.JWT_SECRET!;
