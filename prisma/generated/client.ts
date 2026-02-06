@@ -99,3 +99,23 @@ export type kaon_servicepoint123 = Prisma.kaon_servicepoint123Model
  * 
  */
 export type kaon_user = Prisma.kaon_userModel
+/**
+ * Model kaon_menu
+ * 
+ */
+export type kaon_menu = Prisma.kaon_menuModel
+/**
+ * Model kaon_role
+ * 
+ */
+export type kaon_role = Prisma.kaon_roleModel
+/**
+ * Model kaon_sp_role
+ * 
+ */
+export type kaon_sp_role = Prisma.kaon_sp_roleModel
+/**
+ * Model kaon_role_menu
+ * 
+ */
+export type kaon_role_menu = Prisma.kaon_role_menuModel

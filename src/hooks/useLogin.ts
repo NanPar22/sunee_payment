@@ -39,7 +39,7 @@ export function useLogin() {
         throw new Error(data?.message || "เข้าสู่ระบบไม่สำเร็จ");
       }
 
-      router.push("/report");
+      router.push("/report/info");
     } catch (err: any) {
       setError(err.message || "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
     } finally {

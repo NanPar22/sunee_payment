@@ -1,44 +1,47 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
 type DateRangePickerProps = {
+  from?: string
+  to?: string
   onChange?: (from?: string, to?: string) => void
 }
 
-export default function DateRangePicker({ onChange }: DateRangePickerProps) {
-  // 👉 default range (คำนวณครั้งเดียว)
-  const defaultRange = useMemo(() => {
-    const start = new Date()
-    const end = new Date()
-    end.setDate(start.getDate() + 1)
-    return { start, end }
-  }, [])
+/** แปลง YYYY-MM-DD → Date แบบ local (ไม่ UTC) */
+const parseLocalDate = (value?: string): Date | null => {
+  if (!value) return null
+  const [y, m, d] = value.split("-").map(Number)
+  return new Date(y, m - 1, d)
+}
 
-  const [startDate, setStartDate] = useState<Date | null>(defaultRange.start)
-  const [endDate, setEndDate] = useState<Date | null>(defaultRange.end)
+/** แปลง Date → YYYY-MM-DD แบบ local */
+const formatLocalDate = (date: Date | null): string | undefined => {
+  if (!date) return undefined
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, "0")
+  const d = String(date.getDate()).padStart(2, "0")
+  return `${y}-${m}-${d}`
+}
+
+export default function DateRangePicker({
+  from,
+  to,
+  onChange,
+}: DateRangePickerProps) {
+  const [startDate, setStartDate] = useState<Date | null>(null)
+  const [endDate, setEndDate] = useState<Date | null>(null)
+
+  // ✅ sync ค่า จากหน้าที่เรียก (แบบ local time)
+  useEffect(() => {
+    setStartDate(parseLocalDate(from))
+    setEndDate(parseLocalDate(to))
+  }, [from, to])
 
   const emitChange = (start: Date | null, end: Date | null) => {
-    const from = start ? start.toISOString().slice(0, 10) : undefined
-    const to = end ? end.toISOString().slice(0, 10) : undefined
-    onChange?.(from, to)
-  }
-
-  const setStart = (date: Date | null) => {
-    setStartDate(date)
-    if (date && endDate && endDate < date) {
-      setEndDate(null)
-      emitChange(date, null)
-    } else {
-      emitChange(date, endDate)
-    }
-  }
-
-  const setEnd = (date: Date | null) => {
-    setEndDate(date)
-    emitChange(startDate, date)
+    onChange?.(formatLocalDate(start), formatLocalDate(end))
   }
 
   return (
@@ -54,14 +57,15 @@ export default function DateRangePicker({ onChange }: DateRangePickerProps) {
           endDate={endDate}
           onChange={(dates) => {
             const [start, end] = dates as [Date | null, Date | null]
-            setStart(start)
-            setEnd(end)
+            setStartDate(start)
+            setEndDate(end)
+            emitChange(start, end)
           }}
           placeholderText="เลือกช่วงวันที่"
           dateFormat="dd/MM/yyyy"
           monthsShown={2}
           shouldCloseOnSelect={false}
-          className="h-6 text-center rounded-sm p-2 focus:outline-none"
+          className="h-6 text-center rounded-sm p-2 focus:outline-none "
         />
       </div>
     </div>

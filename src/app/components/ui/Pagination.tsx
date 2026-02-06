@@ -109,7 +109,7 @@ export function Pagination({
                 <span className="text-sm text-gray-600">รายการ</span>
             </div>
 
-            {/* pagination */}
+            {/* pagination */}ึ
             <div className="flex gap-2">
                 {/* Prev */}
                 <button
@@ -134,7 +134,7 @@ export function Pagination({
                             <button
                                 key={p}
                                 onClick={() => onPageChange(p)}
-                                className={`px-3 py-1 border rounded
+                                className={`px-3 py-1  rounded
                                 ${p === page
                                         ? "bg-blue-600 text-white"
                                         : "hover:bg-gray-100"}`}

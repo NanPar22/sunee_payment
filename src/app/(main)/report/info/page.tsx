@@ -10,10 +10,10 @@ import { useTable } from "@/hooks/useTable"
 
 type Row = {
     docno: string
-    ref1: string
-    ref2: string
+    ref1: string | null
+    ref2: string | null
     amount: number
-    payment: string
+    payment: string | null
     dateTime: string
     cusName: string
 }
@@ -23,28 +23,31 @@ export default function TrackingPage() {
     const [from, setFrom] = useState<string>()
     const [to, setTo] = useState<string>()
 
-    // server pagination
     const [page, setPage] = useState(1)
-    const [pageSize, setPageSize] = useState(10)
+    const [pageSize, setPageSize] = useState<number>(20)
 
-
-
-    // data state
     const [data, setData] = useState<Row[]>([])
     const [totalPages, setTotalPages] = useState(1)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
-    // ✅ เพิ่ม useEffect ตรงนี้
+    // pageSize จาก localStorage
     useEffect(() => {
         const saved = localStorage.getItem("infoPageSize")
-        if (saved) {
-            setPageSize(Number(saved))
-        }
+        if (saved) setPageSize(Number(saved))
     }, [])
 
-    // 🔥 fetch GET list
+    // default วันนี้
     useEffect(() => {
+        const today = new Date().toLocaleDateString("en-CA")
+        setFrom(today)
+        setTo(today)
+    }, [])
+
+    // fetch data
+    useEffect(() => {
+        if (!from || !to) return
+
         const fetchData = async () => {
             try {
                 setLoading(true)
@@ -59,16 +62,22 @@ export default function TrackingPage() {
                 if (from) params.set("from", from)
                 if (to) params.set("to", to)
 
-                const res = await fetch(`/api/report/info?${params.toString()}`
-                    ,
-                    {
-                        credentials: "include", // 👈 เพิ่มบรรทัดนี้
-                    }
+                const res = await fetch(
+                    `/api/report/info?${params.toString()}`,
+                    { credentials: "include" }
                 )
+
                 if (!res.ok) throw new Error("โหลดข้อมูลไม่สำเร็จ")
 
                 const json = await res.json()
-                setData(json.items)
+
+                // 🔧 format dateTime ตรงนี้
+                const mapped: Row[] = json.items.map((i: Row) => ({
+                    ...i,
+                    dateTime: new Date(i.dateTime).toLocaleString("th-TH"),
+                }))
+
+                setData(mapped)
                 setTotalPages(json.totalPages)
             } catch (e: any) {
                 setError(e.message)
@@ -88,7 +97,6 @@ export default function TrackingPage() {
             { key: "ref2", label: "Ref 2" },
             { key: "docno", label: "Doc No", sortable: true },
             { key: "amount", label: "Amount", sortable: true },
-            { key: "payment", label: "Payment" },
             { key: "cusName", label: "Customer" },
         ],
         page,
@@ -114,6 +122,8 @@ export default function TrackingPage() {
                     </div>
 
                     <DatePickers
+                        from={from}
+                        to={to}
                         onChange={(f, t) => {
                             setFrom(f)
                             setTo(t)
@@ -121,11 +131,12 @@ export default function TrackingPage() {
                         }}
                     />
                 </div>
+
                 <Actions columns={table.columns} data={data} />
             </div>
 
             <div className="w-full h-[95%] flex flex-col justify-between">
-                <div className=" h-225">
+                <div className="h-225">
                     {loading && <div className="text-center py-10">Loading...</div>}
                     {error && <div className="text-center text-red-500">{error}</div>}
                     {!loading && !error && <Table table={table} />}
@@ -138,7 +149,7 @@ export default function TrackingPage() {
                     onPageChange={setPage}
                     onPageSizeChange={(size) => {
                         setPageSize(size)
-                        setPage(1) // กลับหน้าแรก (แนะนำ)
+                        setPage(1)
                         localStorage.setItem("infoPageSize", String(size))
                     }}
                 />

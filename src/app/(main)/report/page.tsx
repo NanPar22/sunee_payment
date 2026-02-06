@@ -17,6 +17,9 @@ type Row = {
     payment: string
     dateTime: string
     cusName: string
+    bankRef: string
+    respMsg: string
+    qrContent: string
 }
 
 export default function TrackingPage() {
@@ -26,7 +29,7 @@ export default function TrackingPage() {
 
     // server pagination
     const [page, setPage] = useState(1)
-    const [pageSize, setPageSize] = useState(10)
+    const [pageSize, setPageSize] = useState(20)
 
     // data state
     const [data, setData] = useState<Row[]>([])
@@ -75,8 +78,10 @@ export default function TrackingPage() {
             { key: "ref2", label: "Ref 2" },
             { key: "docno", label: "Doc No", sortable: true },
             { key: "amount", label: "Amount", sortable: true },
-            { key: "payment", label: "Payment" },
             { key: "cusName", label: "Customer" },
+            { key: "bankRef", label: "Bank" },
+            { key: "respMsg", label: "Status" },
+            { key: "qrContent", label: "QR Content" }
         ],
         page,
         pageSize,

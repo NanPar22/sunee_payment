@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getReport } from "@/lib/report";
+import {  getReportInfo } from "@/lib/report";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
@@ -41,7 +41,7 @@ export async function GET(req: Request) {
     const dateFrom = from ? new Date(from) : undefined;
     const dateTo = to ? new Date(to) : undefined;
 
-    const result = await getReport({
+    const result = await getReportInfo({
       page,
       pageSize,
       search,

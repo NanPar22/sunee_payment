@@ -29,9 +29,9 @@ export default function Sidebar() {
             drop: ""
         },
         {
-            name: "Users",
-            href: "/user",
-            icon: "fa-users",
+            name: "System",
+            href: "/system",
+            icon: "fa-gear",
             drop: ""
         },
     ]

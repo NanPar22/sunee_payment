@@ -351,3 +351,50 @@ model kaon_user {
   updateddate DateTime @db.DateTime(0)
   description String   @db.Text
 }
+
+model kaon_menu {
+  id            Int              @id @default(autoincrement())
+  menuName      String           @db.VarChar(500)
+  isstatus      Boolean?         @default(true)
+  person        String?          @db.VarChar(500)
+  dates         DateTime?        @db.DateTime(0)
+  updatedby     String?          @db.VarChar(500)
+  updateddate   DateTime?        @db.DateTime(0)
+  description   String?          @db.Text
+  kaonRoleMenus kaon_role_menu[]
+}
+
+model kaon_role {
+  id            Int              @id @default(autoincrement())
+  roleCode      String           @db.VarChar(200)
+  roleName      String           @db.VarChar(500)
+  isstatus      Boolean?         @default(true)
+  description   String?          @db.Text
+  kaonRoleMenus kaon_role_menu[]
+  kaonSpRoles   kaon_sp_role[]
+}
+
+model kaon_sp_role {
+  id     Int       @id @default(autoincrement())
+  spid   String    @db.VarChar(8)
+  roleId Int
+  role   kaon_role @relation(fields: [roleId], references: [id], onUpdate: Restrict, map: "fk_sp_role_role")
+
+  @@unique([spid, roleId], map: "spid")
+  @@index([roleId], map: "fk_sp_role_role")
+}
+
+model kaon_role_menu {
+  id       Int       @id @default(autoincrement())
+  roleId   Int
+  menuId   Int
+  isview   Boolean?  @default(false) 
+  isedit   Boolean?  @default(false)
+  isdelete Boolean?  @default(false)
+  isstatus Boolean?  @default(true)
+  menu     kaon_menu @relation(fields: [menuId], references: [id], onUpdate: Restrict, map: "fk_role_menu_menu")
+  role     kaon_role @relation(fields: [roleId], references: [id], onUpdate: Restrict, map: "fk_role_menu_role")
+
+  @@unique([roleId, menuId], map: "roleId")
+  @@index([menuId], map: "fk_role_menu_menu")
+}
