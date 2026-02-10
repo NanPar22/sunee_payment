@@ -1928,7 +1928,6 @@ export const Kaon_role_menuScalarFieldEnum = {
   roleId: 'roleId',
   menuId: 'menuId',
   isview: 'isview',
-  isadd: 'isadd',
   isedit: 'isedit',
   isdelete: 'isdelete',
   isstatus: 'isstatus'

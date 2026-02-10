@@ -78,7 +78,7 @@ export function Pagination({
                     <button
                         type="button"
                         onClick={() => setOpen(o => !o)}
-                        className="w-full border px-2 py-1 rounded-sm bg-white flex items-center justify-center"
+                        className="w-full border px-2  rounded-sm bg-white flex items-center justify-center"
                     >
                         {pageSize}
                         <i
@@ -88,7 +88,7 @@ export function Pagination({
                     </button>
 
                     {open && (
-                        <ul className="absolute left-0 bottom-0 mb-9 w-full bg-white border rounded-sm z-20">
+                        <ul className="absolute left-0 bottom-0 mb-9 p-0.5 w-full bg-white border rounded-sm z-20 flex flex-col gap-0.5">
                             {sizes.map(size => (
                                 <li
                                     key={size}
@@ -96,7 +96,7 @@ export function Pagination({
                                         onPageSizeChange?.(size)
                                         setOpen(false)
                                     }}
-                                    className={`px-2 py-1 cursor-pointer text-center hover:bg-blue-500 hover:text-white
+                                    className={`px-2 py-0.5 cursor-pointer text-center hover:bg-blue-500 hover:text-white rounded-xs
                                     ${size === pageSize ? "bg-blue-100" : ""}`}
                                 >
                                     {size}

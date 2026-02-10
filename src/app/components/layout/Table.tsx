@@ -59,7 +59,7 @@ ${text}
 
     return (
         <div className="h-full overflow-y-auto rounded-lg shadow-sm ">
-            <table className="w-full   ">
+            <table className="w-full h-full border-collapse ">
                 <thead className="bg-blue-600 sticky top-0  ">
                     <tr>
                         {columns.map(col => (

@@ -43,7 +43,6 @@ export type Kaon_role_menuMinAggregateOutputType = {
   roleId: number | null
   menuId: number | null
   isview: boolean | null
-  isadd: boolean | null
   isedit: boolean | null
   isdelete: boolean | null
   isstatus: boolean | null
@@ -54,7 +53,6 @@ export type Kaon_role_menuMaxAggregateOutputType = {
   roleId: number | null
   menuId: number | null
   isview: boolean | null
-  isadd: boolean | null
   isedit: boolean | null
   isdelete: boolean | null
   isstatus: boolean | null
@@ -65,7 +63,6 @@ export type Kaon_role_menuCountAggregateOutputType = {
   roleId: number
   menuId: number
   isview: number
-  isadd: number
   isedit: number
   isdelete: number
   isstatus: number
@@ -90,7 +87,6 @@ export type Kaon_role_menuMinAggregateInputType = {
   roleId?: true
   menuId?: true
   isview?: true
-  isadd?: true
   isedit?: true
   isdelete?: true
   isstatus?: true
@@ -101,7 +97,6 @@ export type Kaon_role_menuMaxAggregateInputType = {
   roleId?: true
   menuId?: true
   isview?: true
-  isadd?: true
   isedit?: true
   isdelete?: true
   isstatus?: true
@@ -112,7 +107,6 @@ export type Kaon_role_menuCountAggregateInputType = {
   roleId?: true
   menuId?: true
   isview?: true
-  isadd?: true
   isedit?: true
   isdelete?: true
   isstatus?: true
@@ -210,7 +204,6 @@ export type Kaon_role_menuGroupByOutputType = {
   roleId: number
   menuId: number
   isview: boolean | null
-  isadd: boolean | null
   isedit: boolean | null
   isdelete: boolean | null
   isstatus: boolean | null
@@ -244,7 +237,6 @@ export type kaon_role_menuWhereInput = {
   roleId?: Prisma.IntFilter<"kaon_role_menu"> | number
   menuId?: Prisma.IntFilter<"kaon_role_menu"> | number
   isview?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
-  isadd?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
   isedit?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
   isdelete?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
   isstatus?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
@@ -257,7 +249,6 @@ export type kaon_role_menuOrderByWithRelationInput = {
   roleId?: Prisma.SortOrder
   menuId?: Prisma.SortOrder
   isview?: Prisma.SortOrderInput | Prisma.SortOrder
-  isadd?: Prisma.SortOrderInput | Prisma.SortOrder
   isedit?: Prisma.SortOrderInput | Prisma.SortOrder
   isdelete?: Prisma.SortOrderInput | Prisma.SortOrder
   isstatus?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -274,7 +265,6 @@ export type kaon_role_menuWhereUniqueInput = Prisma.AtLeast<{
   roleId?: Prisma.IntFilter<"kaon_role_menu"> | number
   menuId?: Prisma.IntFilter<"kaon_role_menu"> | number
   isview?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
-  isadd?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
   isedit?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
   isdelete?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
   isstatus?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
@@ -287,7 +277,6 @@ export type kaon_role_menuOrderByWithAggregationInput = {
   roleId?: Prisma.SortOrder
   menuId?: Prisma.SortOrder
   isview?: Prisma.SortOrderInput | Prisma.SortOrder
-  isadd?: Prisma.SortOrderInput | Prisma.SortOrder
   isedit?: Prisma.SortOrderInput | Prisma.SortOrder
   isdelete?: Prisma.SortOrderInput | Prisma.SortOrder
   isstatus?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -306,7 +295,6 @@ export type kaon_role_menuScalarWhereWithAggregatesInput = {
   roleId?: Prisma.IntWithAggregatesFilter<"kaon_role_menu"> | number
   menuId?: Prisma.IntWithAggregatesFilter<"kaon_role_menu"> | number
   isview?: Prisma.BoolNullableWithAggregatesFilter<"kaon_role_menu"> | boolean | null
-  isadd?: Prisma.BoolNullableWithAggregatesFilter<"kaon_role_menu"> | boolean | null
   isedit?: Prisma.BoolNullableWithAggregatesFilter<"kaon_role_menu"> | boolean | null
   isdelete?: Prisma.BoolNullableWithAggregatesFilter<"kaon_role_menu"> | boolean | null
   isstatus?: Prisma.BoolNullableWithAggregatesFilter<"kaon_role_menu"> | boolean | null
@@ -314,7 +302,6 @@ export type kaon_role_menuScalarWhereWithAggregatesInput = {
 
 export type kaon_role_menuCreateInput = {
   isview?: boolean | null
-  isadd?: boolean | null
   isedit?: boolean | null
   isdelete?: boolean | null
   isstatus?: boolean | null
@@ -327,7 +314,6 @@ export type kaon_role_menuUncheckedCreateInput = {
   roleId: number
   menuId: number
   isview?: boolean | null
-  isadd?: boolean | null
   isedit?: boolean | null
   isdelete?: boolean | null
   isstatus?: boolean | null
@@ -335,7 +321,6 @@ export type kaon_role_menuUncheckedCreateInput = {
 
 export type kaon_role_menuUpdateInput = {
   isview?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  isadd?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isedit?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isdelete?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -348,7 +333,6 @@ export type kaon_role_menuUncheckedUpdateInput = {
   roleId?: Prisma.IntFieldUpdateOperationsInput | number
   menuId?: Prisma.IntFieldUpdateOperationsInput | number
   isview?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  isadd?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isedit?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isdelete?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -359,7 +343,6 @@ export type kaon_role_menuCreateManyInput = {
   roleId: number
   menuId: number
   isview?: boolean | null
-  isadd?: boolean | null
   isedit?: boolean | null
   isdelete?: boolean | null
   isstatus?: boolean | null
@@ -367,7 +350,6 @@ export type kaon_role_menuCreateManyInput = {
 
 export type kaon_role_menuUpdateManyMutationInput = {
   isview?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  isadd?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isedit?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isdelete?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -378,7 +360,6 @@ export type kaon_role_menuUncheckedUpdateManyInput = {
   roleId?: Prisma.IntFieldUpdateOperationsInput | number
   menuId?: Prisma.IntFieldUpdateOperationsInput | number
   isview?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  isadd?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isedit?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isdelete?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -404,7 +385,6 @@ export type kaon_role_menuCountOrderByAggregateInput = {
   roleId?: Prisma.SortOrder
   menuId?: Prisma.SortOrder
   isview?: Prisma.SortOrder
-  isadd?: Prisma.SortOrder
   isedit?: Prisma.SortOrder
   isdelete?: Prisma.SortOrder
   isstatus?: Prisma.SortOrder
@@ -421,7 +401,6 @@ export type kaon_role_menuMaxOrderByAggregateInput = {
   roleId?: Prisma.SortOrder
   menuId?: Prisma.SortOrder
   isview?: Prisma.SortOrder
-  isadd?: Prisma.SortOrder
   isedit?: Prisma.SortOrder
   isdelete?: Prisma.SortOrder
   isstatus?: Prisma.SortOrder
@@ -432,7 +411,6 @@ export type kaon_role_menuMinOrderByAggregateInput = {
   roleId?: Prisma.SortOrder
   menuId?: Prisma.SortOrder
   isview?: Prisma.SortOrder
-  isadd?: Prisma.SortOrder
   isedit?: Prisma.SortOrder
   isdelete?: Prisma.SortOrder
   isstatus?: Prisma.SortOrder
@@ -530,7 +508,6 @@ export type kaon_role_menuUncheckedUpdateManyWithoutRoleNestedInput = {
 
 export type kaon_role_menuCreateWithoutMenuInput = {
   isview?: boolean | null
-  isadd?: boolean | null
   isedit?: boolean | null
   isdelete?: boolean | null
   isstatus?: boolean | null
@@ -541,7 +518,6 @@ export type kaon_role_menuUncheckedCreateWithoutMenuInput = {
   id?: number
   roleId: number
   isview?: boolean | null
-  isadd?: boolean | null
   isedit?: boolean | null
   isdelete?: boolean | null
   isstatus?: boolean | null
@@ -581,7 +557,6 @@ export type kaon_role_menuScalarWhereInput = {
   roleId?: Prisma.IntFilter<"kaon_role_menu"> | number
   menuId?: Prisma.IntFilter<"kaon_role_menu"> | number
   isview?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
-  isadd?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
   isedit?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
   isdelete?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
   isstatus?: Prisma.BoolNullableFilter<"kaon_role_menu"> | boolean | null
@@ -589,7 +564,6 @@ export type kaon_role_menuScalarWhereInput = {
 
 export type kaon_role_menuCreateWithoutRoleInput = {
   isview?: boolean | null
-  isadd?: boolean | null
   isedit?: boolean | null
   isdelete?: boolean | null
   isstatus?: boolean | null
@@ -600,7 +574,6 @@ export type kaon_role_menuUncheckedCreateWithoutRoleInput = {
   id?: number
   menuId: number
   isview?: boolean | null
-  isadd?: boolean | null
   isedit?: boolean | null
   isdelete?: boolean | null
   isstatus?: boolean | null
@@ -636,7 +609,6 @@ export type kaon_role_menuCreateManyMenuInput = {
   id?: number
   roleId: number
   isview?: boolean | null
-  isadd?: boolean | null
   isedit?: boolean | null
   isdelete?: boolean | null
   isstatus?: boolean | null
@@ -644,7 +616,6 @@ export type kaon_role_menuCreateManyMenuInput = {
 
 export type kaon_role_menuUpdateWithoutMenuInput = {
   isview?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  isadd?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isedit?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isdelete?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -655,7 +626,6 @@ export type kaon_role_menuUncheckedUpdateWithoutMenuInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   roleId?: Prisma.IntFieldUpdateOperationsInput | number
   isview?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  isadd?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isedit?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isdelete?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -665,7 +635,6 @@ export type kaon_role_menuUncheckedUpdateManyWithoutMenuInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   roleId?: Prisma.IntFieldUpdateOperationsInput | number
   isview?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  isadd?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isedit?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isdelete?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -675,7 +644,6 @@ export type kaon_role_menuCreateManyRoleInput = {
   id?: number
   menuId: number
   isview?: boolean | null
-  isadd?: boolean | null
   isedit?: boolean | null
   isdelete?: boolean | null
   isstatus?: boolean | null
@@ -683,7 +651,6 @@ export type kaon_role_menuCreateManyRoleInput = {
 
 export type kaon_role_menuUpdateWithoutRoleInput = {
   isview?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  isadd?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isedit?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isdelete?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -694,7 +661,6 @@ export type kaon_role_menuUncheckedUpdateWithoutRoleInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   menuId?: Prisma.IntFieldUpdateOperationsInput | number
   isview?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  isadd?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isedit?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isdelete?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -704,7 +670,6 @@ export type kaon_role_menuUncheckedUpdateManyWithoutRoleInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   menuId?: Prisma.IntFieldUpdateOperationsInput | number
   isview?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  isadd?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isedit?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isdelete?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -717,7 +682,6 @@ export type kaon_role_menuSelect<ExtArgs extends runtime.Types.Extensions.Intern
   roleId?: boolean
   menuId?: boolean
   isview?: boolean
-  isadd?: boolean
   isedit?: boolean
   isdelete?: boolean
   isstatus?: boolean
@@ -732,13 +696,12 @@ export type kaon_role_menuSelectScalar = {
   roleId?: boolean
   menuId?: boolean
   isview?: boolean
-  isadd?: boolean
   isedit?: boolean
   isdelete?: boolean
   isstatus?: boolean
 }
 
-export type kaon_role_menuOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "roleId" | "menuId" | "isview" | "isadd" | "isedit" | "isdelete" | "isstatus", ExtArgs["result"]["kaon_role_menu"]>
+export type kaon_role_menuOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "roleId" | "menuId" | "isview" | "isedit" | "isdelete" | "isstatus", ExtArgs["result"]["kaon_role_menu"]>
 export type kaon_role_menuInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   menu?: boolean | Prisma.kaon_menuDefaultArgs<ExtArgs>
   role?: boolean | Prisma.kaon_roleDefaultArgs<ExtArgs>
@@ -755,7 +718,6 @@ export type $kaon_role_menuPayload<ExtArgs extends runtime.Types.Extensions.Inte
     roleId: number
     menuId: number
     isview: boolean | null
-    isadd: boolean | null
     isedit: boolean | null
     isdelete: boolean | null
     isstatus: boolean | null
@@ -1134,7 +1096,6 @@ export interface kaon_role_menuFieldRefs {
   readonly roleId: Prisma.FieldRef<"kaon_role_menu", 'Int'>
   readonly menuId: Prisma.FieldRef<"kaon_role_menu", 'Int'>
   readonly isview: Prisma.FieldRef<"kaon_role_menu", 'Boolean'>
-  readonly isadd: Prisma.FieldRef<"kaon_role_menu", 'Boolean'>
   readonly isedit: Prisma.FieldRef<"kaon_role_menu", 'Boolean'>
   readonly isdelete: Prisma.FieldRef<"kaon_role_menu", 'Boolean'>
   readonly isstatus: Prisma.FieldRef<"kaon_role_menu", 'Boolean'>
