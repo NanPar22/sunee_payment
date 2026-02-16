@@ -292,10 +292,11 @@ export async function updateMenu(input: UpdateMenuInput) {
   return updatedMenu;
 }
 
+
 /* =========================================
-   ✅ ลบเมนู (Soft Delete หรือ Hard Delete)
+   ✅ ลบเมนู
 ========================================= */
-export async function deleteMenu(id: number, hardDelete: boolean = false) {
+export async function deleteMenu(id: number) {
   // ✅ ตรวจสอบว่าเมนูมีอยู่จริง
   const existingMenu = await prisma.kaon_menu.findUnique({
     where: { id },
@@ -308,87 +309,22 @@ export async function deleteMenu(id: number, hardDelete: boolean = false) {
     throw new Error("ไม่พบเมนูที่ต้องการลบ");
   }
 
-  // ✅ ตรวจสอบว่ามีเมนูย่อยหรือไม่
-  if (existingMenu.other_kaon_menu && existingMenu.other_kaon_menu.length > 0) {
-    throw new Error(
-      "ไม่สามารถลบเมนูนี้ได้ เนื่องจากมีเมนูย่ออยู่ กรุณาลบเมนูย่อยก่อน",
-    );
+  // ✅ ถ้าเป็นเมนูหลัก และยังมีเมนูย่อย → ไม่ให้ลบ
+  if (existingMenu.parentId === null && existingMenu.other_kaon_menu.length > 0) {
+    throw new Error("ไม่สามารถลบเมนูหลักที่มีเมนูย่อยได้ กรุณาลบเมนูย่อยก่อน");
   }
 
-  if (hardDelete) {
-    // ✅ ลบถาวร
-    await prisma.kaon_menu.delete({
+  // ✅ ใช้ transaction เพื่อความปลอดภัย
+  await prisma.$transaction(async (tx) => {
+    // ถ้าเป็นเมนูย่อย → ลบได้เลย
+    await tx.kaon_menu.delete({
       where: { id },
     });
-
-    return { message: "ลบเมนูสำเร็จ" };
-  } else {
-    // ✅ Soft Delete (เปลี่ยนสถานะเป็น inactive)
-    const softDeletedMenu = await prisma.kaon_menu.update({
-      where: { id },
-      data: {
-        isstatus: false,
-      },
-    });
-
-    return softDeletedMenu;
-  }
-}
-
-/* =========================================
-   ✅ ลบเมนูพร้อมเมนูย่อยทั้งหมด (ระวังใช้)
-========================================= */
-export async function deleteMenuWithChildren(
-  id: number,
-  hardDelete: boolean = false,
-) {
-  const existingMenu = await prisma.kaon_menu.findUnique({
-    where: { id },
-    include: {
-      other_kaon_menu: true,
-    },
   });
 
-  if (!existingMenu) {
-    throw new Error("ไม่พบเมนูที่ต้องการลบ");
-  }
-
-  if (hardDelete) {
-    // ✅ ลบเมนูย่อยก่อน
-    await prisma.kaon_menu.deleteMany({
-      where: {
-        parentId: id,
-      },
-    });
-
-    // ✅ ลบเมนูหลัก
-    await prisma.kaon_menu.delete({
-      where: { id },
-    });
-
-    return { message: "ลบเมนูและเมนูย่อยสำเร็จ" };
-  } else {
-    // ✅ Soft Delete เมนูย่อย
-    await prisma.kaon_menu.updateMany({
-      where: {
-        parentId: id,
-      },
-      data: {
-        isstatus: false,
-      },
-    });
-
-    // ✅ Soft Delete เมนูหลัก
-    const softDeletedMenu = await prisma.kaon_menu.update({
-      where: { id },
-      data: {
-        isstatus: false,
-      },
-    });
-
-    return softDeletedMenu;
-  }
+  return { message: "ลบเมนูสำเร็จ" };
 }
+
 
 /* =========================================
    ✅ เปลี่ยนลำดับเมนู (Reorder)

@@ -134,7 +134,17 @@ export default function Menu() {
         setIsModalOpen(true)
     }
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = async (row: any, hardDelete = false) => {
+        // 🔥 ดึง id ให้แน่ใจว่าเป็น number จริง
+        const id = Number(row?.id ?? row)
+
+        console.log("delete id =", id)
+
+        if (!id || isNaN(id)) {
+            Swal.fire("ID ไม่ถูกต้อง", "", "error")
+            return
+        }
+
         const result = await Swal.fire({
             title: "ยืนยันการลบ?",
             icon: "warning",
@@ -146,18 +156,30 @@ export default function Menu() {
         if (!result.isConfirmed) return
 
         try {
-            const res = await fetch(`/api/system/menus/${id}`, {
-                method: "DELETE",
-            })
+            const res = await fetch(
+                `/api/system/menus/delete/${id}${hardDelete ? "?hard=true" : ""}`,
+                {
+                    method: "DELETE",
+                }
+            )
 
-            if (!res.ok) throw new Error("ลบไม่สำเร็จ")
+            const data = await res.json()
 
-            Swal.fire("ลบสำเร็จ!", "", "success")
+            if (!res.ok || !data.success) {
+                throw new Error(data.error || "ลบไม่สำเร็จ")
+            }
+
+            Swal.fire("สำเร็จ!", data.message, "success")
+
             setRefreshTrigger(prev => prev + 1)
-        } catch {
-            Swal.fire("เกิดข้อผิดพลาด", "", "error")
+
+        } catch (error: any) {
+            Swal.fire("เกิดข้อผิดพลาด", error.message, "error")
         }
     }
+
+
+
     const handleSave = async () => {
         if (!editingRow) return
 
