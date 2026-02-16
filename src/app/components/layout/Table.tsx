@@ -28,7 +28,7 @@ export function Table<T extends object>({ table }: TableProps<T>) {
             title,
             html: `
       <pre style="text-align:left;white-space:pre-wrap;max-height:300px;overflow:auto;">
-${text}
+            ${text}
       </pre>
     `,
             icon: "info",

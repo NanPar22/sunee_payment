@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 
-export type Column<T> = {
-  key: keyof T;
+export type Column<T, K extends keyof T = keyof T> = {
+  key: K;
   label: string;
   sortable?: boolean;
+  render?: (value: T[K], row: T) => React.ReactNode;
 };
 
 type UseTableProps<T> = {
@@ -31,6 +32,9 @@ export function useTable<T>({
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const handleSort = (key: keyof T) => {
+    const column = columns.find((col) => col.key === key);
+    if (!column?.sortable) return;
+
     let nextOrder: "asc" | "desc" = "asc";
 
     if (sortKey === key) {
@@ -39,12 +43,12 @@ export function useTable<T>({
 
     setSortKey(key);
     setSortOrder(nextOrder);
-    onSort?.(key, nextOrder); // 🔥 ส่งไปให้ backend
+    onSort?.(key, nextOrder);
   };
 
   useEffect(() => {
     onPageChange(1);
-  }, [pageSize]);
+  }, [pageSize, onPageChange]);
 
   return {
     columns,

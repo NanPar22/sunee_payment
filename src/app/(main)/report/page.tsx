@@ -69,6 +69,9 @@ export default function TrackingPage() {
         fetchData()
     }, [page, pageSize, keyword, from, to])
 
+
+
+
     const table = useTable({
         data,
         columns: [
@@ -117,7 +120,7 @@ export default function TrackingPage() {
             </div>
 
             <div className="w-full h-[95%] flex flex-col justify-between">
-                <div className=" h-225">
+                <div >
                     {loading && <div className="text-center py-10">Loading...</div>}
                     {error && <div className="text-center text-red-500">{error}</div>}
                     {!loading && !error && <Table table={table} />}

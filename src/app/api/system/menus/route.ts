@@ -1,40 +1,46 @@
-import { createMenu, getAllMenus } from '@/lib/role'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from "next/server";
+import { getMenuList } from "@/lib/menu";
 
-// GET - ดึง menus ทั้งหมด
-export async function GET() {
+export const dynamic = "force-dynamic"; // กัน cache
+
+export async function GET(req: NextRequest) {
   try {
-    const menus = await getAllMenus()
-    return NextResponse.json(menus)
-  } catch (error) {
-    console.error('Error fetching menus:', error)
+    const { searchParams } = new URL(req.url);
+
+    const page = Number(searchParams.get("page") ?? 1);
+    const pageSize = Number(searchParams.get("pageSize") ?? 10);
+    const search = searchParams.get("search") ?? undefined;
+    const statusParam = searchParams.get("status");
+
+    // แปลง string → boolean
+    let status: boolean | undefined = undefined;
+    if (statusParam === "true") status = true;
+    if (statusParam === "false") status = false;
+
+    const result = await getMenuList({
+      page,
+      pageSize,
+      search,
+      status,
+    });
+
     return NextResponse.json(
-      { error: 'Failed to fetch menus' },
+      {
+        success: true,
+        ...result,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Menu API Error:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Internal Server Error",
+      },
       { status: 500 }
-    )
+    );
   }
 }
 
-// POST - สร้าง menu ใหม่
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const { menuName, description, person } = body
-
-    if (!menuName) {
-      return NextResponse.json(
-        { error: 'menuName is required' },
-        { status: 400 }
-      )
-    }
-
-    const menu = await createMenu({ menuName, description, person })
-    return NextResponse.json(menu, { status: 201 })
-  } catch (error) {
-    console.error('Error creating menu:', error)
-    return NextResponse.json(
-      { error: 'Failed to create menu' },
-      { status: 500 }
-    )
-  }
-}

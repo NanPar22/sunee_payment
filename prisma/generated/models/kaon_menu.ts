@@ -28,10 +28,14 @@ export type AggregateKaon_menu = {
 
 export type Kaon_menuAvgAggregateOutputType = {
   id: number | null
+  parentId: number | null
+  sortOrder: number | null
 }
 
 export type Kaon_menuSumAggregateOutputType = {
   id: number | null
+  parentId: number | null
+  sortOrder: number | null
 }
 
 export type Kaon_menuMinAggregateOutputType = {
@@ -43,6 +47,10 @@ export type Kaon_menuMinAggregateOutputType = {
   updatedby: string | null
   updateddate: Date | null
   description: string | null
+  path: string | null
+  parentId: number | null
+  sortOrder: number | null
+  icon: string | null
 }
 
 export type Kaon_menuMaxAggregateOutputType = {
@@ -54,6 +62,10 @@ export type Kaon_menuMaxAggregateOutputType = {
   updatedby: string | null
   updateddate: Date | null
   description: string | null
+  path: string | null
+  parentId: number | null
+  sortOrder: number | null
+  icon: string | null
 }
 
 export type Kaon_menuCountAggregateOutputType = {
@@ -65,16 +77,24 @@ export type Kaon_menuCountAggregateOutputType = {
   updatedby: number
   updateddate: number
   description: number
+  path: number
+  parentId: number
+  sortOrder: number
+  icon: number
   _all: number
 }
 
 
 export type Kaon_menuAvgAggregateInputType = {
   id?: true
+  parentId?: true
+  sortOrder?: true
 }
 
 export type Kaon_menuSumAggregateInputType = {
   id?: true
+  parentId?: true
+  sortOrder?: true
 }
 
 export type Kaon_menuMinAggregateInputType = {
@@ -86,6 +106,10 @@ export type Kaon_menuMinAggregateInputType = {
   updatedby?: true
   updateddate?: true
   description?: true
+  path?: true
+  parentId?: true
+  sortOrder?: true
+  icon?: true
 }
 
 export type Kaon_menuMaxAggregateInputType = {
@@ -97,6 +121,10 @@ export type Kaon_menuMaxAggregateInputType = {
   updatedby?: true
   updateddate?: true
   description?: true
+  path?: true
+  parentId?: true
+  sortOrder?: true
+  icon?: true
 }
 
 export type Kaon_menuCountAggregateInputType = {
@@ -108,6 +136,10 @@ export type Kaon_menuCountAggregateInputType = {
   updatedby?: true
   updateddate?: true
   description?: true
+  path?: true
+  parentId?: true
+  sortOrder?: true
+  icon?: true
   _all?: true
 }
 
@@ -206,6 +238,10 @@ export type Kaon_menuGroupByOutputType = {
   updatedby: string | null
   updateddate: Date | null
   description: string | null
+  path: string | null
+  parentId: number | null
+  sortOrder: number | null
+  icon: string | null
   _count: Kaon_menuCountAggregateOutputType | null
   _avg: Kaon_menuAvgAggregateOutputType | null
   _sum: Kaon_menuSumAggregateOutputType | null
@@ -240,6 +276,12 @@ export type kaon_menuWhereInput = {
   updatedby?: Prisma.StringNullableFilter<"kaon_menu"> | string | null
   updateddate?: Prisma.DateTimeNullableFilter<"kaon_menu"> | Date | string | null
   description?: Prisma.StringNullableFilter<"kaon_menu"> | string | null
+  path?: Prisma.StringNullableFilter<"kaon_menu"> | string | null
+  parentId?: Prisma.IntNullableFilter<"kaon_menu"> | number | null
+  sortOrder?: Prisma.IntNullableFilter<"kaon_menu"> | number | null
+  icon?: Prisma.StringNullableFilter<"kaon_menu"> | string | null
+  kaon_menu?: Prisma.XOR<Prisma.Kaon_menuNullableScalarRelationFilter, Prisma.kaon_menuWhereInput> | null
+  other_kaon_menu?: Prisma.Kaon_menuListRelationFilter
   kaonRoleMenus?: Prisma.Kaon_role_menuListRelationFilter
 }
 
@@ -252,6 +294,12 @@ export type kaon_menuOrderByWithRelationInput = {
   updatedby?: Prisma.SortOrderInput | Prisma.SortOrder
   updateddate?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  path?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  sortOrder?: Prisma.SortOrderInput | Prisma.SortOrder
+  icon?: Prisma.SortOrderInput | Prisma.SortOrder
+  kaon_menu?: Prisma.kaon_menuOrderByWithRelationInput
+  other_kaon_menu?: Prisma.kaon_menuOrderByRelationAggregateInput
   kaonRoleMenus?: Prisma.kaon_role_menuOrderByRelationAggregateInput
   _relevance?: Prisma.kaon_menuOrderByRelevanceInput
 }
@@ -268,6 +316,12 @@ export type kaon_menuWhereUniqueInput = Prisma.AtLeast<{
   updatedby?: Prisma.StringNullableFilter<"kaon_menu"> | string | null
   updateddate?: Prisma.DateTimeNullableFilter<"kaon_menu"> | Date | string | null
   description?: Prisma.StringNullableFilter<"kaon_menu"> | string | null
+  path?: Prisma.StringNullableFilter<"kaon_menu"> | string | null
+  parentId?: Prisma.IntNullableFilter<"kaon_menu"> | number | null
+  sortOrder?: Prisma.IntNullableFilter<"kaon_menu"> | number | null
+  icon?: Prisma.StringNullableFilter<"kaon_menu"> | string | null
+  kaon_menu?: Prisma.XOR<Prisma.Kaon_menuNullableScalarRelationFilter, Prisma.kaon_menuWhereInput> | null
+  other_kaon_menu?: Prisma.Kaon_menuListRelationFilter
   kaonRoleMenus?: Prisma.Kaon_role_menuListRelationFilter
 }, "id">
 
@@ -280,6 +334,10 @@ export type kaon_menuOrderByWithAggregationInput = {
   updatedby?: Prisma.SortOrderInput | Prisma.SortOrder
   updateddate?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  path?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  sortOrder?: Prisma.SortOrderInput | Prisma.SortOrder
+  icon?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.kaon_menuCountOrderByAggregateInput
   _avg?: Prisma.kaon_menuAvgOrderByAggregateInput
   _max?: Prisma.kaon_menuMaxOrderByAggregateInput
@@ -299,6 +357,10 @@ export type kaon_menuScalarWhereWithAggregatesInput = {
   updatedby?: Prisma.StringNullableWithAggregatesFilter<"kaon_menu"> | string | null
   updateddate?: Prisma.DateTimeNullableWithAggregatesFilter<"kaon_menu"> | Date | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"kaon_menu"> | string | null
+  path?: Prisma.StringNullableWithAggregatesFilter<"kaon_menu"> | string | null
+  parentId?: Prisma.IntNullableWithAggregatesFilter<"kaon_menu"> | number | null
+  sortOrder?: Prisma.IntNullableWithAggregatesFilter<"kaon_menu"> | number | null
+  icon?: Prisma.StringNullableWithAggregatesFilter<"kaon_menu"> | string | null
 }
 
 export type kaon_menuCreateInput = {
@@ -309,6 +371,11 @@ export type kaon_menuCreateInput = {
   updatedby?: string | null
   updateddate?: Date | string | null
   description?: string | null
+  path?: string | null
+  sortOrder?: number | null
+  icon?: string | null
+  kaon_menu?: Prisma.kaon_menuCreateNestedOneWithoutOther_kaon_menuInput
+  other_kaon_menu?: Prisma.kaon_menuCreateNestedManyWithoutKaon_menuInput
   kaonRoleMenus?: Prisma.kaon_role_menuCreateNestedManyWithoutMenuInput
 }
 
@@ -321,6 +388,11 @@ export type kaon_menuUncheckedCreateInput = {
   updatedby?: string | null
   updateddate?: Date | string | null
   description?: string | null
+  path?: string | null
+  parentId?: number | null
+  sortOrder?: number | null
+  icon?: string | null
+  other_kaon_menu?: Prisma.kaon_menuUncheckedCreateNestedManyWithoutKaon_menuInput
   kaonRoleMenus?: Prisma.kaon_role_menuUncheckedCreateNestedManyWithoutMenuInput
 }
 
@@ -332,6 +404,11 @@ export type kaon_menuUpdateInput = {
   updatedby?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updateddate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kaon_menu?: Prisma.kaon_menuUpdateOneWithoutOther_kaon_menuNestedInput
+  other_kaon_menu?: Prisma.kaon_menuUpdateManyWithoutKaon_menuNestedInput
   kaonRoleMenus?: Prisma.kaon_role_menuUpdateManyWithoutMenuNestedInput
 }
 
@@ -344,6 +421,11 @@ export type kaon_menuUncheckedUpdateInput = {
   updatedby?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updateddate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  other_kaon_menu?: Prisma.kaon_menuUncheckedUpdateManyWithoutKaon_menuNestedInput
   kaonRoleMenus?: Prisma.kaon_role_menuUncheckedUpdateManyWithoutMenuNestedInput
 }
 
@@ -356,6 +438,10 @@ export type kaon_menuCreateManyInput = {
   updatedby?: string | null
   updateddate?: Date | string | null
   description?: string | null
+  path?: string | null
+  parentId?: number | null
+  sortOrder?: number | null
+  icon?: string | null
 }
 
 export type kaon_menuUpdateManyMutationInput = {
@@ -366,6 +452,9 @@ export type kaon_menuUpdateManyMutationInput = {
   updatedby?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updateddate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type kaon_menuUncheckedUpdateManyInput = {
@@ -377,6 +466,25 @@ export type kaon_menuUncheckedUpdateManyInput = {
   updatedby?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updateddate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type Kaon_menuNullableScalarRelationFilter = {
+  is?: Prisma.kaon_menuWhereInput | null
+  isNot?: Prisma.kaon_menuWhereInput | null
+}
+
+export type Kaon_menuListRelationFilter = {
+  every?: Prisma.kaon_menuWhereInput
+  some?: Prisma.kaon_menuWhereInput
+  none?: Prisma.kaon_menuWhereInput
+}
+
+export type kaon_menuOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type kaon_menuOrderByRelevanceInput = {
@@ -394,10 +502,16 @@ export type kaon_menuCountOrderByAggregateInput = {
   updatedby?: Prisma.SortOrder
   updateddate?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  path?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
+  icon?: Prisma.SortOrder
 }
 
 export type kaon_menuAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
 }
 
 export type kaon_menuMaxOrderByAggregateInput = {
@@ -409,6 +523,10 @@ export type kaon_menuMaxOrderByAggregateInput = {
   updatedby?: Prisma.SortOrder
   updateddate?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  path?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
+  icon?: Prisma.SortOrder
 }
 
 export type kaon_menuMinOrderByAggregateInput = {
@@ -420,10 +538,16 @@ export type kaon_menuMinOrderByAggregateInput = {
   updatedby?: Prisma.SortOrder
   updateddate?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  path?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
+  icon?: Prisma.SortOrder
 }
 
 export type kaon_menuSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
 }
 
 export type Kaon_menuScalarRelationFilter = {
@@ -431,8 +555,66 @@ export type Kaon_menuScalarRelationFilter = {
   isNot?: Prisma.kaon_menuWhereInput
 }
 
+export type kaon_menuCreateNestedOneWithoutOther_kaon_menuInput = {
+  create?: Prisma.XOR<Prisma.kaon_menuCreateWithoutOther_kaon_menuInput, Prisma.kaon_menuUncheckedCreateWithoutOther_kaon_menuInput>
+  connectOrCreate?: Prisma.kaon_menuCreateOrConnectWithoutOther_kaon_menuInput
+  connect?: Prisma.kaon_menuWhereUniqueInput
+}
+
+export type kaon_menuCreateNestedManyWithoutKaon_menuInput = {
+  create?: Prisma.XOR<Prisma.kaon_menuCreateWithoutKaon_menuInput, Prisma.kaon_menuUncheckedCreateWithoutKaon_menuInput> | Prisma.kaon_menuCreateWithoutKaon_menuInput[] | Prisma.kaon_menuUncheckedCreateWithoutKaon_menuInput[]
+  connectOrCreate?: Prisma.kaon_menuCreateOrConnectWithoutKaon_menuInput | Prisma.kaon_menuCreateOrConnectWithoutKaon_menuInput[]
+  createMany?: Prisma.kaon_menuCreateManyKaon_menuInputEnvelope
+  connect?: Prisma.kaon_menuWhereUniqueInput | Prisma.kaon_menuWhereUniqueInput[]
+}
+
+export type kaon_menuUncheckedCreateNestedManyWithoutKaon_menuInput = {
+  create?: Prisma.XOR<Prisma.kaon_menuCreateWithoutKaon_menuInput, Prisma.kaon_menuUncheckedCreateWithoutKaon_menuInput> | Prisma.kaon_menuCreateWithoutKaon_menuInput[] | Prisma.kaon_menuUncheckedCreateWithoutKaon_menuInput[]
+  connectOrCreate?: Prisma.kaon_menuCreateOrConnectWithoutKaon_menuInput | Prisma.kaon_menuCreateOrConnectWithoutKaon_menuInput[]
+  createMany?: Prisma.kaon_menuCreateManyKaon_menuInputEnvelope
+  connect?: Prisma.kaon_menuWhereUniqueInput | Prisma.kaon_menuWhereUniqueInput[]
+}
+
 export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
+}
+
+export type kaon_menuUpdateOneWithoutOther_kaon_menuNestedInput = {
+  create?: Prisma.XOR<Prisma.kaon_menuCreateWithoutOther_kaon_menuInput, Prisma.kaon_menuUncheckedCreateWithoutOther_kaon_menuInput>
+  connectOrCreate?: Prisma.kaon_menuCreateOrConnectWithoutOther_kaon_menuInput
+  upsert?: Prisma.kaon_menuUpsertWithoutOther_kaon_menuInput
+  disconnect?: Prisma.kaon_menuWhereInput | boolean
+  delete?: Prisma.kaon_menuWhereInput | boolean
+  connect?: Prisma.kaon_menuWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.kaon_menuUpdateToOneWithWhereWithoutOther_kaon_menuInput, Prisma.kaon_menuUpdateWithoutOther_kaon_menuInput>, Prisma.kaon_menuUncheckedUpdateWithoutOther_kaon_menuInput>
+}
+
+export type kaon_menuUpdateManyWithoutKaon_menuNestedInput = {
+  create?: Prisma.XOR<Prisma.kaon_menuCreateWithoutKaon_menuInput, Prisma.kaon_menuUncheckedCreateWithoutKaon_menuInput> | Prisma.kaon_menuCreateWithoutKaon_menuInput[] | Prisma.kaon_menuUncheckedCreateWithoutKaon_menuInput[]
+  connectOrCreate?: Prisma.kaon_menuCreateOrConnectWithoutKaon_menuInput | Prisma.kaon_menuCreateOrConnectWithoutKaon_menuInput[]
+  upsert?: Prisma.kaon_menuUpsertWithWhereUniqueWithoutKaon_menuInput | Prisma.kaon_menuUpsertWithWhereUniqueWithoutKaon_menuInput[]
+  createMany?: Prisma.kaon_menuCreateManyKaon_menuInputEnvelope
+  set?: Prisma.kaon_menuWhereUniqueInput | Prisma.kaon_menuWhereUniqueInput[]
+  disconnect?: Prisma.kaon_menuWhereUniqueInput | Prisma.kaon_menuWhereUniqueInput[]
+  delete?: Prisma.kaon_menuWhereUniqueInput | Prisma.kaon_menuWhereUniqueInput[]
+  connect?: Prisma.kaon_menuWhereUniqueInput | Prisma.kaon_menuWhereUniqueInput[]
+  update?: Prisma.kaon_menuUpdateWithWhereUniqueWithoutKaon_menuInput | Prisma.kaon_menuUpdateWithWhereUniqueWithoutKaon_menuInput[]
+  updateMany?: Prisma.kaon_menuUpdateManyWithWhereWithoutKaon_menuInput | Prisma.kaon_menuUpdateManyWithWhereWithoutKaon_menuInput[]
+  deleteMany?: Prisma.kaon_menuScalarWhereInput | Prisma.kaon_menuScalarWhereInput[]
+}
+
+export type kaon_menuUncheckedUpdateManyWithoutKaon_menuNestedInput = {
+  create?: Prisma.XOR<Prisma.kaon_menuCreateWithoutKaon_menuInput, Prisma.kaon_menuUncheckedCreateWithoutKaon_menuInput> | Prisma.kaon_menuCreateWithoutKaon_menuInput[] | Prisma.kaon_menuUncheckedCreateWithoutKaon_menuInput[]
+  connectOrCreate?: Prisma.kaon_menuCreateOrConnectWithoutKaon_menuInput | Prisma.kaon_menuCreateOrConnectWithoutKaon_menuInput[]
+  upsert?: Prisma.kaon_menuUpsertWithWhereUniqueWithoutKaon_menuInput | Prisma.kaon_menuUpsertWithWhereUniqueWithoutKaon_menuInput[]
+  createMany?: Prisma.kaon_menuCreateManyKaon_menuInputEnvelope
+  set?: Prisma.kaon_menuWhereUniqueInput | Prisma.kaon_menuWhereUniqueInput[]
+  disconnect?: Prisma.kaon_menuWhereUniqueInput | Prisma.kaon_menuWhereUniqueInput[]
+  delete?: Prisma.kaon_menuWhereUniqueInput | Prisma.kaon_menuWhereUniqueInput[]
+  connect?: Prisma.kaon_menuWhereUniqueInput | Prisma.kaon_menuWhereUniqueInput[]
+  update?: Prisma.kaon_menuUpdateWithWhereUniqueWithoutKaon_menuInput | Prisma.kaon_menuUpdateWithWhereUniqueWithoutKaon_menuInput[]
+  updateMany?: Prisma.kaon_menuUpdateManyWithWhereWithoutKaon_menuInput | Prisma.kaon_menuUpdateManyWithWhereWithoutKaon_menuInput[]
+  deleteMany?: Prisma.kaon_menuScalarWhereInput | Prisma.kaon_menuScalarWhereInput[]
 }
 
 export type kaon_menuCreateNestedOneWithoutKaonRoleMenusInput = {
@@ -449,6 +631,159 @@ export type kaon_menuUpdateOneRequiredWithoutKaonRoleMenusNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.kaon_menuUpdateToOneWithWhereWithoutKaonRoleMenusInput, Prisma.kaon_menuUpdateWithoutKaonRoleMenusInput>, Prisma.kaon_menuUncheckedUpdateWithoutKaonRoleMenusInput>
 }
 
+export type kaon_menuCreateWithoutOther_kaon_menuInput = {
+  menuName: string
+  isstatus?: boolean | null
+  person?: string | null
+  dates?: Date | string | null
+  updatedby?: string | null
+  updateddate?: Date | string | null
+  description?: string | null
+  path?: string | null
+  sortOrder?: number | null
+  icon?: string | null
+  kaon_menu?: Prisma.kaon_menuCreateNestedOneWithoutOther_kaon_menuInput
+  kaonRoleMenus?: Prisma.kaon_role_menuCreateNestedManyWithoutMenuInput
+}
+
+export type kaon_menuUncheckedCreateWithoutOther_kaon_menuInput = {
+  id?: number
+  menuName: string
+  isstatus?: boolean | null
+  person?: string | null
+  dates?: Date | string | null
+  updatedby?: string | null
+  updateddate?: Date | string | null
+  description?: string | null
+  path?: string | null
+  parentId?: number | null
+  sortOrder?: number | null
+  icon?: string | null
+  kaonRoleMenus?: Prisma.kaon_role_menuUncheckedCreateNestedManyWithoutMenuInput
+}
+
+export type kaon_menuCreateOrConnectWithoutOther_kaon_menuInput = {
+  where: Prisma.kaon_menuWhereUniqueInput
+  create: Prisma.XOR<Prisma.kaon_menuCreateWithoutOther_kaon_menuInput, Prisma.kaon_menuUncheckedCreateWithoutOther_kaon_menuInput>
+}
+
+export type kaon_menuCreateWithoutKaon_menuInput = {
+  menuName: string
+  isstatus?: boolean | null
+  person?: string | null
+  dates?: Date | string | null
+  updatedby?: string | null
+  updateddate?: Date | string | null
+  description?: string | null
+  path?: string | null
+  sortOrder?: number | null
+  icon?: string | null
+  other_kaon_menu?: Prisma.kaon_menuCreateNestedManyWithoutKaon_menuInput
+  kaonRoleMenus?: Prisma.kaon_role_menuCreateNestedManyWithoutMenuInput
+}
+
+export type kaon_menuUncheckedCreateWithoutKaon_menuInput = {
+  id?: number
+  menuName: string
+  isstatus?: boolean | null
+  person?: string | null
+  dates?: Date | string | null
+  updatedby?: string | null
+  updateddate?: Date | string | null
+  description?: string | null
+  path?: string | null
+  sortOrder?: number | null
+  icon?: string | null
+  other_kaon_menu?: Prisma.kaon_menuUncheckedCreateNestedManyWithoutKaon_menuInput
+  kaonRoleMenus?: Prisma.kaon_role_menuUncheckedCreateNestedManyWithoutMenuInput
+}
+
+export type kaon_menuCreateOrConnectWithoutKaon_menuInput = {
+  where: Prisma.kaon_menuWhereUniqueInput
+  create: Prisma.XOR<Prisma.kaon_menuCreateWithoutKaon_menuInput, Prisma.kaon_menuUncheckedCreateWithoutKaon_menuInput>
+}
+
+export type kaon_menuCreateManyKaon_menuInputEnvelope = {
+  data: Prisma.kaon_menuCreateManyKaon_menuInput | Prisma.kaon_menuCreateManyKaon_menuInput[]
+  skipDuplicates?: boolean
+}
+
+export type kaon_menuUpsertWithoutOther_kaon_menuInput = {
+  update: Prisma.XOR<Prisma.kaon_menuUpdateWithoutOther_kaon_menuInput, Prisma.kaon_menuUncheckedUpdateWithoutOther_kaon_menuInput>
+  create: Prisma.XOR<Prisma.kaon_menuCreateWithoutOther_kaon_menuInput, Prisma.kaon_menuUncheckedCreateWithoutOther_kaon_menuInput>
+  where?: Prisma.kaon_menuWhereInput
+}
+
+export type kaon_menuUpdateToOneWithWhereWithoutOther_kaon_menuInput = {
+  where?: Prisma.kaon_menuWhereInput
+  data: Prisma.XOR<Prisma.kaon_menuUpdateWithoutOther_kaon_menuInput, Prisma.kaon_menuUncheckedUpdateWithoutOther_kaon_menuInput>
+}
+
+export type kaon_menuUpdateWithoutOther_kaon_menuInput = {
+  menuName?: Prisma.StringFieldUpdateOperationsInput | string
+  isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  person?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dates?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedby?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updateddate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kaon_menu?: Prisma.kaon_menuUpdateOneWithoutOther_kaon_menuNestedInput
+  kaonRoleMenus?: Prisma.kaon_role_menuUpdateManyWithoutMenuNestedInput
+}
+
+export type kaon_menuUncheckedUpdateWithoutOther_kaon_menuInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  menuName?: Prisma.StringFieldUpdateOperationsInput | string
+  isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  person?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dates?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedby?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updateddate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kaonRoleMenus?: Prisma.kaon_role_menuUncheckedUpdateManyWithoutMenuNestedInput
+}
+
+export type kaon_menuUpsertWithWhereUniqueWithoutKaon_menuInput = {
+  where: Prisma.kaon_menuWhereUniqueInput
+  update: Prisma.XOR<Prisma.kaon_menuUpdateWithoutKaon_menuInput, Prisma.kaon_menuUncheckedUpdateWithoutKaon_menuInput>
+  create: Prisma.XOR<Prisma.kaon_menuCreateWithoutKaon_menuInput, Prisma.kaon_menuUncheckedCreateWithoutKaon_menuInput>
+}
+
+export type kaon_menuUpdateWithWhereUniqueWithoutKaon_menuInput = {
+  where: Prisma.kaon_menuWhereUniqueInput
+  data: Prisma.XOR<Prisma.kaon_menuUpdateWithoutKaon_menuInput, Prisma.kaon_menuUncheckedUpdateWithoutKaon_menuInput>
+}
+
+export type kaon_menuUpdateManyWithWhereWithoutKaon_menuInput = {
+  where: Prisma.kaon_menuScalarWhereInput
+  data: Prisma.XOR<Prisma.kaon_menuUpdateManyMutationInput, Prisma.kaon_menuUncheckedUpdateManyWithoutKaon_menuInput>
+}
+
+export type kaon_menuScalarWhereInput = {
+  AND?: Prisma.kaon_menuScalarWhereInput | Prisma.kaon_menuScalarWhereInput[]
+  OR?: Prisma.kaon_menuScalarWhereInput[]
+  NOT?: Prisma.kaon_menuScalarWhereInput | Prisma.kaon_menuScalarWhereInput[]
+  id?: Prisma.IntFilter<"kaon_menu"> | number
+  menuName?: Prisma.StringFilter<"kaon_menu"> | string
+  isstatus?: Prisma.BoolNullableFilter<"kaon_menu"> | boolean | null
+  person?: Prisma.StringNullableFilter<"kaon_menu"> | string | null
+  dates?: Prisma.DateTimeNullableFilter<"kaon_menu"> | Date | string | null
+  updatedby?: Prisma.StringNullableFilter<"kaon_menu"> | string | null
+  updateddate?: Prisma.DateTimeNullableFilter<"kaon_menu"> | Date | string | null
+  description?: Prisma.StringNullableFilter<"kaon_menu"> | string | null
+  path?: Prisma.StringNullableFilter<"kaon_menu"> | string | null
+  parentId?: Prisma.IntNullableFilter<"kaon_menu"> | number | null
+  sortOrder?: Prisma.IntNullableFilter<"kaon_menu"> | number | null
+  icon?: Prisma.StringNullableFilter<"kaon_menu"> | string | null
+}
+
 export type kaon_menuCreateWithoutKaonRoleMenusInput = {
   menuName: string
   isstatus?: boolean | null
@@ -457,6 +792,11 @@ export type kaon_menuCreateWithoutKaonRoleMenusInput = {
   updatedby?: string | null
   updateddate?: Date | string | null
   description?: string | null
+  path?: string | null
+  sortOrder?: number | null
+  icon?: string | null
+  kaon_menu?: Prisma.kaon_menuCreateNestedOneWithoutOther_kaon_menuInput
+  other_kaon_menu?: Prisma.kaon_menuCreateNestedManyWithoutKaon_menuInput
 }
 
 export type kaon_menuUncheckedCreateWithoutKaonRoleMenusInput = {
@@ -468,6 +808,11 @@ export type kaon_menuUncheckedCreateWithoutKaonRoleMenusInput = {
   updatedby?: string | null
   updateddate?: Date | string | null
   description?: string | null
+  path?: string | null
+  parentId?: number | null
+  sortOrder?: number | null
+  icon?: string | null
+  other_kaon_menu?: Prisma.kaon_menuUncheckedCreateNestedManyWithoutKaon_menuInput
 }
 
 export type kaon_menuCreateOrConnectWithoutKaonRoleMenusInput = {
@@ -494,6 +839,11 @@ export type kaon_menuUpdateWithoutKaonRoleMenusInput = {
   updatedby?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updateddate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kaon_menu?: Prisma.kaon_menuUpdateOneWithoutOther_kaon_menuNestedInput
+  other_kaon_menu?: Prisma.kaon_menuUpdateManyWithoutKaon_menuNestedInput
 }
 
 export type kaon_menuUncheckedUpdateWithoutKaonRoleMenusInput = {
@@ -505,6 +855,70 @@ export type kaon_menuUncheckedUpdateWithoutKaonRoleMenusInput = {
   updatedby?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updateddate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  other_kaon_menu?: Prisma.kaon_menuUncheckedUpdateManyWithoutKaon_menuNestedInput
+}
+
+export type kaon_menuCreateManyKaon_menuInput = {
+  id?: number
+  menuName: string
+  isstatus?: boolean | null
+  person?: string | null
+  dates?: Date | string | null
+  updatedby?: string | null
+  updateddate?: Date | string | null
+  description?: string | null
+  path?: string | null
+  sortOrder?: number | null
+  icon?: string | null
+}
+
+export type kaon_menuUpdateWithoutKaon_menuInput = {
+  menuName?: Prisma.StringFieldUpdateOperationsInput | string
+  isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  person?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dates?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedby?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updateddate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  other_kaon_menu?: Prisma.kaon_menuUpdateManyWithoutKaon_menuNestedInput
+  kaonRoleMenus?: Prisma.kaon_role_menuUpdateManyWithoutMenuNestedInput
+}
+
+export type kaon_menuUncheckedUpdateWithoutKaon_menuInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  menuName?: Prisma.StringFieldUpdateOperationsInput | string
+  isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  person?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dates?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedby?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updateddate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  other_kaon_menu?: Prisma.kaon_menuUncheckedUpdateManyWithoutKaon_menuNestedInput
+  kaonRoleMenus?: Prisma.kaon_role_menuUncheckedUpdateManyWithoutMenuNestedInput
+}
+
+export type kaon_menuUncheckedUpdateManyWithoutKaon_menuInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  menuName?: Prisma.StringFieldUpdateOperationsInput | string
+  isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  person?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dates?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedby?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updateddate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -513,10 +927,12 @@ export type kaon_menuUncheckedUpdateWithoutKaonRoleMenusInput = {
  */
 
 export type Kaon_menuCountOutputType = {
+  other_kaon_menu: number
   kaonRoleMenus: number
 }
 
 export type Kaon_menuCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  other_kaon_menu?: boolean | Kaon_menuCountOutputTypeCountOther_kaon_menuArgs
   kaonRoleMenus?: boolean | Kaon_menuCountOutputTypeCountKaonRoleMenusArgs
 }
 
@@ -528,6 +944,13 @@ export type Kaon_menuCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ex
    * Select specific fields to fetch from the Kaon_menuCountOutputType
    */
   select?: Prisma.Kaon_menuCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * Kaon_menuCountOutputType without action
+ */
+export type Kaon_menuCountOutputTypeCountOther_kaon_menuArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.kaon_menuWhereInput
 }
 
 /**
@@ -547,6 +970,12 @@ export type kaon_menuSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   updatedby?: boolean
   updateddate?: boolean
   description?: boolean
+  path?: boolean
+  parentId?: boolean
+  sortOrder?: boolean
+  icon?: boolean
+  kaon_menu?: boolean | Prisma.kaon_menu$kaon_menuArgs<ExtArgs>
+  other_kaon_menu?: boolean | Prisma.kaon_menu$other_kaon_menuArgs<ExtArgs>
   kaonRoleMenus?: boolean | Prisma.kaon_menu$kaonRoleMenusArgs<ExtArgs>
   _count?: boolean | Prisma.Kaon_menuCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["kaon_menu"]>
@@ -562,10 +991,16 @@ export type kaon_menuSelectScalar = {
   updatedby?: boolean
   updateddate?: boolean
   description?: boolean
+  path?: boolean
+  parentId?: boolean
+  sortOrder?: boolean
+  icon?: boolean
 }
 
-export type kaon_menuOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "menuName" | "isstatus" | "person" | "dates" | "updatedby" | "updateddate" | "description", ExtArgs["result"]["kaon_menu"]>
+export type kaon_menuOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "menuName" | "isstatus" | "person" | "dates" | "updatedby" | "updateddate" | "description" | "path" | "parentId" | "sortOrder" | "icon", ExtArgs["result"]["kaon_menu"]>
 export type kaon_menuInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  kaon_menu?: boolean | Prisma.kaon_menu$kaon_menuArgs<ExtArgs>
+  other_kaon_menu?: boolean | Prisma.kaon_menu$other_kaon_menuArgs<ExtArgs>
   kaonRoleMenus?: boolean | Prisma.kaon_menu$kaonRoleMenusArgs<ExtArgs>
   _count?: boolean | Prisma.Kaon_menuCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -573,6 +1008,8 @@ export type kaon_menuInclude<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type $kaon_menuPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "kaon_menu"
   objects: {
+    kaon_menu: Prisma.$kaon_menuPayload<ExtArgs> | null
+    other_kaon_menu: Prisma.$kaon_menuPayload<ExtArgs>[]
     kaonRoleMenus: Prisma.$kaon_role_menuPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -584,6 +1021,10 @@ export type $kaon_menuPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     updatedby: string | null
     updateddate: Date | null
     description: string | null
+    path: string | null
+    parentId: number | null
+    sortOrder: number | null
+    icon: string | null
   }, ExtArgs["result"]["kaon_menu"]>
   composites: {}
 }
@@ -924,6 +1365,8 @@ readonly fields: kaon_menuFieldRefs;
  */
 export interface Prisma__kaon_menuClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  kaon_menu<T extends Prisma.kaon_menu$kaon_menuArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.kaon_menu$kaon_menuArgs<ExtArgs>>): Prisma.Prisma__kaon_menuClient<runtime.Types.Result.GetResult<Prisma.$kaon_menuPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  other_kaon_menu<T extends Prisma.kaon_menu$other_kaon_menuArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.kaon_menu$other_kaon_menuArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$kaon_menuPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   kaonRoleMenus<T extends Prisma.kaon_menu$kaonRoleMenusArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.kaon_menu$kaonRoleMenusArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$kaon_role_menuPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -962,6 +1405,10 @@ export interface kaon_menuFieldRefs {
   readonly updatedby: Prisma.FieldRef<"kaon_menu", 'String'>
   readonly updateddate: Prisma.FieldRef<"kaon_menu", 'DateTime'>
   readonly description: Prisma.FieldRef<"kaon_menu", 'String'>
+  readonly path: Prisma.FieldRef<"kaon_menu", 'String'>
+  readonly parentId: Prisma.FieldRef<"kaon_menu", 'Int'>
+  readonly sortOrder: Prisma.FieldRef<"kaon_menu", 'Int'>
+  readonly icon: Prisma.FieldRef<"kaon_menu", 'String'>
 }
     
 
@@ -1302,6 +1749,49 @@ export type kaon_menuDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many kaon_menus to delete.
    */
   limit?: number
+}
+
+/**
+ * kaon_menu.kaon_menu
+ */
+export type kaon_menu$kaon_menuArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the kaon_menu
+   */
+  select?: Prisma.kaon_menuSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the kaon_menu
+   */
+  omit?: Prisma.kaon_menuOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.kaon_menuInclude<ExtArgs> | null
+  where?: Prisma.kaon_menuWhereInput
+}
+
+/**
+ * kaon_menu.other_kaon_menu
+ */
+export type kaon_menu$other_kaon_menuArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the kaon_menu
+   */
+  select?: Prisma.kaon_menuSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the kaon_menu
+   */
+  omit?: Prisma.kaon_menuOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.kaon_menuInclude<ExtArgs> | null
+  where?: Prisma.kaon_menuWhereInput
+  orderBy?: Prisma.kaon_menuOrderByWithRelationInput | Prisma.kaon_menuOrderByWithRelationInput[]
+  cursor?: Prisma.kaon_menuWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Kaon_menuScalarFieldEnum | Prisma.Kaon_menuScalarFieldEnum[]
 }
 
 /**

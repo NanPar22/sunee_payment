@@ -3,8 +3,47 @@
 import TableToggle, { RowData } from "@/app/components/layout/Table_Toggle"
 import Dropdown from "@/app/components/ui/Dropdown"
 import Search from "@/app/components/ui/Search"
+import { use, useEffect, useState } from "react"
+
+type RoleItem = {
+    id: Int16Array;
+    roleCode: string;
+    roleName: string;
+}
 
 export default function Row() {
+    const [keyword, setKeyword] = useState("")
+
+    // server pagination
+    const [page, setPage] = useState(1)
+    const [pageSize, setPageSize] = useState(20)
+
+
+    // data state
+    // const [data, setData] = useState<Row[]>([])
+    const [roledata, setRoledata] = useState<RoleItem[]>([])
+    const [totalPages, setTotalPages] = useState(1)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+
+    const [selectedRole, setSelectedRole] = useState<string>("All")
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await fetch("/api/system/roles?page=1&pageSize=100")
+            const json = await res.json()
+            setRoledata(json.data)
+        }
+        fetchData()
+    }, [])
+
+    const roleOptions = [
+        "All",
+        ...roledata.map((role) => role.roleName),
+    ]
+
+
+
 
     const permissionsData: RowData[] = [
         {
@@ -33,7 +72,7 @@ export default function Row() {
         },
     ]
     return (
-        <div className="h-full p-2 flex flex-col gap-2 bg-amber-300">
+        <div className="h-full p-2 flex flex-col gap-2 ">
             <div className="font-bold text-2xl">Tracking</div>
 
             <div className="flex  gap-4 ">
@@ -42,10 +81,14 @@ export default function Row() {
                 </div>
                 <div>
                     <Dropdown
-                        className="w-20"
-                        value="All" options={["All", "Admin", "User"]} />
+                        className=""
+                        value={selectedRole}
+                        options={roleOptions}
+                        onChange={setSelectedRole}
+                    />
                 </div>
             </div>
+
             <div className="w-full h-full flex flex-col ">
                 <div className=" h-full w-full ">
                     <TableToggle headers={["Menu", "View", "Add", "Edit", "Delete"]}
@@ -55,4 +98,4 @@ export default function Row() {
             </div>
         </div>
     )
-}   
+}

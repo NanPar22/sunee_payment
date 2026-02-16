@@ -20,10 +20,13 @@ export function getPaginationPages(
     page: number,
     totalPages: number
 ): PageItem[] {
+    if (totalPages <= 0) return []
+
+    if (totalPages === 1) return [1]
+
+    if (totalPages === 2) return [1, 2]
+
     const pages: PageItem[] = []
-
-    if (totalPages <= 1) return [1]
-
     const window = 1 // แสดงรอบ page ข้างละ 1
 
     // ---------- หน้าแรก ----------
@@ -109,7 +112,7 @@ export function Pagination({
                 <span className="text-sm text-gray-600">รายการ</span>
             </div>
 
-            {/* pagination */}ึ
+            {/* pagination */}
             <div className="flex gap-2">
                 {/* Prev */}
                 <button
@@ -132,7 +135,7 @@ export function Pagination({
                             </span>
                         ) : (
                             <button
-                                key={p}
+                                key={`page-${p}-${i}`}
                                 onClick={() => onPageChange(p)}
                                 className={`px-3 py-1  rounded
                                 ${p === page

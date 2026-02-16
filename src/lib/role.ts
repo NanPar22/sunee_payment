@@ -1,6 +1,17 @@
 // lib/role.ts
 import { prisma } from "@/lib/prisma";
 
+export type GetroleParams = {
+  page: number;
+  pageSiae: number;
+  search?: string;
+};
+export type RoleItem = {
+  id: Int8Array;
+  roleCode: string;
+  roleName: string;
+};
+
 export async function getRoleList(params: {
   page: number;
   pageSize: number;
@@ -12,10 +23,7 @@ export async function getRoleList(params: {
   const where: any = {};
 
   if (search) {
-    where.OR = [
-      { roleName: { contains: search } },
-      { roleCode: { contains: search } },
-    ];
+    where.OR = [{ roleName: { contains: search } }];
   }
 
   // 🔥 จุดสำคัญ
@@ -32,6 +40,13 @@ export async function getRoleList(params: {
     }),
     prisma.kaon_role.count({ where }),
   ]);
+  
 
-  return { data, total, page, pageSize };
+  return {
+    data,
+    total,
+    page,
+    pageSize,
+    totalPages: Math.ceil(total / pageSize),
+  };
 }

@@ -136,7 +136,7 @@ export default function TrackingPage() {
             </div>
 
             <div className="w-full h-[95%] flex flex-col justify-between">
-                <div className="h-225">
+                <div className="">
                     {loading && <div className="text-center py-10">Loading...</div>}
                     {error && <div className="text-center text-red-500">{error}</div>}
                     {!loading && !error && <Table table={table} />}

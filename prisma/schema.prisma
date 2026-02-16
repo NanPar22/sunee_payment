@@ -353,15 +353,23 @@ model kaon_user {
 }
 
 model kaon_menu {
-  id            Int              @id @default(autoincrement())
-  menuName      String           @db.VarChar(500)
-  isstatus      Boolean?         @default(true)
-  person        String?          @db.VarChar(500)
-  dates         DateTime?        @db.DateTime(0)
-  updatedby     String?          @db.VarChar(500)
-  updateddate   DateTime?        @db.DateTime(0)
-  description   String?          @db.Text
-  kaonRoleMenus kaon_role_menu[]
+  id              Int              @id @default(autoincrement())
+  menuName        String           @db.VarChar(500)
+  isstatus        Boolean?         @default(true)
+  person          String?          @db.VarChar(500)
+  dates           DateTime?        @db.DateTime(0)
+  updatedby       String?          @db.VarChar(500)
+  updateddate     DateTime?        @db.DateTime(0)
+  description     String?          @db.Text
+  path            String?          @db.VarChar(500)
+  parentId        Int?
+  sortOrder       Int?             @default(0)
+  icon            String?          @db.VarChar(100)
+  kaon_menu       kaon_menu?       @relation("kaon_menuTokaon_menu", fields: [parentId], references: [id], map: "fk_menu_parent")
+  other_kaon_menu kaon_menu[]      @relation("kaon_menuTokaon_menu")
+  kaonRoleMenus   kaon_role_menu[]
+
+  @@index([parentId], map: "fk_menu_parent")
 }
 
 model kaon_role {
@@ -388,7 +396,8 @@ model kaon_role_menu {
   id       Int       @id @default(autoincrement())
   roleId   Int
   menuId   Int
-  isview   Boolean?  @default(false) 
+  isview   Boolean?  @default(false)
+  isadd    Boolean?  @default(false)
   isedit   Boolean?  @default(false)
   isdelete Boolean?  @default(false)
   isstatus Boolean?  @default(true)

@@ -1,40 +1,30 @@
-// app/api/roles/route.ts
-import { NextRequest, NextResponse } from "next/server"
-import { getRoleList } from "@/lib/role"
+import { NextRequest, NextResponse } from "next/server";
+import { getRoleList } from "@/lib/role";
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url)
+    const { searchParams } = new URL(req.url);
 
-    const page = Math.max(1, Number(searchParams.get("page")) || 1)
-    const pageSize = Math.max(1, Number(searchParams.get("pageSize")) || 10)
-    const search = searchParams.get("search") || undefined
+    const page = Number(searchParams.get("page") || 1);
+    const pageSize = Number(searchParams.get("pageSize") || 10);
+    const search = searchParams.get("search") || undefined;
 
-    // 🔘 status → boolean | undefined
-    const statusParam = searchParams.get("status")
-    const status =
-      statusParam === "true"
-        ? true
-        : statusParam === "false"
-        ? false
-        : undefined // all
+    const statusParam = searchParams.get("status");
+    const status = statusParam === null ? undefined : statusParam === "true";
 
     const result = await getRoleList({
       page,
       pageSize,
       search,
-      status, // boolean | undefined
-    })
+      status,
+    });
 
-    return NextResponse.json({
-      success: true,
-      ...result,
-    })
+    return NextResponse.json(result);
   } catch (error) {
-    console.error("GET /api/roles error:", error)
+    console.error("GET /api/roles error:", error);
     return NextResponse.json(
-      { success: false, message: "Internal Server Error" },
-      { status: 500 }
-    )
+      { message: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }

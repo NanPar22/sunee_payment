@@ -1,13 +1,13 @@
 import { prisma } from "@/lib/prisma";
 
-export type GetReportParams = {
-  page: number;
-  pageSize: number;
-  search?: string;
-  dateFrom?: Date;
-  dateTo?: Date;
-  spid?: string;
-};
+  export type GetReportParams = {
+    page: number;
+    pageSize: number;
+    search?: string;
+    dateFrom?: Date;
+    dateTo?: Date;
+    spid?: string;
+  };
 
 export type ReportItem = {
   saleman: string;
@@ -85,10 +85,10 @@ export async function getReport(params: GetReportParams) {
     qrContent: i.qrContent,
   }));
 
-  // นับจำนวนทั้งหมด
-  const total = await prisma.kaon_checklistlog.count({
-    where,
-  });
+    // นับจำนวนทั้งหมด
+    const total = await prisma.kaon_checklistlog.count({
+      where,
+    });
 
   return {
     items,

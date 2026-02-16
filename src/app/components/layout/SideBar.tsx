@@ -2,12 +2,35 @@
 
 import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+
+
+type MenuItem = {
+    id: number
+    menuName: string
+    path: string | null
+    icon: string | null
+    other_kaon_menu?: MenuItem[]
+}
+
+
 
 export default function Sidebar() {
     const router = useRouter()
     const pathname = usePathname()
     const [openMenu, setOpenMenu] = useState<string | null>(null)
+    const [menus, setMenus] = useState<MenuItem[]>([])
+
+    // ✅ ดึง menu จาก API
+    useEffect(() => {
+        fetch("/api/system/menus/sidebar", { cache: "no-store" })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    setMenus(data.data)
+                }
+            })
+    }, [])
 
     const handleLogout = async () => {
         await fetch("/api/auth/logout", {
@@ -16,35 +39,6 @@ export default function Sidebar() {
         })
         router.push("/login")
     }
-
-    const menu = [
-        {
-            name: "Dashboard",
-            href: "/",
-            icon: "fa-house",
-        },
-        {
-            name: "Reports",
-            href: "/report/info",
-            icon: "fa-file-lines",
-        },
-        {
-            name: "System",
-            href: "/system",
-            icon: "fa-gear",
-            subMenu: [
-                {
-                    name: "Users",
-                    href: "/system/users",
-                },
-                {
-                    name: "Roles",
-                    href: "/system/roles",
-                    icon: "fa-user-shield",
-                },
-            ],
-        },
-    ]
 
 
     return (
@@ -75,67 +69,77 @@ export default function Sidebar() {
             <div className="w-full h-0.5 bg-[#B3E5FC] my-2 rounded-full" />
 
             {/* Menu */}
-            {menu.map((item) => {
-                const isOpen = openMenu === item.name
-                const hasSub = !!item.subMenu
+            {menus.map((item) => {
+                const isOpen = openMenu === item.menuName
+                const hasSub =
+                    item.other_kaon_menu &&
+                    item.other_kaon_menu.length > 0
 
                 return (
-                    <div key={item.name}>
-                        {/* ===== Main Menu ===== */}
+                    <div key={item.id}>
                         {hasSub ? (
                             <button
                                 onClick={() =>
-                                    setOpenMenu(isOpen ? null : item.name)
+                                    setOpenMenu(isOpen ? null : item.menuName)
                                 }
                                 className="w-full rounded-sm py-2 px-2 flex gap-1 items-center text-white hover:bg-blue-800/60"
                             >
                                 <div className="w-[20%] flex justify-center">
-                                    <i className={`fa-solid ${item.icon} text-2xl`} />
+                                    {item.icon && (
+                                        <i className={`fa-solid ${item.icon} text-2xl`} />
+                                    )}
                                 </div>
 
                                 <div className="w-[70%] font-semibold text-left">
-                                    {item.name}
+                                    {item.menuName}
                                 </div>
 
                                 <div className="w-[10%] flex justify-center">
                                     <i
-                                        className={`fa-solid fa-caret-right transition-transform  ${isOpen ? "rotate-90" : ""
+                                        className={`fa-solid fa-caret-right transition-transform ${isOpen ? "rotate-90" : ""
                                             }`}
                                     />
                                 </div>
                             </button>
                         ) : (
                             <Link
-                                href={item.href!}
+                                href={item.path ?? "#"}
                                 className={`w-full rounded-sm py-2 px-2 flex gap-1 items-center text-white
-                                ${pathname === item.href
+                    ${pathname === item.path
                                         ? "bg-blue-800/60"
-                                        : "hover:bg-blue-800/60"}`}
+                                        : "hover:bg-blue-800/60"
+                                    }`}
                             >
                                 <div className="w-[20%] flex justify-center">
-                                    <i className={`fa-solid ${item.icon} text-2xl`} />
+                                    {item.icon && (
+                                        <i className={`fa-solid ${item.icon} text-2xl`} />
+                                    )}
                                 </div>
 
                                 <div className="w-[75%] font-semibold">
-                                    {item.name}
+                                    {item.menuName}
                                 </div>
                             </Link>
                         )}
 
-                        {/* ===== Sub Menu ===== */}
                         {hasSub && isOpen && (
                             <div className="ml-10 mt-1 flex flex-col gap-1">
-                                {item.subMenu!.map((sub) => (
+                                {item.other_kaon_menu!.map((sub) => (
                                     <Link
-                                        key={sub.href}
-                                        href={sub.href}
+                                        key={sub.id}
+                                        href={sub.path ?? "#"}
                                         className={`text-sm px-2 py-1 rounded text-white/90 hover:bg-blue-700/60
-                                        ${pathname === sub.href
+                            ${pathname === sub.path
                                                 ? "bg-blue-700/70"
-                                                : ""}`}
+                                                : ""
+                                            }`}
                                     >
-                                        {sub.icon && <i className={`fa-solid ${sub.icon} mr-2`} />}
-                                        {sub.name}
+                                        {sub.icon && (
+                                            <i
+                                                className={`fa-solid ${sub.icon} mr-2`}
+                                            />
+                                        )}
+                                        {sub.menuName}
                                     </Link>
                                 ))}
                             </div>

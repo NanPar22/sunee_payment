@@ -468,7 +468,11 @@ export const Kaon_menuScalarFieldEnum = {
   dates: 'dates',
   updatedby: 'updatedby',
   updateddate: 'updateddate',
-  description: 'description'
+  description: 'description',
+  path: 'path',
+  parentId: 'parentId',
+  sortOrder: 'sortOrder',
+  icon: 'icon'
 } as const
 
 export type Kaon_menuScalarFieldEnum = (typeof Kaon_menuScalarFieldEnum)[keyof typeof Kaon_menuScalarFieldEnum]
@@ -499,6 +503,7 @@ export const Kaon_role_menuScalarFieldEnum = {
   roleId: 'roleId',
   menuId: 'menuId',
   isview: 'isview',
+  isadd: 'isadd',
   isedit: 'isedit',
   isdelete: 'isdelete',
   isstatus: 'isstatus'
@@ -829,7 +834,9 @@ export const kaon_menuOrderByRelevanceFieldEnum = {
   menuName: 'menuName',
   person: 'person',
   updatedby: 'updatedby',
-  description: 'description'
+  description: 'description',
+  path: 'path',
+  icon: 'icon'
 } as const
 
 export type kaon_menuOrderByRelevanceFieldEnum = (typeof kaon_menuOrderByRelevanceFieldEnum)[keyof typeof kaon_menuOrderByRelevanceFieldEnum]
