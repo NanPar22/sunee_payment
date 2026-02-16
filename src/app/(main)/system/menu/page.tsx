@@ -320,7 +320,7 @@ export default function Menu() {
     })
 
     return (
-        <div className="h-full overflow-auto p-4 flex flex-col gap-4">
+        <div className="h-full  p-4 flex flex-col gap-4">
             <div className="font-bold text-2xl">Menu Management</div>
             <div className="flex items-center justify-between  ">
                 <div className="flex items-center gap-2">
@@ -519,13 +519,13 @@ export default function Menu() {
                                     !isChanged()
                                 }
                                 className={`px-4 py-2 rounded-md transition-colors
-        ${!editingRow?.menuName ||
+                                  ${!editingRow?.menuName ||
                                         editingRow.menuName.trim() === "" ||
                                         !isChanged()
                                         ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                                         : "bg-blue-500 text-white hover:bg-blue-600"
                                     }
-    `}
+                                    `}
                             >
                                 {isAddMode ? "Create" : "Save"}
                             </button>
