@@ -109,7 +109,7 @@ export function Table_Drop<T extends { id: number }>({ table }: TableProps<T>) {
                                                 <table className="w-full table-fixed">
                                                     <tbody>
                                                         {row.children?.map(child => (
-                                                            <tr key={child.id} className="bg-blue-50 hover:bg-blue-100 text-gray-700">
+                                                            <tr key={child.id} className="bg-blue-50/50 hover:bg-blue-100 text-gray-700">
                                                                 {columns.map(col => {
                                                                     const key = String(col.key)
                                                                     const value = child[col.key]

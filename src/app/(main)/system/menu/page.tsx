@@ -295,7 +295,20 @@ export default function Menu() {
         columns: [
             { key: "menuName", label: "Name" },
             { key: "path", label: "Path" },
-            { key: "icon", label: "Icon" },
+            {
+                key: "icon",
+                label: "Icon",
+                render: (value) => {
+                    if (typeof value !== "string") return null
+
+                    return (
+                        <div className="flex items-center gap-2">
+                            <i className={`fa-solid ${value}`}></i>
+                            <span>{value}</span>
+                        </div>
+                    )
+                }
+            },
             { key: "sortOrder", label: "SortOrder" },
             {
                 key: "isstatus",
@@ -564,7 +577,7 @@ export default function Menu() {
                     </div>
                 )}
             </BaseModal>
-            
+
         </div>
     )
 }
