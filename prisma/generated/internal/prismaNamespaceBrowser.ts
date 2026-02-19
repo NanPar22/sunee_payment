@@ -60,13 +60,12 @@ export const ModelName = {
   kaon_checklistlog_inquiry: 'kaon_checklistlog_inquiry',
   kaon_program: 'kaon_program',
   kaon_reference: 'kaon_reference',
-  kaon_servicepoint: 'kaon_servicepoint',
   kaon_servicepoint123: 'kaon_servicepoint123',
   kaon_user: 'kaon_user',
   kaon_menu: 'kaon_menu',
   kaon_role: 'kaon_role',
-  kaon_sp_role: 'kaon_sp_role',
-  kaon_role_menu: 'kaon_role_menu'
+  kaon_role_menu: 'kaon_role_menu',
+  kaon_servicepoint: 'kaon_servicepoint'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -400,29 +399,6 @@ export const Kaon_referenceScalarFieldEnum = {
 export type Kaon_referenceScalarFieldEnum = (typeof Kaon_referenceScalarFieldEnum)[keyof typeof Kaon_referenceScalarFieldEnum]
 
 
-export const Kaon_servicepointScalarFieldEnum = {
-  id: 'id',
-  SPID: 'SPID',
-  p_refer1: 'p_refer1',
-  Name: 'Name',
-  Detail: 'Detail',
-  Location: 'Location',
-  Remark: 'Remark',
-  ServiceType: 'ServiceType',
-  ZoneID: 'ZoneID',
-  UserName: 'UserName',
-  Password: 'Password',
-  IsStatus: 'IsStatus',
-  Person: 'Person',
-  Dates: 'Dates',
-  UpdatedBy: 'UpdatedBy',
-  UpdatedDate: 'UpdatedDate',
-  ServiceTypeName: 'ServiceTypeName'
-} as const
-
-export type Kaon_servicepointScalarFieldEnum = (typeof Kaon_servicepointScalarFieldEnum)[keyof typeof Kaon_servicepointScalarFieldEnum]
-
-
 export const Kaon_servicepoint123ScalarFieldEnum = {
   id: 'id',
   SPID: 'SPID',
@@ -489,15 +465,6 @@ export const Kaon_roleScalarFieldEnum = {
 export type Kaon_roleScalarFieldEnum = (typeof Kaon_roleScalarFieldEnum)[keyof typeof Kaon_roleScalarFieldEnum]
 
 
-export const Kaon_sp_roleScalarFieldEnum = {
-  id: 'id',
-  spid: 'spid',
-  roleId: 'roleId'
-} as const
-
-export type Kaon_sp_roleScalarFieldEnum = (typeof Kaon_sp_roleScalarFieldEnum)[keyof typeof Kaon_sp_roleScalarFieldEnum]
-
-
 export const Kaon_role_menuScalarFieldEnum = {
   id: 'id',
   roleId: 'roleId',
@@ -510,6 +477,30 @@ export const Kaon_role_menuScalarFieldEnum = {
 } as const
 
 export type Kaon_role_menuScalarFieldEnum = (typeof Kaon_role_menuScalarFieldEnum)[keyof typeof Kaon_role_menuScalarFieldEnum]
+
+
+export const Kaon_servicepointScalarFieldEnum = {
+  id: 'id',
+  SPID: 'SPID',
+  p_refer1: 'p_refer1',
+  Name: 'Name',
+  Detail: 'Detail',
+  Location: 'Location',
+  Remark: 'Remark',
+  ServiceType: 'ServiceType',
+  ZoneID: 'ZoneID',
+  UserName: 'UserName',
+  Password: 'Password',
+  IsStatus: 'IsStatus',
+  Person: 'Person',
+  Dates: 'Dates',
+  UpdatedBy: 'UpdatedBy',
+  UpdatedDate: 'UpdatedDate',
+  ServiceTypeName: 'ServiceTypeName',
+  roleId: 'roleId'
+} as const
+
+export type Kaon_servicepointScalarFieldEnum = (typeof Kaon_servicepointScalarFieldEnum)[keyof typeof Kaon_servicepointScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -780,26 +771,6 @@ export const kaon_referenceOrderByRelevanceFieldEnum = {
 export type kaon_referenceOrderByRelevanceFieldEnum = (typeof kaon_referenceOrderByRelevanceFieldEnum)[keyof typeof kaon_referenceOrderByRelevanceFieldEnum]
 
 
-export const kaon_servicepointOrderByRelevanceFieldEnum = {
-  SPID: 'SPID',
-  p_refer1: 'p_refer1',
-  Name: 'Name',
-  Detail: 'Detail',
-  Location: 'Location',
-  Remark: 'Remark',
-  ServiceType: 'ServiceType',
-  ZoneID: 'ZoneID',
-  UserName: 'UserName',
-  Password: 'Password',
-  IsStatus: 'IsStatus',
-  Person: 'Person',
-  UpdatedBy: 'UpdatedBy',
-  ServiceTypeName: 'ServiceTypeName'
-} as const
-
-export type kaon_servicepointOrderByRelevanceFieldEnum = (typeof kaon_servicepointOrderByRelevanceFieldEnum)[keyof typeof kaon_servicepointOrderByRelevanceFieldEnum]
-
-
 export const kaon_servicepoint123OrderByRelevanceFieldEnum = {
   SPID: 'SPID',
   Name: 'Name',
@@ -851,9 +822,22 @@ export const kaon_roleOrderByRelevanceFieldEnum = {
 export type kaon_roleOrderByRelevanceFieldEnum = (typeof kaon_roleOrderByRelevanceFieldEnum)[keyof typeof kaon_roleOrderByRelevanceFieldEnum]
 
 
-export const kaon_sp_roleOrderByRelevanceFieldEnum = {
-  spid: 'spid'
+export const kaon_servicepointOrderByRelevanceFieldEnum = {
+  SPID: 'SPID',
+  p_refer1: 'p_refer1',
+  Name: 'Name',
+  Detail: 'Detail',
+  Location: 'Location',
+  Remark: 'Remark',
+  ServiceType: 'ServiceType',
+  ZoneID: 'ZoneID',
+  UserName: 'UserName',
+  Password: 'Password',
+  IsStatus: 'IsStatus',
+  Person: 'Person',
+  UpdatedBy: 'UpdatedBy',
+  ServiceTypeName: 'ServiceTypeName'
 } as const
 
-export type kaon_sp_roleOrderByRelevanceFieldEnum = (typeof kaon_sp_roleOrderByRelevanceFieldEnum)[keyof typeof kaon_sp_roleOrderByRelevanceFieldEnum]
+export type kaon_servicepointOrderByRelevanceFieldEnum = (typeof kaon_servicepointOrderByRelevanceFieldEnum)[keyof typeof kaon_servicepointOrderByRelevanceFieldEnum]
 

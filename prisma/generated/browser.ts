@@ -63,11 +63,6 @@ export type kaon_program = Prisma.kaon_programModel
  */
 export type kaon_reference = Prisma.kaon_referenceModel
 /**
- * Model kaon_servicepoint
- * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
- */
-export type kaon_servicepoint = Prisma.kaon_servicepointModel
-/**
  * Model kaon_servicepoint123
  * 
  */
@@ -88,12 +83,12 @@ export type kaon_menu = Prisma.kaon_menuModel
  */
 export type kaon_role = Prisma.kaon_roleModel
 /**
- * Model kaon_sp_role
- * 
- */
-export type kaon_sp_role = Prisma.kaon_sp_roleModel
-/**
  * Model kaon_role_menu
  * 
  */
 export type kaon_role_menu = Prisma.kaon_role_menuModel
+/**
+ * Model kaon_servicepoint
+ * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+ */
+export type kaon_servicepoint = Prisma.kaon_servicepointModel

@@ -7,7 +7,7 @@ export type GetroleParams = {
   search?: string;
 };
 export type RoleItem = {
-  id: Int8Array;
+  id: number;
   roleCode: string;
   roleName: string;
 };

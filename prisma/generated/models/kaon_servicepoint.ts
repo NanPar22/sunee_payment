@@ -28,10 +28,12 @@ export type AggregateKaon_servicepoint = {
 
 export type Kaon_servicepointAvgAggregateOutputType = {
   id: number | null
+  roleId: number | null
 }
 
 export type Kaon_servicepointSumAggregateOutputType = {
   id: number | null
+  roleId: number | null
 }
 
 export type Kaon_servicepointMinAggregateOutputType = {
@@ -52,6 +54,7 @@ export type Kaon_servicepointMinAggregateOutputType = {
   UpdatedBy: string | null
   UpdatedDate: Date | null
   ServiceTypeName: string | null
+  roleId: number | null
 }
 
 export type Kaon_servicepointMaxAggregateOutputType = {
@@ -72,6 +75,7 @@ export type Kaon_servicepointMaxAggregateOutputType = {
   UpdatedBy: string | null
   UpdatedDate: Date | null
   ServiceTypeName: string | null
+  roleId: number | null
 }
 
 export type Kaon_servicepointCountAggregateOutputType = {
@@ -92,16 +96,19 @@ export type Kaon_servicepointCountAggregateOutputType = {
   UpdatedBy: number
   UpdatedDate: number
   ServiceTypeName: number
+  roleId: number
   _all: number
 }
 
 
 export type Kaon_servicepointAvgAggregateInputType = {
   id?: true
+  roleId?: true
 }
 
 export type Kaon_servicepointSumAggregateInputType = {
   id?: true
+  roleId?: true
 }
 
 export type Kaon_servicepointMinAggregateInputType = {
@@ -122,6 +129,7 @@ export type Kaon_servicepointMinAggregateInputType = {
   UpdatedBy?: true
   UpdatedDate?: true
   ServiceTypeName?: true
+  roleId?: true
 }
 
 export type Kaon_servicepointMaxAggregateInputType = {
@@ -142,6 +150,7 @@ export type Kaon_servicepointMaxAggregateInputType = {
   UpdatedBy?: true
   UpdatedDate?: true
   ServiceTypeName?: true
+  roleId?: true
 }
 
 export type Kaon_servicepointCountAggregateInputType = {
@@ -162,6 +171,7 @@ export type Kaon_servicepointCountAggregateInputType = {
   UpdatedBy?: true
   UpdatedDate?: true
   ServiceTypeName?: true
+  roleId?: true
   _all?: true
 }
 
@@ -253,8 +263,8 @@ export type kaon_servicepointGroupByArgs<ExtArgs extends runtime.Types.Extension
 
 export type Kaon_servicepointGroupByOutputType = {
   id: number
-  SPID: string | null
-  p_refer1: string
+  SPID: string
+  p_refer1: string | null
   Name: string | null
   Detail: string | null
   Location: string | null
@@ -269,6 +279,7 @@ export type Kaon_servicepointGroupByOutputType = {
   UpdatedBy: string | null
   UpdatedDate: Date | null
   ServiceTypeName: string | null
+  roleId: number | null
   _count: Kaon_servicepointCountAggregateOutputType | null
   _avg: Kaon_servicepointAvgAggregateOutputType | null
   _sum: Kaon_servicepointSumAggregateOutputType | null
@@ -296,8 +307,8 @@ export type kaon_servicepointWhereInput = {
   OR?: Prisma.kaon_servicepointWhereInput[]
   NOT?: Prisma.kaon_servicepointWhereInput | Prisma.kaon_servicepointWhereInput[]
   id?: Prisma.IntFilter<"kaon_servicepoint"> | number
-  SPID?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
-  p_refer1?: Prisma.StringFilter<"kaon_servicepoint"> | string
+  SPID?: Prisma.StringFilter<"kaon_servicepoint"> | string
+  p_refer1?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
   Name?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
   Detail?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
   Location?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
@@ -312,12 +323,14 @@ export type kaon_servicepointWhereInput = {
   UpdatedBy?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
   UpdatedDate?: Prisma.DateTimeNullableFilter<"kaon_servicepoint"> | Date | string | null
   ServiceTypeName?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  roleId?: Prisma.IntNullableFilter<"kaon_servicepoint"> | number | null
+  kaon_role?: Prisma.XOR<Prisma.Kaon_roleNullableScalarRelationFilter, Prisma.kaon_roleWhereInput> | null
 }
 
 export type kaon_servicepointOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  SPID?: Prisma.SortOrderInput | Prisma.SortOrder
-  p_refer1?: Prisma.SortOrder
+  SPID?: Prisma.SortOrder
+  p_refer1?: Prisma.SortOrderInput | Prisma.SortOrder
   Name?: Prisma.SortOrderInput | Prisma.SortOrder
   Detail?: Prisma.SortOrderInput | Prisma.SortOrder
   Location?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -332,6 +345,8 @@ export type kaon_servicepointOrderByWithRelationInput = {
   UpdatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   UpdatedDate?: Prisma.SortOrderInput | Prisma.SortOrder
   ServiceTypeName?: Prisma.SortOrderInput | Prisma.SortOrder
+  roleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  kaon_role?: Prisma.kaon_roleOrderByWithRelationInput
   _relevance?: Prisma.kaon_servicepointOrderByRelevanceInput
 }
 
@@ -340,8 +355,8 @@ export type kaon_servicepointWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.kaon_servicepointWhereInput | Prisma.kaon_servicepointWhereInput[]
   OR?: Prisma.kaon_servicepointWhereInput[]
   NOT?: Prisma.kaon_servicepointWhereInput | Prisma.kaon_servicepointWhereInput[]
-  SPID?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
-  p_refer1?: Prisma.StringFilter<"kaon_servicepoint"> | string
+  SPID?: Prisma.StringFilter<"kaon_servicepoint"> | string
+  p_refer1?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
   Name?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
   Detail?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
   Location?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
@@ -356,12 +371,14 @@ export type kaon_servicepointWhereUniqueInput = Prisma.AtLeast<{
   UpdatedBy?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
   UpdatedDate?: Prisma.DateTimeNullableFilter<"kaon_servicepoint"> | Date | string | null
   ServiceTypeName?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  roleId?: Prisma.IntNullableFilter<"kaon_servicepoint"> | number | null
+  kaon_role?: Prisma.XOR<Prisma.Kaon_roleNullableScalarRelationFilter, Prisma.kaon_roleWhereInput> | null
 }, "id">
 
 export type kaon_servicepointOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  SPID?: Prisma.SortOrderInput | Prisma.SortOrder
-  p_refer1?: Prisma.SortOrder
+  SPID?: Prisma.SortOrder
+  p_refer1?: Prisma.SortOrderInput | Prisma.SortOrder
   Name?: Prisma.SortOrderInput | Prisma.SortOrder
   Detail?: Prisma.SortOrderInput | Prisma.SortOrder
   Location?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -376,6 +393,7 @@ export type kaon_servicepointOrderByWithAggregationInput = {
   UpdatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   UpdatedDate?: Prisma.SortOrderInput | Prisma.SortOrder
   ServiceTypeName?: Prisma.SortOrderInput | Prisma.SortOrder
+  roleId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.kaon_servicepointCountOrderByAggregateInput
   _avg?: Prisma.kaon_servicepointAvgOrderByAggregateInput
   _max?: Prisma.kaon_servicepointMaxOrderByAggregateInput
@@ -388,8 +406,8 @@ export type kaon_servicepointScalarWhereWithAggregatesInput = {
   OR?: Prisma.kaon_servicepointScalarWhereWithAggregatesInput[]
   NOT?: Prisma.kaon_servicepointScalarWhereWithAggregatesInput | Prisma.kaon_servicepointScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"kaon_servicepoint"> | number
-  SPID?: Prisma.StringNullableWithAggregatesFilter<"kaon_servicepoint"> | string | null
-  p_refer1?: Prisma.StringWithAggregatesFilter<"kaon_servicepoint"> | string
+  SPID?: Prisma.StringWithAggregatesFilter<"kaon_servicepoint"> | string
+  p_refer1?: Prisma.StringNullableWithAggregatesFilter<"kaon_servicepoint"> | string | null
   Name?: Prisma.StringNullableWithAggregatesFilter<"kaon_servicepoint"> | string | null
   Detail?: Prisma.StringNullableWithAggregatesFilter<"kaon_servicepoint"> | string | null
   Location?: Prisma.StringNullableWithAggregatesFilter<"kaon_servicepoint"> | string | null
@@ -404,11 +422,12 @@ export type kaon_servicepointScalarWhereWithAggregatesInput = {
   UpdatedBy?: Prisma.StringNullableWithAggregatesFilter<"kaon_servicepoint"> | string | null
   UpdatedDate?: Prisma.DateTimeNullableWithAggregatesFilter<"kaon_servicepoint"> | Date | string | null
   ServiceTypeName?: Prisma.StringNullableWithAggregatesFilter<"kaon_servicepoint"> | string | null
+  roleId?: Prisma.IntNullableWithAggregatesFilter<"kaon_servicepoint"> | number | null
 }
 
 export type kaon_servicepointCreateInput = {
-  SPID?: string | null
-  p_refer1: string
+  SPID: string
+  p_refer1?: string | null
   Name?: string | null
   Detail?: string | null
   Location?: string | null
@@ -423,12 +442,13 @@ export type kaon_servicepointCreateInput = {
   UpdatedBy?: string | null
   UpdatedDate?: Date | string | null
   ServiceTypeName?: string | null
+  kaon_role?: Prisma.kaon_roleCreateNestedOneWithoutKaon_servicepointInput
 }
 
 export type kaon_servicepointUncheckedCreateInput = {
   id?: number
-  SPID?: string | null
-  p_refer1: string
+  SPID: string
+  p_refer1?: string | null
   Name?: string | null
   Detail?: string | null
   Location?: string | null
@@ -443,11 +463,12 @@ export type kaon_servicepointUncheckedCreateInput = {
   UpdatedBy?: string | null
   UpdatedDate?: Date | string | null
   ServiceTypeName?: string | null
+  roleId?: number | null
 }
 
 export type kaon_servicepointUpdateInput = {
-  SPID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  p_refer1?: Prisma.StringFieldUpdateOperationsInput | string
+  SPID?: Prisma.StringFieldUpdateOperationsInput | string
+  p_refer1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -462,12 +483,13 @@ export type kaon_servicepointUpdateInput = {
   UpdatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   UpdatedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ServiceTypeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kaon_role?: Prisma.kaon_roleUpdateOneWithoutKaon_servicepointNestedInput
 }
 
 export type kaon_servicepointUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  SPID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  p_refer1?: Prisma.StringFieldUpdateOperationsInput | string
+  SPID?: Prisma.StringFieldUpdateOperationsInput | string
+  p_refer1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -482,12 +504,13 @@ export type kaon_servicepointUncheckedUpdateInput = {
   UpdatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   UpdatedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ServiceTypeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type kaon_servicepointCreateManyInput = {
   id?: number
-  SPID?: string | null
-  p_refer1: string
+  SPID: string
+  p_refer1?: string | null
   Name?: string | null
   Detail?: string | null
   Location?: string | null
@@ -502,11 +525,12 @@ export type kaon_servicepointCreateManyInput = {
   UpdatedBy?: string | null
   UpdatedDate?: Date | string | null
   ServiceTypeName?: string | null
+  roleId?: number | null
 }
 
 export type kaon_servicepointUpdateManyMutationInput = {
-  SPID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  p_refer1?: Prisma.StringFieldUpdateOperationsInput | string
+  SPID?: Prisma.StringFieldUpdateOperationsInput | string
+  p_refer1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -525,8 +549,8 @@ export type kaon_servicepointUpdateManyMutationInput = {
 
 export type kaon_servicepointUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  SPID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  p_refer1?: Prisma.StringFieldUpdateOperationsInput | string
+  SPID?: Prisma.StringFieldUpdateOperationsInput | string
+  p_refer1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -541,6 +565,17 @@ export type kaon_servicepointUncheckedUpdateManyInput = {
   UpdatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   UpdatedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ServiceTypeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+}
+
+export type Kaon_servicepointListRelationFilter = {
+  every?: Prisma.kaon_servicepointWhereInput
+  some?: Prisma.kaon_servicepointWhereInput
+  none?: Prisma.kaon_servicepointWhereInput
+}
+
+export type kaon_servicepointOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type kaon_servicepointOrderByRelevanceInput = {
@@ -567,10 +602,12 @@ export type kaon_servicepointCountOrderByAggregateInput = {
   UpdatedBy?: Prisma.SortOrder
   UpdatedDate?: Prisma.SortOrder
   ServiceTypeName?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
 }
 
 export type kaon_servicepointAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
 }
 
 export type kaon_servicepointMaxOrderByAggregateInput = {
@@ -591,6 +628,7 @@ export type kaon_servicepointMaxOrderByAggregateInput = {
   UpdatedBy?: Prisma.SortOrder
   UpdatedDate?: Prisma.SortOrder
   ServiceTypeName?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
 }
 
 export type kaon_servicepointMinOrderByAggregateInput = {
@@ -611,14 +649,222 @@ export type kaon_servicepointMinOrderByAggregateInput = {
   UpdatedBy?: Prisma.SortOrder
   UpdatedDate?: Prisma.SortOrder
   ServiceTypeName?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
 }
 
 export type kaon_servicepointSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
+export type kaon_servicepointCreateNestedManyWithoutKaon_roleInput = {
+  create?: Prisma.XOR<Prisma.kaon_servicepointCreateWithoutKaon_roleInput, Prisma.kaon_servicepointUncheckedCreateWithoutKaon_roleInput> | Prisma.kaon_servicepointCreateWithoutKaon_roleInput[] | Prisma.kaon_servicepointUncheckedCreateWithoutKaon_roleInput[]
+  connectOrCreate?: Prisma.kaon_servicepointCreateOrConnectWithoutKaon_roleInput | Prisma.kaon_servicepointCreateOrConnectWithoutKaon_roleInput[]
+  createMany?: Prisma.kaon_servicepointCreateManyKaon_roleInputEnvelope
+  connect?: Prisma.kaon_servicepointWhereUniqueInput | Prisma.kaon_servicepointWhereUniqueInput[]
+}
+
+export type kaon_servicepointUncheckedCreateNestedManyWithoutKaon_roleInput = {
+  create?: Prisma.XOR<Prisma.kaon_servicepointCreateWithoutKaon_roleInput, Prisma.kaon_servicepointUncheckedCreateWithoutKaon_roleInput> | Prisma.kaon_servicepointCreateWithoutKaon_roleInput[] | Prisma.kaon_servicepointUncheckedCreateWithoutKaon_roleInput[]
+  connectOrCreate?: Prisma.kaon_servicepointCreateOrConnectWithoutKaon_roleInput | Prisma.kaon_servicepointCreateOrConnectWithoutKaon_roleInput[]
+  createMany?: Prisma.kaon_servicepointCreateManyKaon_roleInputEnvelope
+  connect?: Prisma.kaon_servicepointWhereUniqueInput | Prisma.kaon_servicepointWhereUniqueInput[]
+}
+
+export type kaon_servicepointUpdateManyWithoutKaon_roleNestedInput = {
+  create?: Prisma.XOR<Prisma.kaon_servicepointCreateWithoutKaon_roleInput, Prisma.kaon_servicepointUncheckedCreateWithoutKaon_roleInput> | Prisma.kaon_servicepointCreateWithoutKaon_roleInput[] | Prisma.kaon_servicepointUncheckedCreateWithoutKaon_roleInput[]
+  connectOrCreate?: Prisma.kaon_servicepointCreateOrConnectWithoutKaon_roleInput | Prisma.kaon_servicepointCreateOrConnectWithoutKaon_roleInput[]
+  upsert?: Prisma.kaon_servicepointUpsertWithWhereUniqueWithoutKaon_roleInput | Prisma.kaon_servicepointUpsertWithWhereUniqueWithoutKaon_roleInput[]
+  createMany?: Prisma.kaon_servicepointCreateManyKaon_roleInputEnvelope
+  set?: Prisma.kaon_servicepointWhereUniqueInput | Prisma.kaon_servicepointWhereUniqueInput[]
+  disconnect?: Prisma.kaon_servicepointWhereUniqueInput | Prisma.kaon_servicepointWhereUniqueInput[]
+  delete?: Prisma.kaon_servicepointWhereUniqueInput | Prisma.kaon_servicepointWhereUniqueInput[]
+  connect?: Prisma.kaon_servicepointWhereUniqueInput | Prisma.kaon_servicepointWhereUniqueInput[]
+  update?: Prisma.kaon_servicepointUpdateWithWhereUniqueWithoutKaon_roleInput | Prisma.kaon_servicepointUpdateWithWhereUniqueWithoutKaon_roleInput[]
+  updateMany?: Prisma.kaon_servicepointUpdateManyWithWhereWithoutKaon_roleInput | Prisma.kaon_servicepointUpdateManyWithWhereWithoutKaon_roleInput[]
+  deleteMany?: Prisma.kaon_servicepointScalarWhereInput | Prisma.kaon_servicepointScalarWhereInput[]
+}
+
+export type kaon_servicepointUncheckedUpdateManyWithoutKaon_roleNestedInput = {
+  create?: Prisma.XOR<Prisma.kaon_servicepointCreateWithoutKaon_roleInput, Prisma.kaon_servicepointUncheckedCreateWithoutKaon_roleInput> | Prisma.kaon_servicepointCreateWithoutKaon_roleInput[] | Prisma.kaon_servicepointUncheckedCreateWithoutKaon_roleInput[]
+  connectOrCreate?: Prisma.kaon_servicepointCreateOrConnectWithoutKaon_roleInput | Prisma.kaon_servicepointCreateOrConnectWithoutKaon_roleInput[]
+  upsert?: Prisma.kaon_servicepointUpsertWithWhereUniqueWithoutKaon_roleInput | Prisma.kaon_servicepointUpsertWithWhereUniqueWithoutKaon_roleInput[]
+  createMany?: Prisma.kaon_servicepointCreateManyKaon_roleInputEnvelope
+  set?: Prisma.kaon_servicepointWhereUniqueInput | Prisma.kaon_servicepointWhereUniqueInput[]
+  disconnect?: Prisma.kaon_servicepointWhereUniqueInput | Prisma.kaon_servicepointWhereUniqueInput[]
+  delete?: Prisma.kaon_servicepointWhereUniqueInput | Prisma.kaon_servicepointWhereUniqueInput[]
+  connect?: Prisma.kaon_servicepointWhereUniqueInput | Prisma.kaon_servicepointWhereUniqueInput[]
+  update?: Prisma.kaon_servicepointUpdateWithWhereUniqueWithoutKaon_roleInput | Prisma.kaon_servicepointUpdateWithWhereUniqueWithoutKaon_roleInput[]
+  updateMany?: Prisma.kaon_servicepointUpdateManyWithWhereWithoutKaon_roleInput | Prisma.kaon_servicepointUpdateManyWithWhereWithoutKaon_roleInput[]
+  deleteMany?: Prisma.kaon_servicepointScalarWhereInput | Prisma.kaon_servicepointScalarWhereInput[]
+}
+
+export type kaon_servicepointCreateWithoutKaon_roleInput = {
+  SPID: string
+  p_refer1?: string | null
+  Name?: string | null
+  Detail?: string | null
+  Location?: string | null
+  Remark?: string | null
+  ServiceType?: string | null
+  ZoneID?: string | null
+  UserName?: string | null
+  Password?: string | null
+  IsStatus?: string | null
+  Person?: string | null
+  Dates?: Date | string | null
+  UpdatedBy?: string | null
+  UpdatedDate?: Date | string | null
+  ServiceTypeName?: string | null
+}
+
+export type kaon_servicepointUncheckedCreateWithoutKaon_roleInput = {
+  id?: number
+  SPID: string
+  p_refer1?: string | null
+  Name?: string | null
+  Detail?: string | null
+  Location?: string | null
+  Remark?: string | null
+  ServiceType?: string | null
+  ZoneID?: string | null
+  UserName?: string | null
+  Password?: string | null
+  IsStatus?: string | null
+  Person?: string | null
+  Dates?: Date | string | null
+  UpdatedBy?: string | null
+  UpdatedDate?: Date | string | null
+  ServiceTypeName?: string | null
+}
+
+export type kaon_servicepointCreateOrConnectWithoutKaon_roleInput = {
+  where: Prisma.kaon_servicepointWhereUniqueInput
+  create: Prisma.XOR<Prisma.kaon_servicepointCreateWithoutKaon_roleInput, Prisma.kaon_servicepointUncheckedCreateWithoutKaon_roleInput>
+}
+
+export type kaon_servicepointCreateManyKaon_roleInputEnvelope = {
+  data: Prisma.kaon_servicepointCreateManyKaon_roleInput | Prisma.kaon_servicepointCreateManyKaon_roleInput[]
+  skipDuplicates?: boolean
+}
+
+export type kaon_servicepointUpsertWithWhereUniqueWithoutKaon_roleInput = {
+  where: Prisma.kaon_servicepointWhereUniqueInput
+  update: Prisma.XOR<Prisma.kaon_servicepointUpdateWithoutKaon_roleInput, Prisma.kaon_servicepointUncheckedUpdateWithoutKaon_roleInput>
+  create: Prisma.XOR<Prisma.kaon_servicepointCreateWithoutKaon_roleInput, Prisma.kaon_servicepointUncheckedCreateWithoutKaon_roleInput>
+}
+
+export type kaon_servicepointUpdateWithWhereUniqueWithoutKaon_roleInput = {
+  where: Prisma.kaon_servicepointWhereUniqueInput
+  data: Prisma.XOR<Prisma.kaon_servicepointUpdateWithoutKaon_roleInput, Prisma.kaon_servicepointUncheckedUpdateWithoutKaon_roleInput>
+}
+
+export type kaon_servicepointUpdateManyWithWhereWithoutKaon_roleInput = {
+  where: Prisma.kaon_servicepointScalarWhereInput
+  data: Prisma.XOR<Prisma.kaon_servicepointUpdateManyMutationInput, Prisma.kaon_servicepointUncheckedUpdateManyWithoutKaon_roleInput>
+}
+
+export type kaon_servicepointScalarWhereInput = {
+  AND?: Prisma.kaon_servicepointScalarWhereInput | Prisma.kaon_servicepointScalarWhereInput[]
+  OR?: Prisma.kaon_servicepointScalarWhereInput[]
+  NOT?: Prisma.kaon_servicepointScalarWhereInput | Prisma.kaon_servicepointScalarWhereInput[]
+  id?: Prisma.IntFilter<"kaon_servicepoint"> | number
+  SPID?: Prisma.StringFilter<"kaon_servicepoint"> | string
+  p_refer1?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  Name?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  Detail?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  Location?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  Remark?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  ServiceType?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  ZoneID?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  UserName?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  Password?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  IsStatus?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  Person?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  Dates?: Prisma.DateTimeNullableFilter<"kaon_servicepoint"> | Date | string | null
+  UpdatedBy?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  UpdatedDate?: Prisma.DateTimeNullableFilter<"kaon_servicepoint"> | Date | string | null
+  ServiceTypeName?: Prisma.StringNullableFilter<"kaon_servicepoint"> | string | null
+  roleId?: Prisma.IntNullableFilter<"kaon_servicepoint"> | number | null
+}
+
+export type kaon_servicepointCreateManyKaon_roleInput = {
+  id?: number
+  SPID: string
+  p_refer1?: string | null
+  Name?: string | null
+  Detail?: string | null
+  Location?: string | null
+  Remark?: string | null
+  ServiceType?: string | null
+  ZoneID?: string | null
+  UserName?: string | null
+  Password?: string | null
+  IsStatus?: string | null
+  Person?: string | null
+  Dates?: Date | string | null
+  UpdatedBy?: string | null
+  UpdatedDate?: Date | string | null
+  ServiceTypeName?: string | null
+}
+
+export type kaon_servicepointUpdateWithoutKaon_roleInput = {
+  SPID?: Prisma.StringFieldUpdateOperationsInput | string
+  p_refer1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Remark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ServiceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ZoneID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  UserName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  IsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Person?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Dates?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  UpdatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  UpdatedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ServiceTypeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type kaon_servicepointUncheckedUpdateWithoutKaon_roleInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  SPID?: Prisma.StringFieldUpdateOperationsInput | string
+  p_refer1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Remark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ServiceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ZoneID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  UserName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  IsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Person?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Dates?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  UpdatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  UpdatedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ServiceTypeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type kaon_servicepointUncheckedUpdateManyWithoutKaon_roleInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  SPID?: Prisma.StringFieldUpdateOperationsInput | string
+  p_refer1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Detail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Remark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ServiceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ZoneID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  UserName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  IsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Person?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Dates?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  UpdatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  UpdatedDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ServiceTypeName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -641,6 +887,8 @@ export type kaon_servicepointSelect<ExtArgs extends runtime.Types.Extensions.Int
   UpdatedBy?: boolean
   UpdatedDate?: boolean
   ServiceTypeName?: boolean
+  roleId?: boolean
+  kaon_role?: boolean | Prisma.kaon_servicepoint$kaon_roleArgs<ExtArgs>
 }, ExtArgs["result"]["kaon_servicepoint"]>
 
 
@@ -663,17 +911,23 @@ export type kaon_servicepointSelectScalar = {
   UpdatedBy?: boolean
   UpdatedDate?: boolean
   ServiceTypeName?: boolean
+  roleId?: boolean
 }
 
-export type kaon_servicepointOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "SPID" | "p_refer1" | "Name" | "Detail" | "Location" | "Remark" | "ServiceType" | "ZoneID" | "UserName" | "Password" | "IsStatus" | "Person" | "Dates" | "UpdatedBy" | "UpdatedDate" | "ServiceTypeName", ExtArgs["result"]["kaon_servicepoint"]>
+export type kaon_servicepointOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "SPID" | "p_refer1" | "Name" | "Detail" | "Location" | "Remark" | "ServiceType" | "ZoneID" | "UserName" | "Password" | "IsStatus" | "Person" | "Dates" | "UpdatedBy" | "UpdatedDate" | "ServiceTypeName" | "roleId", ExtArgs["result"]["kaon_servicepoint"]>
+export type kaon_servicepointInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  kaon_role?: boolean | Prisma.kaon_servicepoint$kaon_roleArgs<ExtArgs>
+}
 
 export type $kaon_servicepointPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "kaon_servicepoint"
-  objects: {}
+  objects: {
+    kaon_role: Prisma.$kaon_rolePayload<ExtArgs> | null
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    SPID: string | null
-    p_refer1: string
+    SPID: string
+    p_refer1: string | null
     Name: string | null
     Detail: string | null
     Location: string | null
@@ -688,6 +942,7 @@ export type $kaon_servicepointPayload<ExtArgs extends runtime.Types.Extensions.I
     UpdatedBy: string | null
     UpdatedDate: Date | null
     ServiceTypeName: string | null
+    roleId: number | null
   }, ExtArgs["result"]["kaon_servicepoint"]>
   composites: {}
 }
@@ -1028,6 +1283,7 @@ readonly fields: kaon_servicepointFieldRefs;
  */
 export interface Prisma__kaon_servicepointClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  kaon_role<T extends Prisma.kaon_servicepoint$kaon_roleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.kaon_servicepoint$kaon_roleArgs<ExtArgs>>): Prisma.Prisma__kaon_roleClient<runtime.Types.Result.GetResult<Prisma.$kaon_rolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1074,6 +1330,7 @@ export interface kaon_servicepointFieldRefs {
   readonly UpdatedBy: Prisma.FieldRef<"kaon_servicepoint", 'String'>
   readonly UpdatedDate: Prisma.FieldRef<"kaon_servicepoint", 'DateTime'>
   readonly ServiceTypeName: Prisma.FieldRef<"kaon_servicepoint", 'String'>
+  readonly roleId: Prisma.FieldRef<"kaon_servicepoint", 'Int'>
 }
     
 
@@ -1090,6 +1347,10 @@ export type kaon_servicepointFindUniqueArgs<ExtArgs extends runtime.Types.Extens
    * Omit specific fields from the kaon_servicepoint
    */
   omit?: Prisma.kaon_servicepointOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.kaon_servicepointInclude<ExtArgs> | null
   /**
    * Filter, which kaon_servicepoint to fetch.
    */
@@ -1109,6 +1370,10 @@ export type kaon_servicepointFindUniqueOrThrowArgs<ExtArgs extends runtime.Types
    */
   omit?: Prisma.kaon_servicepointOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.kaon_servicepointInclude<ExtArgs> | null
+  /**
    * Filter, which kaon_servicepoint to fetch.
    */
   where: Prisma.kaon_servicepointWhereUniqueInput
@@ -1126,6 +1391,10 @@ export type kaon_servicepointFindFirstArgs<ExtArgs extends runtime.Types.Extensi
    * Omit specific fields from the kaon_servicepoint
    */
   omit?: Prisma.kaon_servicepointOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.kaon_servicepointInclude<ExtArgs> | null
   /**
    * Filter, which kaon_servicepoint to fetch.
    */
@@ -1175,6 +1444,10 @@ export type kaon_servicepointFindFirstOrThrowArgs<ExtArgs extends runtime.Types.
    */
   omit?: Prisma.kaon_servicepointOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.kaon_servicepointInclude<ExtArgs> | null
+  /**
    * Filter, which kaon_servicepoint to fetch.
    */
   where?: Prisma.kaon_servicepointWhereInput
@@ -1223,6 +1496,10 @@ export type kaon_servicepointFindManyArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.kaon_servicepointOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.kaon_servicepointInclude<ExtArgs> | null
+  /**
    * Filter, which kaon_servicepoints to fetch.
    */
   where?: Prisma.kaon_servicepointWhereInput
@@ -1266,6 +1543,10 @@ export type kaon_servicepointCreateArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.kaon_servicepointOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.kaon_servicepointInclude<ExtArgs> | null
+  /**
    * The data needed to create a kaon_servicepoint.
    */
   data: Prisma.XOR<Prisma.kaon_servicepointCreateInput, Prisma.kaon_servicepointUncheckedCreateInput>
@@ -1294,6 +1575,10 @@ export type kaon_servicepointUpdateArgs<ExtArgs extends runtime.Types.Extensions
    * Omit specific fields from the kaon_servicepoint
    */
   omit?: Prisma.kaon_servicepointOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.kaon_servicepointInclude<ExtArgs> | null
   /**
    * The data needed to update a kaon_servicepoint.
    */
@@ -1335,6 +1620,10 @@ export type kaon_servicepointUpsertArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.kaon_servicepointOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.kaon_servicepointInclude<ExtArgs> | null
+  /**
    * The filter to search for the kaon_servicepoint to update in case it exists.
    */
   where: Prisma.kaon_servicepointWhereUniqueInput
@@ -1361,6 +1650,10 @@ export type kaon_servicepointDeleteArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.kaon_servicepointOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.kaon_servicepointInclude<ExtArgs> | null
+  /**
    * Filter which kaon_servicepoint to delete.
    */
   where: Prisma.kaon_servicepointWhereUniqueInput
@@ -1381,6 +1674,25 @@ export type kaon_servicepointDeleteManyArgs<ExtArgs extends runtime.Types.Extens
 }
 
 /**
+ * kaon_servicepoint.kaon_role
+ */
+export type kaon_servicepoint$kaon_roleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the kaon_role
+   */
+  select?: Prisma.kaon_roleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the kaon_role
+   */
+  omit?: Prisma.kaon_roleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.kaon_roleInclude<ExtArgs> | null
+  where?: Prisma.kaon_roleWhereInput
+}
+
+/**
  * kaon_servicepoint without action
  */
 export type kaon_servicepointDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1392,4 +1704,8 @@ export type kaon_servicepointDefaultArgs<ExtArgs extends runtime.Types.Extension
    * Omit specific fields from the kaon_servicepoint
    */
   omit?: Prisma.kaon_servicepointOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.kaon_servicepointInclude<ExtArgs> | null
 }

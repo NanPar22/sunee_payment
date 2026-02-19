@@ -217,7 +217,7 @@ export type kaon_roleWhereInput = {
   isstatus?: Prisma.BoolNullableFilter<"kaon_role"> | boolean | null
   description?: Prisma.StringNullableFilter<"kaon_role"> | string | null
   kaonRoleMenus?: Prisma.Kaon_role_menuListRelationFilter
-  kaonSpRoles?: Prisma.Kaon_sp_roleListRelationFilter
+  kaon_servicepoint?: Prisma.Kaon_servicepointListRelationFilter
 }
 
 export type kaon_roleOrderByWithRelationInput = {
@@ -227,7 +227,7 @@ export type kaon_roleOrderByWithRelationInput = {
   isstatus?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   kaonRoleMenus?: Prisma.kaon_role_menuOrderByRelationAggregateInput
-  kaonSpRoles?: Prisma.kaon_sp_roleOrderByRelationAggregateInput
+  kaon_servicepoint?: Prisma.kaon_servicepointOrderByRelationAggregateInput
   _relevance?: Prisma.kaon_roleOrderByRelevanceInput
 }
 
@@ -241,7 +241,7 @@ export type kaon_roleWhereUniqueInput = Prisma.AtLeast<{
   isstatus?: Prisma.BoolNullableFilter<"kaon_role"> | boolean | null
   description?: Prisma.StringNullableFilter<"kaon_role"> | string | null
   kaonRoleMenus?: Prisma.Kaon_role_menuListRelationFilter
-  kaonSpRoles?: Prisma.Kaon_sp_roleListRelationFilter
+  kaon_servicepoint?: Prisma.Kaon_servicepointListRelationFilter
 }, "id">
 
 export type kaon_roleOrderByWithAggregationInput = {
@@ -274,7 +274,7 @@ export type kaon_roleCreateInput = {
   isstatus?: boolean | null
   description?: string | null
   kaonRoleMenus?: Prisma.kaon_role_menuCreateNestedManyWithoutRoleInput
-  kaonSpRoles?: Prisma.kaon_sp_roleCreateNestedManyWithoutRoleInput
+  kaon_servicepoint?: Prisma.kaon_servicepointCreateNestedManyWithoutKaon_roleInput
 }
 
 export type kaon_roleUncheckedCreateInput = {
@@ -284,7 +284,7 @@ export type kaon_roleUncheckedCreateInput = {
   isstatus?: boolean | null
   description?: string | null
   kaonRoleMenus?: Prisma.kaon_role_menuUncheckedCreateNestedManyWithoutRoleInput
-  kaonSpRoles?: Prisma.kaon_sp_roleUncheckedCreateNestedManyWithoutRoleInput
+  kaon_servicepoint?: Prisma.kaon_servicepointUncheckedCreateNestedManyWithoutKaon_roleInput
 }
 
 export type kaon_roleUpdateInput = {
@@ -293,7 +293,7 @@ export type kaon_roleUpdateInput = {
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kaonRoleMenus?: Prisma.kaon_role_menuUpdateManyWithoutRoleNestedInput
-  kaonSpRoles?: Prisma.kaon_sp_roleUpdateManyWithoutRoleNestedInput
+  kaon_servicepoint?: Prisma.kaon_servicepointUpdateManyWithoutKaon_roleNestedInput
 }
 
 export type kaon_roleUncheckedUpdateInput = {
@@ -303,7 +303,7 @@ export type kaon_roleUncheckedUpdateInput = {
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kaonRoleMenus?: Prisma.kaon_role_menuUncheckedUpdateManyWithoutRoleNestedInput
-  kaonSpRoles?: Prisma.kaon_sp_roleUncheckedUpdateManyWithoutRoleNestedInput
+  kaon_servicepoint?: Prisma.kaon_servicepointUncheckedUpdateManyWithoutKaon_roleNestedInput
 }
 
 export type kaon_roleCreateManyInput = {
@@ -372,18 +372,9 @@ export type Kaon_roleScalarRelationFilter = {
   isNot?: Prisma.kaon_roleWhereInput
 }
 
-export type kaon_roleCreateNestedOneWithoutKaonSpRolesInput = {
-  create?: Prisma.XOR<Prisma.kaon_roleCreateWithoutKaonSpRolesInput, Prisma.kaon_roleUncheckedCreateWithoutKaonSpRolesInput>
-  connectOrCreate?: Prisma.kaon_roleCreateOrConnectWithoutKaonSpRolesInput
-  connect?: Prisma.kaon_roleWhereUniqueInput
-}
-
-export type kaon_roleUpdateOneRequiredWithoutKaonSpRolesNestedInput = {
-  create?: Prisma.XOR<Prisma.kaon_roleCreateWithoutKaonSpRolesInput, Prisma.kaon_roleUncheckedCreateWithoutKaonSpRolesInput>
-  connectOrCreate?: Prisma.kaon_roleCreateOrConnectWithoutKaonSpRolesInput
-  upsert?: Prisma.kaon_roleUpsertWithoutKaonSpRolesInput
-  connect?: Prisma.kaon_roleWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.kaon_roleUpdateToOneWithWhereWithoutKaonSpRolesInput, Prisma.kaon_roleUpdateWithoutKaonSpRolesInput>, Prisma.kaon_roleUncheckedUpdateWithoutKaonSpRolesInput>
+export type Kaon_roleNullableScalarRelationFilter = {
+  is?: Prisma.kaon_roleWhereInput | null
+  isNot?: Prisma.kaon_roleWhereInput | null
 }
 
 export type kaon_roleCreateNestedOneWithoutKaonRoleMenusInput = {
@@ -400,54 +391,20 @@ export type kaon_roleUpdateOneRequiredWithoutKaonRoleMenusNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.kaon_roleUpdateToOneWithWhereWithoutKaonRoleMenusInput, Prisma.kaon_roleUpdateWithoutKaonRoleMenusInput>, Prisma.kaon_roleUncheckedUpdateWithoutKaonRoleMenusInput>
 }
 
-export type kaon_roleCreateWithoutKaonSpRolesInput = {
-  roleCode: string
-  roleName: string
-  isstatus?: boolean | null
-  description?: string | null
-  kaonRoleMenus?: Prisma.kaon_role_menuCreateNestedManyWithoutRoleInput
+export type kaon_roleCreateNestedOneWithoutKaon_servicepointInput = {
+  create?: Prisma.XOR<Prisma.kaon_roleCreateWithoutKaon_servicepointInput, Prisma.kaon_roleUncheckedCreateWithoutKaon_servicepointInput>
+  connectOrCreate?: Prisma.kaon_roleCreateOrConnectWithoutKaon_servicepointInput
+  connect?: Prisma.kaon_roleWhereUniqueInput
 }
 
-export type kaon_roleUncheckedCreateWithoutKaonSpRolesInput = {
-  id?: number
-  roleCode: string
-  roleName: string
-  isstatus?: boolean | null
-  description?: string | null
-  kaonRoleMenus?: Prisma.kaon_role_menuUncheckedCreateNestedManyWithoutRoleInput
-}
-
-export type kaon_roleCreateOrConnectWithoutKaonSpRolesInput = {
-  where: Prisma.kaon_roleWhereUniqueInput
-  create: Prisma.XOR<Prisma.kaon_roleCreateWithoutKaonSpRolesInput, Prisma.kaon_roleUncheckedCreateWithoutKaonSpRolesInput>
-}
-
-export type kaon_roleUpsertWithoutKaonSpRolesInput = {
-  update: Prisma.XOR<Prisma.kaon_roleUpdateWithoutKaonSpRolesInput, Prisma.kaon_roleUncheckedUpdateWithoutKaonSpRolesInput>
-  create: Prisma.XOR<Prisma.kaon_roleCreateWithoutKaonSpRolesInput, Prisma.kaon_roleUncheckedCreateWithoutKaonSpRolesInput>
-  where?: Prisma.kaon_roleWhereInput
-}
-
-export type kaon_roleUpdateToOneWithWhereWithoutKaonSpRolesInput = {
-  where?: Prisma.kaon_roleWhereInput
-  data: Prisma.XOR<Prisma.kaon_roleUpdateWithoutKaonSpRolesInput, Prisma.kaon_roleUncheckedUpdateWithoutKaonSpRolesInput>
-}
-
-export type kaon_roleUpdateWithoutKaonSpRolesInput = {
-  roleCode?: Prisma.StringFieldUpdateOperationsInput | string
-  roleName?: Prisma.StringFieldUpdateOperationsInput | string
-  isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  kaonRoleMenus?: Prisma.kaon_role_menuUpdateManyWithoutRoleNestedInput
-}
-
-export type kaon_roleUncheckedUpdateWithoutKaonSpRolesInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  roleCode?: Prisma.StringFieldUpdateOperationsInput | string
-  roleName?: Prisma.StringFieldUpdateOperationsInput | string
-  isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  kaonRoleMenus?: Prisma.kaon_role_menuUncheckedUpdateManyWithoutRoleNestedInput
+export type kaon_roleUpdateOneWithoutKaon_servicepointNestedInput = {
+  create?: Prisma.XOR<Prisma.kaon_roleCreateWithoutKaon_servicepointInput, Prisma.kaon_roleUncheckedCreateWithoutKaon_servicepointInput>
+  connectOrCreate?: Prisma.kaon_roleCreateOrConnectWithoutKaon_servicepointInput
+  upsert?: Prisma.kaon_roleUpsertWithoutKaon_servicepointInput
+  disconnect?: Prisma.kaon_roleWhereInput | boolean
+  delete?: Prisma.kaon_roleWhereInput | boolean
+  connect?: Prisma.kaon_roleWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.kaon_roleUpdateToOneWithWhereWithoutKaon_servicepointInput, Prisma.kaon_roleUpdateWithoutKaon_servicepointInput>, Prisma.kaon_roleUncheckedUpdateWithoutKaon_servicepointInput>
 }
 
 export type kaon_roleCreateWithoutKaonRoleMenusInput = {
@@ -455,7 +412,7 @@ export type kaon_roleCreateWithoutKaonRoleMenusInput = {
   roleName: string
   isstatus?: boolean | null
   description?: string | null
-  kaonSpRoles?: Prisma.kaon_sp_roleCreateNestedManyWithoutRoleInput
+  kaon_servicepoint?: Prisma.kaon_servicepointCreateNestedManyWithoutKaon_roleInput
 }
 
 export type kaon_roleUncheckedCreateWithoutKaonRoleMenusInput = {
@@ -464,7 +421,7 @@ export type kaon_roleUncheckedCreateWithoutKaonRoleMenusInput = {
   roleName: string
   isstatus?: boolean | null
   description?: string | null
-  kaonSpRoles?: Prisma.kaon_sp_roleUncheckedCreateNestedManyWithoutRoleInput
+  kaon_servicepoint?: Prisma.kaon_servicepointUncheckedCreateNestedManyWithoutKaon_roleInput
 }
 
 export type kaon_roleCreateOrConnectWithoutKaonRoleMenusInput = {
@@ -488,7 +445,7 @@ export type kaon_roleUpdateWithoutKaonRoleMenusInput = {
   roleName?: Prisma.StringFieldUpdateOperationsInput | string
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  kaonSpRoles?: Prisma.kaon_sp_roleUpdateManyWithoutRoleNestedInput
+  kaon_servicepoint?: Prisma.kaon_servicepointUpdateManyWithoutKaon_roleNestedInput
 }
 
 export type kaon_roleUncheckedUpdateWithoutKaonRoleMenusInput = {
@@ -497,7 +454,57 @@ export type kaon_roleUncheckedUpdateWithoutKaonRoleMenusInput = {
   roleName?: Prisma.StringFieldUpdateOperationsInput | string
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  kaonSpRoles?: Prisma.kaon_sp_roleUncheckedUpdateManyWithoutRoleNestedInput
+  kaon_servicepoint?: Prisma.kaon_servicepointUncheckedUpdateManyWithoutKaon_roleNestedInput
+}
+
+export type kaon_roleCreateWithoutKaon_servicepointInput = {
+  roleCode: string
+  roleName: string
+  isstatus?: boolean | null
+  description?: string | null
+  kaonRoleMenus?: Prisma.kaon_role_menuCreateNestedManyWithoutRoleInput
+}
+
+export type kaon_roleUncheckedCreateWithoutKaon_servicepointInput = {
+  id?: number
+  roleCode: string
+  roleName: string
+  isstatus?: boolean | null
+  description?: string | null
+  kaonRoleMenus?: Prisma.kaon_role_menuUncheckedCreateNestedManyWithoutRoleInput
+}
+
+export type kaon_roleCreateOrConnectWithoutKaon_servicepointInput = {
+  where: Prisma.kaon_roleWhereUniqueInput
+  create: Prisma.XOR<Prisma.kaon_roleCreateWithoutKaon_servicepointInput, Prisma.kaon_roleUncheckedCreateWithoutKaon_servicepointInput>
+}
+
+export type kaon_roleUpsertWithoutKaon_servicepointInput = {
+  update: Prisma.XOR<Prisma.kaon_roleUpdateWithoutKaon_servicepointInput, Prisma.kaon_roleUncheckedUpdateWithoutKaon_servicepointInput>
+  create: Prisma.XOR<Prisma.kaon_roleCreateWithoutKaon_servicepointInput, Prisma.kaon_roleUncheckedCreateWithoutKaon_servicepointInput>
+  where?: Prisma.kaon_roleWhereInput
+}
+
+export type kaon_roleUpdateToOneWithWhereWithoutKaon_servicepointInput = {
+  where?: Prisma.kaon_roleWhereInput
+  data: Prisma.XOR<Prisma.kaon_roleUpdateWithoutKaon_servicepointInput, Prisma.kaon_roleUncheckedUpdateWithoutKaon_servicepointInput>
+}
+
+export type kaon_roleUpdateWithoutKaon_servicepointInput = {
+  roleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  roleName?: Prisma.StringFieldUpdateOperationsInput | string
+  isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kaonRoleMenus?: Prisma.kaon_role_menuUpdateManyWithoutRoleNestedInput
+}
+
+export type kaon_roleUncheckedUpdateWithoutKaon_servicepointInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  roleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  roleName?: Prisma.StringFieldUpdateOperationsInput | string
+  isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kaonRoleMenus?: Prisma.kaon_role_menuUncheckedUpdateManyWithoutRoleNestedInput
 }
 
 
@@ -507,12 +514,12 @@ export type kaon_roleUncheckedUpdateWithoutKaonRoleMenusInput = {
 
 export type Kaon_roleCountOutputType = {
   kaonRoleMenus: number
-  kaonSpRoles: number
+  kaon_servicepoint: number
 }
 
 export type Kaon_roleCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kaonRoleMenus?: boolean | Kaon_roleCountOutputTypeCountKaonRoleMenusArgs
-  kaonSpRoles?: boolean | Kaon_roleCountOutputTypeCountKaonSpRolesArgs
+  kaon_servicepoint?: boolean | Kaon_roleCountOutputTypeCountKaon_servicepointArgs
 }
 
 /**
@@ -535,8 +542,8 @@ export type Kaon_roleCountOutputTypeCountKaonRoleMenusArgs<ExtArgs extends runti
 /**
  * Kaon_roleCountOutputType without action
  */
-export type Kaon_roleCountOutputTypeCountKaonSpRolesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.kaon_sp_roleWhereInput
+export type Kaon_roleCountOutputTypeCountKaon_servicepointArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.kaon_servicepointWhereInput
 }
 
 
@@ -547,7 +554,7 @@ export type kaon_roleSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   isstatus?: boolean
   description?: boolean
   kaonRoleMenus?: boolean | Prisma.kaon_role$kaonRoleMenusArgs<ExtArgs>
-  kaonSpRoles?: boolean | Prisma.kaon_role$kaonSpRolesArgs<ExtArgs>
+  kaon_servicepoint?: boolean | Prisma.kaon_role$kaon_servicepointArgs<ExtArgs>
   _count?: boolean | Prisma.Kaon_roleCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["kaon_role"]>
 
@@ -564,7 +571,7 @@ export type kaon_roleSelectScalar = {
 export type kaon_roleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "roleCode" | "roleName" | "isstatus" | "description", ExtArgs["result"]["kaon_role"]>
 export type kaon_roleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kaonRoleMenus?: boolean | Prisma.kaon_role$kaonRoleMenusArgs<ExtArgs>
-  kaonSpRoles?: boolean | Prisma.kaon_role$kaonSpRolesArgs<ExtArgs>
+  kaon_servicepoint?: boolean | Prisma.kaon_role$kaon_servicepointArgs<ExtArgs>
   _count?: boolean | Prisma.Kaon_roleCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -572,7 +579,7 @@ export type $kaon_rolePayload<ExtArgs extends runtime.Types.Extensions.InternalA
   name: "kaon_role"
   objects: {
     kaonRoleMenus: Prisma.$kaon_role_menuPayload<ExtArgs>[]
-    kaonSpRoles: Prisma.$kaon_sp_rolePayload<ExtArgs>[]
+    kaon_servicepoint: Prisma.$kaon_servicepointPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -921,7 +928,7 @@ readonly fields: kaon_roleFieldRefs;
 export interface Prisma__kaon_roleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   kaonRoleMenus<T extends Prisma.kaon_role$kaonRoleMenusArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.kaon_role$kaonRoleMenusArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$kaon_role_menuPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  kaonSpRoles<T extends Prisma.kaon_role$kaonSpRolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.kaon_role$kaonSpRolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$kaon_sp_rolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  kaon_servicepoint<T extends Prisma.kaon_role$kaon_servicepointArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.kaon_role$kaon_servicepointArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$kaon_servicepointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1323,27 +1330,27 @@ export type kaon_role$kaonRoleMenusArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
- * kaon_role.kaonSpRoles
+ * kaon_role.kaon_servicepoint
  */
-export type kaon_role$kaonSpRolesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type kaon_role$kaon_servicepointArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the kaon_sp_role
+   * Select specific fields to fetch from the kaon_servicepoint
    */
-  select?: Prisma.kaon_sp_roleSelect<ExtArgs> | null
+  select?: Prisma.kaon_servicepointSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the kaon_sp_role
+   * Omit specific fields from the kaon_servicepoint
    */
-  omit?: Prisma.kaon_sp_roleOmit<ExtArgs> | null
+  omit?: Prisma.kaon_servicepointOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.kaon_sp_roleInclude<ExtArgs> | null
-  where?: Prisma.kaon_sp_roleWhereInput
-  orderBy?: Prisma.kaon_sp_roleOrderByWithRelationInput | Prisma.kaon_sp_roleOrderByWithRelationInput[]
-  cursor?: Prisma.kaon_sp_roleWhereUniqueInput
+  include?: Prisma.kaon_servicepointInclude<ExtArgs> | null
+  where?: Prisma.kaon_servicepointWhereInput
+  orderBy?: Prisma.kaon_servicepointOrderByWithRelationInput | Prisma.kaon_servicepointOrderByWithRelationInput[]
+  cursor?: Prisma.kaon_servicepointWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.Kaon_sp_roleScalarFieldEnum | Prisma.Kaon_sp_roleScalarFieldEnum[]
+  distinct?: Prisma.Kaon_servicepointScalarFieldEnum | Prisma.Kaon_servicepointScalarFieldEnum[]
 }
 
 /**

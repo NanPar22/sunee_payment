@@ -300,27 +300,6 @@ model kaon_reference {
   description String   @db.Text
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model kaon_servicepoint {
-  id              Int       @id @default(autoincrement())
-  SPID            String?   @db.VarChar(8)
-  p_refer1        String    @db.VarChar(15)
-  Name            String?   @db.VarChar(500)
-  Detail          String?   @db.VarChar(500)
-  Location        String?   @db.VarChar(500)
-  Remark          String?   @db.VarChar(500)
-  ServiceType     String?   @db.VarChar(1)
-  ZoneID          String?   @db.VarChar(2)
-  UserName        String?   @db.VarChar(50)
-  Password        String?   @db.VarChar(50)
-  IsStatus        String?   @db.VarChar(1)
-  Person          String?   @db.VarChar(500)
-  Dates           DateTime? @db.DateTime(0)
-  UpdatedBy       String?   @db.VarChar(500)
-  UpdatedDate     DateTime? @db.DateTime(0)
-  ServiceTypeName String?   @db.VarChar(50)
-}
-
 model kaon_servicepoint123 {
   id              Int       @id @default(autoincrement())
   SPID            String?   @db.VarChar(50)
@@ -373,23 +352,13 @@ model kaon_menu {
 }
 
 model kaon_role {
-  id            Int              @id @default(autoincrement())
-  roleCode      String           @db.VarChar(200)
-  roleName      String           @db.VarChar(500)
-  isstatus      Boolean?         @default(true)
-  description   String?          @db.Text
-  kaonRoleMenus kaon_role_menu[]
-  kaonSpRoles   kaon_sp_role[]
-}
-
-model kaon_sp_role {
-  id     Int       @id @default(autoincrement())
-  spid   String    @db.VarChar(8)
-  roleId Int
-  role   kaon_role @relation(fields: [roleId], references: [id], onUpdate: Restrict, map: "fk_sp_role_role")
-
-  @@unique([spid, roleId], map: "spid")
-  @@index([roleId], map: "fk_sp_role_role")
+  id                Int                 @id @default(autoincrement())
+  roleCode          String              @db.VarChar(200)
+  roleName          String              @db.VarChar(500)
+  isstatus          Boolean?            @default(true)
+  description       String?             @db.Text
+  kaonRoleMenus     kaon_role_menu[]
+  kaon_servicepoint kaon_servicepoint[]
 }
 
 model kaon_role_menu {
@@ -406,4 +375,29 @@ model kaon_role_menu {
 
   @@unique([roleId, menuId], map: "roleId")
   @@index([menuId], map: "fk_role_menu_menu")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model kaon_servicepoint {
+  id              Int        @id @default(autoincrement())
+  SPID            String     @db.VarChar(8)
+  p_refer1        String?    @db.VarChar(255)
+  Name            String?    @db.VarChar(500)
+  Detail          String?    @db.VarChar(500)
+  Location        String?    @db.VarChar(500)
+  Remark          String?    @db.VarChar(500)
+  ServiceType     String?    @db.VarChar(1)
+  ZoneID          String?    @db.VarChar(2)
+  UserName        String?    @db.VarChar(50)
+  Password        String?    @db.VarChar(50)
+  IsStatus        String?    @db.VarChar(1)
+  Person          String?    @db.VarChar(500)
+  Dates           DateTime?  @db.DateTime(0)
+  UpdatedBy       String?    @db.VarChar(500)
+  UpdatedDate     DateTime?  @db.DateTime(0)
+  ServiceTypeName String?    @db.VarChar(50)
+  roleId          Int?
+  kaon_role       kaon_role? @relation(fields: [roleId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_servicepoint_role")
+
+  @@index([roleId], map: "fk_servicepoint_role")
 }

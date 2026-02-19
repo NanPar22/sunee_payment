@@ -601,6 +601,10 @@ export type kaon_servicepoint123SumOrderByAggregateInput = {
   Password?: Prisma.SortOrder
 }
 
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type NullableIntFieldUpdateOperationsInput = {
   set?: number | null
   increment?: number

@@ -1,5 +1,6 @@
 "use client"
 
+import BaseModal from "@/app/components/layout/BaseModel"
 import { Table_Drop } from "@/app/components/layout/Table_drop"
 import Dropdown from "@/app/components/ui/Dropdown"
 import { Pagination } from "@/app/components/ui/Pagination"
@@ -86,7 +87,7 @@ export default function Menu() {
                     path: parent.path,
                     sortOrder: parent.sortOrder,
                     icon: parent.icon,
-                    parentId: parent.parentId, // ✅ เพิ่ม: parentId ของ parent
+                    parentId: parent.parentId, // เพิ่ม: parentId ของ parent
                     isstatus: parent.isstatus ? "Active" : "Inactive",
                     children: parent.other_kaon_menu?.map((child) => ({
                         id: child.id,
@@ -94,7 +95,7 @@ export default function Menu() {
                         path: child.path,
                         sortOrder: child.sortOrder,
                         icon: child.icon,
-                        parentId: parent.id, // ✅ เพิ่ม: parentId ของ child
+                        parentId: parent.id, //  เพิ่ม: parentId ของ child
                         isstatus: child.isstatus ? "Active" : "Inactive",
                     })),
                 }))
@@ -117,13 +118,13 @@ export default function Menu() {
             id: 0,
             menuName: "",
             path: "",
-            parentId: null, // ✅ แก้ไข: เปลี่ยนจาก 0 เป็น null
+            parentId: null, //  แก้ไข: เปลี่ยนจาก 0 เป็น null
             sortOrder: 0,
             icon: "",
             isstatus: "Active",
         })
 
-        setOriginalRow(null) // 🔥 Add mode ไม่ต้องเทียบ
+        setOriginalRow(null) //  Add mode ไม่ต้องเทียบ
         setIsModalOpen(true)
     }
 
@@ -135,7 +136,7 @@ export default function Menu() {
     }
 
     const handleDelete = async (row: any, hardDelete = false) => {
-        // 🔥 ดึง id ให้แน่ใจว่าเป็น number จริง
+        //  ดึง id ให้แน่ใจว่าเป็น number จริง
         const id = Number(row?.id ?? row)
 
         console.log("delete id =", id)
@@ -189,13 +190,13 @@ export default function Menu() {
             return
         }
 
-        // ✅ Validation: path
+        //  Validation: path
         if (editingRow.path && !editingRow.path.trim().startsWith("/")) {
             Swal.fire("path ต้องขึ้นต้นด้วย /", "", "warning")
             return
         }
 
-        // ✅ Validation: sortOrder
+        //  Validation: sortOrder
         if (editingRow.sortOrder !== undefined && editingRow.sortOrder < 0) {
             Swal.fire("ลำดับต้องเป็นตัวเลขที่มากกว่าหรือเท่ากับ 0", "", "warning")
             return
@@ -226,7 +227,7 @@ export default function Menu() {
                 })
             }
 
-            // ✅ ตรวจสอบ HTTP status ก่อน
+            //  ตรวจสอบ HTTP status ก่อน
             if (!res.ok) {
                 const result = await res.json()
                 throw new Error(result.error || `HTTP Error: ${res.status}`)
@@ -234,7 +235,7 @@ export default function Menu() {
 
             const result = await res.json()
 
-            // ✅ ตรวจสอบ success flag
+            // ตรวจสอบ success flag
             if (!result.success) {
                 throw new Error(result.error || "บันทึกไม่สำเร็จ")
             }
@@ -343,7 +344,7 @@ export default function Menu() {
 
     return (
         <div className="h-full  p-4 flex flex-col gap-4">
-            <div className="font-bold text-2xl">Menu Management</div>
+            <div className="font-bold text-blue-600  text-2xl">Menu Management</div>
             <div className="flex items-center justify-between  ">
                 <div className="flex items-center gap-2">
                     <div className="w-80">
@@ -403,159 +404,167 @@ export default function Menu() {
                 />
             </div>
 
+            <BaseModal
+                open={isModalOpen && !!editingRow}
+                title={isAddMode ? "Add New Menu" : "Edit Menu"}
+                onClose={() => {
+                    setIsModalOpen(false)
+                    setEditingRow(null)
+                }}
+                footer={
+                    <div className="flex gap-3 justify-end">
+                        <button
+                            onClick={() => {
+                                setIsModalOpen(false)
+                                setEditingRow(null)
+                            }}
+                            className="px-4 py-2 border border-gray-300 rounded-md hover:bg-red-200 hover:text-red-900 hover:border-red-200 transition-colors"
+                        >
+                            Cancel
+                        </button>
 
-            {isModalOpen && editingRow && (
-                <div
-                    className="modal-overlay"
-                    onClick={() => {
-                        setIsModalOpen(false)
-                        setEditingRow(null)
-                    }}
-                >
-                    <div
-                        className="modal-content"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <h2 className="text-xl font-bold mb-4 text-gray-800">
-                            {isAddMode ? "Add New Menu" : "Edit Menu"}
-                        </h2>
-
-                        <div className="space-y-4">
-                            {/* Menu Name */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Menu Name <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    value={editingRow.menuName}
-                                    onChange={(e) => setEditingRow({ ...editingRow, menuName: e.target.value })}
-                                    className="w-full text-gray-500  border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Enter menu name"
-                                />
-                            </div>
-
-                            {/* Path */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Path <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    value={editingRow.path}
-                                    onChange={(e) => setEditingRow({ ...editingRow, path: e.target.value })}
-                                    className="w-full text-gray-500  border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="/example"
-                                />
-                            </div>
-
-                            {/* Parent ID */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Parent ID
-                                </label>
-                                <input
-                                    type="number"
-                                    value={editingRow.parentId ?? ""}
-                                    onChange={(e) =>
-                                        setEditingRow({
-                                            ...editingRow,
-                                            parentId: e.target.value === "" ? null : Number(e.target.value)
-                                        })
-                                    }
-                                    className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Leave empty for main menu"
-                                    min="1"
-                                />
-                                <p className="text-xs text-gray-500 mt-1">
-                                    Leave empty for Main Menu or enter parent menu ID for Sub Menu
-                                </p>
-                            </div>
-
-                            {/* Icon */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Icon
-                                </label>
-                                <input
-                                    type="text"
-                                    value={editingRow.icon || ""}
-                                    onChange={(e) => setEditingRow({ ...editingRow, icon: e.target.value })}
-                                    className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="fa-house"
-                                />
-                            </div>
-
-                            {/* Sort Order */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Sort Order
-                                </label>
-                                <input
-                                    type="number"
-                                    value={editingRow.sortOrder}
-                                    onChange={(e) => setEditingRow({ ...editingRow, sortOrder: Number(e.target.value) })}
-                                    className="w-full text-gray-500  border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    min="0"
-                                />
-                            </div>
-
-                            {/* Status - Toggle */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Status
-                                </label>
-                                <div className="flex items-center gap-3">
-                                    <Toggle
-                                        value={editingRow.isstatus === "Active"}
-                                        onChange={(checked) =>
-                                            setEditingRow({
-                                                ...editingRow,
-                                                isstatus: checked ? "Active" : "Inactive"
-                                            })
-                                        }
-                                    />
-                                    <span className="text-sm text-gray-600">
-                                        {editingRow.isstatus === "Active" ? "Active" : "Inactive"}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Buttons */}
-                        <div className="flex gap-3 mt-6 justify-end">
-                            <button
-                                onClick={() => {
-                                    setIsModalOpen(false)
-                                    setEditingRow(null)
-                                }}
-                                className="px-4 py-2 border border-gray-300 rounded-md hover:bg-red-200 hover:text-red-900 hover:border-red-200 transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleSave}
-                                disabled={
-                                    !editingRow?.menuName ||
+                        <button
+                            onClick={handleSave}
+                            disabled={
+                                !editingRow?.menuName ||
+                                editingRow.menuName.trim() === "" ||
+                                !isChanged()
+                            }
+                            className={`px-4 py-2 rounded-md transition-colors
+                    ${!editingRow?.menuName ||
                                     editingRow.menuName.trim() === "" ||
                                     !isChanged()
+                                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                                    : "bg-blue-500 text-white hover:bg-blue-600"
                                 }
-                                className={`px-4 py-2 rounded-md transition-colors
-                                  ${!editingRow?.menuName ||
-                                        editingRow.menuName.trim() === "" ||
-                                        !isChanged()
-                                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                                        : "bg-blue-500 text-white hover:bg-blue-600"
-                                    }
-                                    `}
-                            >
-                                {isAddMode ? "Create" : "Save"}
-                            </button>
-
-                        </div>
+                `}
+                        >
+                            {isAddMode ? "Create" : "Save"}
+                        </button>
                     </div>
-                </div>
-            )}
+                }
+            >
+                {editingRow && (
+                    <div className="space-y-4">
+
+                        {/* Menu Name */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Menu Name <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                value={editingRow.menuName}
+                                onChange={(e) =>
+                                    setEditingRow({ ...editingRow, menuName: e.target.value })
+                                }
+                                className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Enter menu name"
+                            />
+                        </div>
+
+                        {/* Path */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Path <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                value={editingRow.path}
+                                onChange={(e) =>
+                                    setEditingRow({ ...editingRow, path: e.target.value })
+                                }
+                                className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="/example"
+                            />
+                        </div>
+
+                        {/* Parent ID */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Parent ID
+                            </label>
+                            <input
+                                type="number"
+                                value={editingRow.parentId ?? ""}
+                                onChange={(e) =>
+                                    setEditingRow({
+                                        ...editingRow,
+                                        parentId:
+                                            e.target.value === ""
+                                                ? null
+                                                : Number(e.target.value),
+                                    })
+                                }
+                                className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Leave empty for main menu"
+                                min="1"
+                            />
+                            <p className="text-xs text-gray-500 mt-1">
+                                Leave empty for Main Menu or enter parent menu ID for Sub Menu
+                            </p>
+                        </div>
+
+                        {/* Icon */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Icon
+                            </label>
+                            <input
+                                type="text"
+                                value={editingRow.icon || ""}
+                                onChange={(e) =>
+                                    setEditingRow({ ...editingRow, icon: e.target.value })
+                                }
+                                className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="fa-house"
+                            />
+                        </div>
+
+                        {/* Sort Order */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Sort Order
+                            </label>
+                            <input
+                                type="number"
+                                value={editingRow.sortOrder}
+                                onChange={(e) =>
+                                    setEditingRow({
+                                        ...editingRow,
+                                        sortOrder: Number(e.target.value),
+                                    })
+                                }
+                                className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                min="0"
+                            />
+                        </div>
+
+                        {/* Status */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Status
+                            </label>
+                            <div className="flex items-center gap-3">
+                                <Toggle
+                                    value={editingRow.isstatus === "Active"}
+                                    onChange={(checked) =>
+                                        setEditingRow({
+                                            ...editingRow,
+                                            isstatus: checked ? "Active" : "Inactive",
+                                        })
+                                    }
+                                />
+                                <span className="text-sm text-gray-600">
+                                    {editingRow.isstatus}
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                )}
+            </BaseModal>
+            
         </div>
     )
 }

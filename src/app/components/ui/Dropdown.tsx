@@ -22,8 +22,8 @@ export default function Dropdown<T extends string | number>({
             <button
                 type="button"
                 onClick={() => setOpen(o => !o)}
-                className="w-full h-full border border-blue-500 text-blue-500 px-2 rounded-sm  flex items-center justify-center gap-1"
-            > 
+                className="w-full h-full border border-blue-500 text-blue-500 px-2 rounded-sm flex items-center justify-center gap-1"
+            >
                 {value}
                 <i
                     className={`fa-solid transition-transform duration-200
@@ -32,17 +32,17 @@ export default function Dropdown<T extends string | number>({
             </button>
 
             {open && (
-                <ul className="absolute left-0 mt-0.5  p-0.5 bg-white border border-blue-500 shadow-md     rounded-sm z-20 flex flex-col gap-0.5">
+                <ul className="absolute left-0 mt-0.5 w-full p-0.5 bg-white border border-blue-500 shadow-md rounded-sm z-20 flex flex-col gap-0.5">
                     {options.map(option => (
                         <li
                             key={option}
-                            onClick={() => {2
+                            onClick={() => {
                                 onChange?.(option)
                                 setOpen(false)
                             }}
-                            className={`px-2 py-0.5  cursor-pointer text-blue-500 text-center rounded-xs
-                            hover:bg-blue-500 hover:text-white
-                            ${option === value ? "bg-blue-100" : ""}`}
+                            className={`px-2 py-0.5 cursor-pointer text-blue-500 text-center rounded-xs
+                                hover:bg-blue-500 hover:text-white
+                                ${option === value ? "bg-blue-100" : ""}`}
                         >
                             {option}
                         </li>

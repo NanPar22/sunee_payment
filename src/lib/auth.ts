@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { comparePassword, hashPassword } from "./password";
+import { comparePassword } from "./password";
 import { signToken } from "./jwt";
 
 export async function loginUser(username: string, password: string) {
@@ -8,12 +8,14 @@ export async function loginUser(username: string, password: string) {
       where: {
         UserName: username,
       },
-      select: {
-        id: true,
-        UserName: true,
-        Password: true,
-        SPID: true,
-        ServiceTypeName: true,
+      include: {
+        kaon_role: {
+          select: {
+            id: true,
+            roleName: true,
+            roleCode: true,
+          },
+        },
       },
     });
 
@@ -36,10 +38,12 @@ export async function loginUser(username: string, password: string) {
 
     if (!ok) return null;
 
+    const roleName = user.kaon_role?.roleName ?? "user";
+
     const token = signToken({
       id: user.id,
       username: user.UserName,
-      role: user.ServiceTypeName ?? "user",
+      role: roleName,
       spid: user.SPID || undefined,
     });
 
@@ -47,7 +51,7 @@ export async function loginUser(username: string, password: string) {
       user: {
         id: user.id,
         username: user.UserName,
-        role: user.ServiceTypeName ?? "user",
+        role: roleName,
         spid: user.SPID,
       },
       token,

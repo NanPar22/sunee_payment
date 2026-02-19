@@ -16,6 +16,7 @@ export default function Search({ onSearch }: SearchProps) {
         placeholder="ค้นหา"
         type="search"
         value={value}
+        onKeyDown={(e) => e.key === "Enter" && onSearch?.(value)}
         onChange={(e) => setValue(e.target.value)}
         className={clsx(
           "w-full placeholder:text-blue-300/60 text-blue-500 text-sm",

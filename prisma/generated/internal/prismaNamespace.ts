@@ -393,13 +393,12 @@ export const ModelName = {
   kaon_checklistlog_inquiry: 'kaon_checklistlog_inquiry',
   kaon_program: 'kaon_program',
   kaon_reference: 'kaon_reference',
-  kaon_servicepoint: 'kaon_servicepoint',
   kaon_servicepoint123: 'kaon_servicepoint123',
   kaon_user: 'kaon_user',
   kaon_menu: 'kaon_menu',
   kaon_role: 'kaon_role',
-  kaon_sp_role: 'kaon_sp_role',
-  kaon_role_menu: 'kaon_role_menu'
+  kaon_role_menu: 'kaon_role_menu',
+  kaon_servicepoint: 'kaon_servicepoint'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -415,7 +414,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "kaon_channel" | "kaon_chashier" | "kaon_checklistlog" | "kaon_checklistlog_approval" | "kaon_checklistlog_bak" | "kaon_checklistlog_data" | "kaon_checklistlog_inquiry" | "kaon_program" | "kaon_reference" | "kaon_servicepoint" | "kaon_servicepoint123" | "kaon_user" | "kaon_menu" | "kaon_role" | "kaon_sp_role" | "kaon_role_menu"
+    modelProps: "kaon_channel" | "kaon_chashier" | "kaon_checklistlog" | "kaon_checklistlog_approval" | "kaon_checklistlog_bak" | "kaon_checklistlog_data" | "kaon_checklistlog_inquiry" | "kaon_program" | "kaon_reference" | "kaon_servicepoint123" | "kaon_user" | "kaon_menu" | "kaon_role" | "kaon_role_menu" | "kaon_servicepoint"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1013,72 +1012,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    kaon_servicepoint: {
-      payload: Prisma.$kaon_servicepointPayload<ExtArgs>
-      fields: Prisma.kaon_servicepointFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.kaon_servicepointFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.kaon_servicepointFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload>
-        }
-        findFirst: {
-          args: Prisma.kaon_servicepointFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.kaon_servicepointFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload>
-        }
-        findMany: {
-          args: Prisma.kaon_servicepointFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload>[]
-        }
-        create: {
-          args: Prisma.kaon_servicepointCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload>
-        }
-        createMany: {
-          args: Prisma.kaon_servicepointCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.kaon_servicepointDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload>
-        }
-        update: {
-          args: Prisma.kaon_servicepointUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload>
-        }
-        deleteMany: {
-          args: Prisma.kaon_servicepointDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.kaon_servicepointUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.kaon_servicepointUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload>
-        }
-        aggregate: {
-          args: Prisma.Kaon_servicepointAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateKaon_servicepoint>
-        }
-        groupBy: {
-          args: Prisma.kaon_servicepointGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.Kaon_servicepointGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.kaon_servicepointCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.Kaon_servicepointCountAggregateOutputType> | number
-        }
-      }
-    }
     kaon_servicepoint123: {
       payload: Prisma.$kaon_servicepoint123Payload<ExtArgs>
       fields: Prisma.kaon_servicepoint123FieldRefs
@@ -1343,72 +1276,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    kaon_sp_role: {
-      payload: Prisma.$kaon_sp_rolePayload<ExtArgs>
-      fields: Prisma.kaon_sp_roleFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.kaon_sp_roleFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_sp_rolePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.kaon_sp_roleFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_sp_rolePayload>
-        }
-        findFirst: {
-          args: Prisma.kaon_sp_roleFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_sp_rolePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.kaon_sp_roleFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_sp_rolePayload>
-        }
-        findMany: {
-          args: Prisma.kaon_sp_roleFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_sp_rolePayload>[]
-        }
-        create: {
-          args: Prisma.kaon_sp_roleCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_sp_rolePayload>
-        }
-        createMany: {
-          args: Prisma.kaon_sp_roleCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.kaon_sp_roleDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_sp_rolePayload>
-        }
-        update: {
-          args: Prisma.kaon_sp_roleUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_sp_rolePayload>
-        }
-        deleteMany: {
-          args: Prisma.kaon_sp_roleDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.kaon_sp_roleUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.kaon_sp_roleUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_sp_rolePayload>
-        }
-        aggregate: {
-          args: Prisma.Kaon_sp_roleAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateKaon_sp_role>
-        }
-        groupBy: {
-          args: Prisma.kaon_sp_roleGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.Kaon_sp_roleGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.kaon_sp_roleCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.Kaon_sp_roleCountAggregateOutputType> | number
-        }
-      }
-    }
     kaon_role_menu: {
       payload: Prisma.$kaon_role_menuPayload<ExtArgs>
       fields: Prisma.kaon_role_menuFieldRefs
@@ -1472,6 +1339,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.kaon_role_menuCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.Kaon_role_menuCountAggregateOutputType> | number
+        }
+      }
+    }
+    kaon_servicepoint: {
+      payload: Prisma.$kaon_servicepointPayload<ExtArgs>
+      fields: Prisma.kaon_servicepointFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.kaon_servicepointFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.kaon_servicepointFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload>
+        }
+        findFirst: {
+          args: Prisma.kaon_servicepointFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.kaon_servicepointFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload>
+        }
+        findMany: {
+          args: Prisma.kaon_servicepointFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload>[]
+        }
+        create: {
+          args: Prisma.kaon_servicepointCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload>
+        }
+        createMany: {
+          args: Prisma.kaon_servicepointCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.kaon_servicepointDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload>
+        }
+        update: {
+          args: Prisma.kaon_servicepointUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload>
+        }
+        deleteMany: {
+          args: Prisma.kaon_servicepointDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.kaon_servicepointUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.kaon_servicepointUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_servicepointPayload>
+        }
+        aggregate: {
+          args: Prisma.Kaon_servicepointAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateKaon_servicepoint>
+        }
+        groupBy: {
+          args: Prisma.kaon_servicepointGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Kaon_servicepointGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.kaon_servicepointCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Kaon_servicepointCountAggregateOutputType> | number
         }
       }
     }
@@ -1829,29 +1762,6 @@ export const Kaon_referenceScalarFieldEnum = {
 export type Kaon_referenceScalarFieldEnum = (typeof Kaon_referenceScalarFieldEnum)[keyof typeof Kaon_referenceScalarFieldEnum]
 
 
-export const Kaon_servicepointScalarFieldEnum = {
-  id: 'id',
-  SPID: 'SPID',
-  p_refer1: 'p_refer1',
-  Name: 'Name',
-  Detail: 'Detail',
-  Location: 'Location',
-  Remark: 'Remark',
-  ServiceType: 'ServiceType',
-  ZoneID: 'ZoneID',
-  UserName: 'UserName',
-  Password: 'Password',
-  IsStatus: 'IsStatus',
-  Person: 'Person',
-  Dates: 'Dates',
-  UpdatedBy: 'UpdatedBy',
-  UpdatedDate: 'UpdatedDate',
-  ServiceTypeName: 'ServiceTypeName'
-} as const
-
-export type Kaon_servicepointScalarFieldEnum = (typeof Kaon_servicepointScalarFieldEnum)[keyof typeof Kaon_servicepointScalarFieldEnum]
-
-
 export const Kaon_servicepoint123ScalarFieldEnum = {
   id: 'id',
   SPID: 'SPID',
@@ -1918,15 +1828,6 @@ export const Kaon_roleScalarFieldEnum = {
 export type Kaon_roleScalarFieldEnum = (typeof Kaon_roleScalarFieldEnum)[keyof typeof Kaon_roleScalarFieldEnum]
 
 
-export const Kaon_sp_roleScalarFieldEnum = {
-  id: 'id',
-  spid: 'spid',
-  roleId: 'roleId'
-} as const
-
-export type Kaon_sp_roleScalarFieldEnum = (typeof Kaon_sp_roleScalarFieldEnum)[keyof typeof Kaon_sp_roleScalarFieldEnum]
-
-
 export const Kaon_role_menuScalarFieldEnum = {
   id: 'id',
   roleId: 'roleId',
@@ -1939,6 +1840,30 @@ export const Kaon_role_menuScalarFieldEnum = {
 } as const
 
 export type Kaon_role_menuScalarFieldEnum = (typeof Kaon_role_menuScalarFieldEnum)[keyof typeof Kaon_role_menuScalarFieldEnum]
+
+
+export const Kaon_servicepointScalarFieldEnum = {
+  id: 'id',
+  SPID: 'SPID',
+  p_refer1: 'p_refer1',
+  Name: 'Name',
+  Detail: 'Detail',
+  Location: 'Location',
+  Remark: 'Remark',
+  ServiceType: 'ServiceType',
+  ZoneID: 'ZoneID',
+  UserName: 'UserName',
+  Password: 'Password',
+  IsStatus: 'IsStatus',
+  Person: 'Person',
+  Dates: 'Dates',
+  UpdatedBy: 'UpdatedBy',
+  UpdatedDate: 'UpdatedDate',
+  ServiceTypeName: 'ServiceTypeName',
+  roleId: 'roleId'
+} as const
+
+export type Kaon_servicepointScalarFieldEnum = (typeof Kaon_servicepointScalarFieldEnum)[keyof typeof Kaon_servicepointScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2209,26 +2134,6 @@ export const kaon_referenceOrderByRelevanceFieldEnum = {
 export type kaon_referenceOrderByRelevanceFieldEnum = (typeof kaon_referenceOrderByRelevanceFieldEnum)[keyof typeof kaon_referenceOrderByRelevanceFieldEnum]
 
 
-export const kaon_servicepointOrderByRelevanceFieldEnum = {
-  SPID: 'SPID',
-  p_refer1: 'p_refer1',
-  Name: 'Name',
-  Detail: 'Detail',
-  Location: 'Location',
-  Remark: 'Remark',
-  ServiceType: 'ServiceType',
-  ZoneID: 'ZoneID',
-  UserName: 'UserName',
-  Password: 'Password',
-  IsStatus: 'IsStatus',
-  Person: 'Person',
-  UpdatedBy: 'UpdatedBy',
-  ServiceTypeName: 'ServiceTypeName'
-} as const
-
-export type kaon_servicepointOrderByRelevanceFieldEnum = (typeof kaon_servicepointOrderByRelevanceFieldEnum)[keyof typeof kaon_servicepointOrderByRelevanceFieldEnum]
-
-
 export const kaon_servicepoint123OrderByRelevanceFieldEnum = {
   SPID: 'SPID',
   Name: 'Name',
@@ -2280,11 +2185,24 @@ export const kaon_roleOrderByRelevanceFieldEnum = {
 export type kaon_roleOrderByRelevanceFieldEnum = (typeof kaon_roleOrderByRelevanceFieldEnum)[keyof typeof kaon_roleOrderByRelevanceFieldEnum]
 
 
-export const kaon_sp_roleOrderByRelevanceFieldEnum = {
-  spid: 'spid'
+export const kaon_servicepointOrderByRelevanceFieldEnum = {
+  SPID: 'SPID',
+  p_refer1: 'p_refer1',
+  Name: 'Name',
+  Detail: 'Detail',
+  Location: 'Location',
+  Remark: 'Remark',
+  ServiceType: 'ServiceType',
+  ZoneID: 'ZoneID',
+  UserName: 'UserName',
+  Password: 'Password',
+  IsStatus: 'IsStatus',
+  Person: 'Person',
+  UpdatedBy: 'UpdatedBy',
+  ServiceTypeName: 'ServiceTypeName'
 } as const
 
-export type kaon_sp_roleOrderByRelevanceFieldEnum = (typeof kaon_sp_roleOrderByRelevanceFieldEnum)[keyof typeof kaon_sp_roleOrderByRelevanceFieldEnum]
+export type kaon_servicepointOrderByRelevanceFieldEnum = (typeof kaon_servicepointOrderByRelevanceFieldEnum)[keyof typeof kaon_servicepointOrderByRelevanceFieldEnum]
 
 
 
@@ -2438,13 +2356,12 @@ export type GlobalOmitConfig = {
   kaon_checklistlog_inquiry?: Prisma.kaon_checklistlog_inquiryOmit
   kaon_program?: Prisma.kaon_programOmit
   kaon_reference?: Prisma.kaon_referenceOmit
-  kaon_servicepoint?: Prisma.kaon_servicepointOmit
   kaon_servicepoint123?: Prisma.kaon_servicepoint123Omit
   kaon_user?: Prisma.kaon_userOmit
   kaon_menu?: Prisma.kaon_menuOmit
   kaon_role?: Prisma.kaon_roleOmit
-  kaon_sp_role?: Prisma.kaon_sp_roleOmit
   kaon_role_menu?: Prisma.kaon_role_menuOmit
+  kaon_servicepoint?: Prisma.kaon_servicepointOmit
 }
 
 /* Types for Logging */
