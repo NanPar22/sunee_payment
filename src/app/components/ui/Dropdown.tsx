@@ -22,7 +22,7 @@ export default function Dropdown<T extends string | number>({
             <button
                 type="button"
                 onClick={() => setOpen(o => !o)}
-                className="w-full h-full border border-blue-500 text-blue-500 px-2 rounded-sm flex items-center justify-center gap-1"
+                className="w-full h-full border border-blue-500 text-blue-500 px-2 rounded-sm flex items-center justify-between  gap-1"
             >
                 {value}
                 <i

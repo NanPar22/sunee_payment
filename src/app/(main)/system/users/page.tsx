@@ -257,7 +257,7 @@ export default function User() {
     })
 
     return (
-        <div className="h-full p-4 flex flex-col gap-4">
+        <div className="h-full p-2 flex flex-col gap-4">
             <div className="font-bold text-blue-600 text-2xl">
                 User Management
             </div>

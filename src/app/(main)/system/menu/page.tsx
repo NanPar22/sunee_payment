@@ -179,8 +179,6 @@ export default function Menu() {
         }
     }
 
-
-
     const handleSave = async () => {
         if (!editingRow) return
 
@@ -356,7 +354,7 @@ export default function Menu() {
     })
 
     return (
-        <div className="h-full  p-4 flex flex-col gap-4">
+        <div className="h-full  p-2 flex flex-col gap-4">
             <div className="font-bold text-blue-600  text-2xl">Menu Management</div>
             <div className="flex items-center justify-between  ">
                 <div className="flex items-center gap-2">
@@ -385,7 +383,7 @@ export default function Menu() {
                             }
                             setPage(1)
                         }}
-                        className="w-18"
+                        className="w-20"
                     />
                 </div>
                 <div className="flex items-center justify-center  ">

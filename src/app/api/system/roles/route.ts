@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getRoleList } from "@/lib/role";
+import { createRole, getRoleList } from "@/lib/role";
 
 export async function GET(req: NextRequest) {
   try {
@@ -25,6 +25,32 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 },
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+
+    const role = await createRole(body);
+
+    return NextResponse.json(
+      {
+        success: true,
+        data: role,
+      },
+      { status: 201 },
+    );
+  } catch (error: any) {
+    console.error("Create Role Error:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: error.message || "Internal server error",
+      },
+      { status: 400 },
     );
   }
 }
