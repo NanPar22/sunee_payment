@@ -5,7 +5,7 @@ export type GetUserParams = {
   pageSize: number;
   search?: string;
   status?: boolean;
-  role?: number;
+  role?: string | number;
 };
 
 export type CreateUserParams = {

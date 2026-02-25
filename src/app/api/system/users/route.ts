@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       pageSize,
       search,
       status,
-      role,
+      role ,
     });
 
     return NextResponse.json({

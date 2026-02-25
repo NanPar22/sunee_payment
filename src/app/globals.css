@@ -25,11 +25,9 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
 .font-main {
-  @apply text-[#0F172A] ;
+  @apply text-[#0F172A];
 }
-
 
 .shadow {
   @apply shadow-[2px_3px_3px_2px_rgba(179,229,252,0.5)];
@@ -41,19 +39,18 @@ body {
 
 .shadow-sidebar {
   @apply shadow-[1px_1px_2px_1px_rgba(0,0,70,0.5)];
-}๐
-
-.shadow-input {
+}
+๐ .shadow-input {
   @apply shadow-[0.5px_0.5px_1px_0.5px_rgba(179,229,252,0.5)];
 }
 
-.btn-logout{
-  @apply  hover:bg-[#cdebff]  hover:text-[#0F172A] font-semibold  w-full rounded-md border border-[#009FE3] 
+.btn-logout {
+  @apply hover:bg-[#cdebff]  hover:text-[#0F172A] font-semibold  w-full rounded-md border border-[#009FE3] 
    transform transition-transform duration-300 ease-in-out hover:scale-105;
 }
 
-.btn{
-  @apply  hover:bg-[#cdebff]  hover:text-[#0F172A] font-semibold  w-full rounded-md border border-[#009FE3] px-2 py-1
+.btn {
+  @apply hover:bg-[#cdebff]  hover:text-[#0F172A] font-semibold  w-full rounded-md border border-[#009FE3] px-2 py-1
    transform transition-transform duration-300 ease-in-out hover:scale-105;
 }
 
@@ -64,6 +61,16 @@ body {
 
 .transform {
   @apply transform transition-transform duration-300 ease-in-out hover:scale-105;
+}
+
+.focus-input {
+  @apply w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+@layer utilities {
+  .swal2-container {
+    z-index: 999999 !important;
+  }
 }
 
 .modal-overlay {

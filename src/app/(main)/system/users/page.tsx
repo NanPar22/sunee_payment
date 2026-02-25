@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from "react"
 import Swal from "sweetalert2"
 import { Toggle } from "@/app/components/ui/Toggle"
 import BaseModal from "@/app/components/layout/BaseModel"
-import Dropdown_Input from "@/app/components/ui/Dropdown_Input"
+import Dropdown_Input from "@/app/components/ui/Dropdown_Input" 
 
 type RoleItem = {
     id: number
@@ -312,10 +312,7 @@ export default function User() {
             <BaseModal
                 open={isModalOpen && !!editingRow}
                 title={isAddMode ? "Add New User" : "Edit User"}
-                onClose={() => {
-                    setIsModalOpen(false)
-                    setEditingRow(null)
-                }}
+                onClose={() => { }}
                 footer={
                     <div className="flex gap-3 justify-end">
                         <button

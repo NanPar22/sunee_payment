@@ -418,10 +418,7 @@ export default function Menu() {
             <BaseModal
                 open={isModalOpen && !!editingRow}
                 title={isAddMode ? "Add New Menu" : "Edit Menu"}
-                onClose={() => {
-                    setIsModalOpen(false)
-                    setEditingRow(null)
-                }}
+                onClose={() => { }}
                 footer={
                     <div className="flex gap-3 justify-end">
                         <button

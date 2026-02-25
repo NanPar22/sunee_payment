@@ -40,7 +40,7 @@ export async function getRoleList(params: {
   if (status !== undefined) {
     where.isstatus = status;
   }
-  
+
   const [data, total] = await Promise.all([
     prisma.kaon_role.findMany({
       where,
@@ -84,4 +84,41 @@ export async function createRole(params: CreateRole) {
     }
     throw error;
   }
+}
+
+export async function updateRole(id: number, params: CreateRole) {
+  const { roleCode, roleName, isstatus, description } = params;
+
+  if (!roleCode?.trim() || !roleName?.trim()) {
+    throw new Error("Role code and role name are required");
+  }
+
+  try {
+    const role = await prisma.kaon_role.update({
+      where: { id },
+      data: {
+        roleCode: roleCode.trim(),
+        roleName: roleName.trim(),
+        description: description?.trim(),
+        isstatus,
+      },
+    });
+
+    return role;
+  } catch (error: any) {
+    if (error.code === "P2002") {
+      throw new Error("Role code already exists");
+    }
+    throw error;
+  }
+}
+
+export async function deleteRole(id: number) {
+  if (!id || isNaN(id)) {
+    throw new Error("Invalid role id");
+  }
+
+  return prisma.kaon_role.delete({
+    where: { id },
+  });
 }

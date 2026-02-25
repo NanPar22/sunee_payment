@@ -405,16 +405,16 @@ export default function User() {
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Role
                             </label>
-                            <Dropdown_Input
-                                options={roleOptions}
-                                value={editingRow.role}
-                                onChange={(val) =>
-                                    setEditingRow({
-                                        ...editingRow,
-                                        role: val,
-                                    })
-                                }
-                            />
+                                {/* <Dropdown_Input
+                                    options={roleOptions}
+                                    value={editingRow.role}
+                                    onChange={(val) =>
+                                        setEditingRow({
+                                            ...editingRow,
+                                            role: val,
+                                        })
+                                    }
+                                /> */}
                         </div>
 
                         {/* Status Toggle */}
