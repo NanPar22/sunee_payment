@@ -42,6 +42,7 @@ export async function loginUser(username: string, password: string) {
 
     const token = signToken({
       id: user.id,
+      roleId: user.kaon_role?.id ?? 0, // เพิ่มตรงนี้
       username: user.UserName,
       role: roleName,
       spid: user.SPID || undefined,

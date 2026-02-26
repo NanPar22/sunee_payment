@@ -31,6 +31,7 @@ export default function Roles() {
 
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [editingRow, setEditingRow] = useState<Roles | null>(null)
+    const [editpermission, setEdipermisson] = useState<Roles | null>(null)
     const [isAddMode, setIsAddMode] = useState(false)
     const [oldRow, setOldRow] = useState<Roles | null>(null)
 
@@ -88,6 +89,17 @@ export default function Roles() {
 
     // ================= EDIT =================
     const handleEdit = (row: Roles) => {
+        setIsAddMode(false)
+
+        const Row = data.find(d => d.id === row.id) ?? row
+
+        setEditingRow({ ...Row })
+        setOldRow({ ...Row })
+        setIsModalOpen(true)
+    }
+
+    // ================= EDIT =================
+    const handlePermission = (row: Roles) => {
         setIsAddMode(false)
 
         const Row = data.find(d => d.id === row.id) ?? row
@@ -232,6 +244,12 @@ export default function Roles() {
                             >
                                 Delete
                             </button>
+                            <button
+                                onClick={() => handlePermission(row)}
+                                className="px-2 py-0.5 text-xs bg-blue-400 text-blue-900 hover:bg-blue-600 hover:text-white rounded"
+                            >
+                                Permission
+                            </button>
                         </div>
                     </div>
                 ),
@@ -288,7 +306,7 @@ export default function Roles() {
 
             {/* ================= MODAL ================= */}
             <BaseModal
-                open={isModalOpen && !!editingRow}
+                open={isModalOpen}
                 title={isAddMode ? "Add New Roles" : "Edit Roles"}
                 onClose={() => { }}
                 footer={
@@ -390,11 +408,10 @@ export default function Roles() {
                             </div>
                         </div>
                     </div>
-                )}
-
-                <>
-                </>
+                )},
             </BaseModal>
+
+            
         </div>
     )
 }
