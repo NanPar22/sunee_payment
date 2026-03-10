@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ success: true, ...result });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, message: error?.message ?? "Unknown error" },
+      { success: false, message: error?.message ?? "Unknown error" }, 
       { status: 500 },
     );
   }
@@ -24,16 +24,26 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { spid, username, roleId, status } = body;
+    const { spid, username, roleId, status, password } = body; // ✅ เพิ่ม password
 
-    if (!spid || !username || !roleId) {
+    if (!spid || !username || !roleId || !password) {
       return NextResponse.json(
-        { success: false, message: "spid, username, roleId are required" },
+        {
+          success: false,
+          message: "spid, username, roleId, password are required",
+        },
         { status: 400 },
       );
     }
 
-    const result = await createUser({ spid, username, roleId, status });
+    const result = await createUser({
+      spid,
+      username,
+      roleId,
+      status,
+      password, // ✅ ตอนนี้มีค่าแล้ว
+    });
+
     return NextResponse.json({ success: true, data: result }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(

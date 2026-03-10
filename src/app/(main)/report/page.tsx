@@ -37,7 +37,7 @@ export default function TrackingPage() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
-    // 🔥 fetch GET list
+    // fetch GET list
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -53,7 +53,9 @@ export default function TrackingPage() {
                 if (from) params.set("from", from)
                 if (to) params.set("to", to)
 
-                const res = await fetch(`/api/report/list?${params.toString()}`)
+                const res = await fetch(`/api/report/list?${params.toString()}`, {
+                    credentials: "include" // ✅ เพิ่มบรรทัดนี้
+                })
                 if (!res.ok) throw new Error("โหลดข้อมูลไม่สำเร็จ")
 
                 const json = await res.json()

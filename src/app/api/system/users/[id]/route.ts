@@ -15,15 +15,16 @@ export async function PUT(
         { status: 400 },
       );
     }
-
+    
     const body = await request.json();
-    const { spid, username, roleId, status } = body;
+    const { spid, username, roleId, status, password } = body;
 
     const result = await updateUser(userId, {
       spid,
       username,
       roleId,
       status,
+      password, // 👈 เพิ่มตรงนี้
     });
 
     return NextResponse.json({ success: true, data: result });

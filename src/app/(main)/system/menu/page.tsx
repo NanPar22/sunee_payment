@@ -139,8 +139,6 @@ export default function Menu() {
         //  ดึง id ให้แน่ใจว่าเป็น number จริง
         const id = Number(row?.id ?? row)
 
-        console.log("delete id =", id)
-
         if (!id || isNaN(id)) {
             Swal.fire("ID ไม่ถูกต้อง", "", "error")
             return

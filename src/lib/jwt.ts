@@ -1,11 +1,20 @@
 import jwt, { JwtPayload as DefaultJwtPayload } from "jsonwebtoken";
 
+export interface MenuPermission {
+  menuId: number;
+  isview: boolean;
+  isadd: boolean;
+  isedit: boolean;
+  isdelete: boolean;
+}
+
 export interface JwtPayload {
   id: number;
   roleId: number; // เพิ่มตรงนี้
   role: string;
   username: string;
   spid?: string;
+  permissions: MenuPermission[];
 }
 
 const JWT_SECRET = process.env.JWT_SECRET!;

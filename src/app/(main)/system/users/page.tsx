@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from "react"
 import Swal from "sweetalert2"
 import { Toggle } from "@/app/components/ui/Toggle"
 import BaseModal from "@/app/components/layout/BaseModel"
-import Dropdown_Input from "@/app/components/ui/Dropdown_Input" 
+import Dropdown_Input from "@/app/components/ui/Dropdown_Input"
 
 type RoleItem = {
     id: number
@@ -24,6 +24,7 @@ type User = {
     roleId: number
     role: string
     status: string
+    password: string
 }
 
 export default function User() {
@@ -42,6 +43,13 @@ export default function User() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [editingRow, setEditingRow] = useState<User | null>(null)
     const [isAddMode, setIsAddMode] = useState(false)
+
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+    const [confirmPassword, setConfirmPassword] = useState("")
+
+    const [isChangePasswordMode, setIsChangePasswordMode] = useState(false)
+
 
     const [refreshTrigger, setRefreshTrigger] = useState(0)
 
@@ -117,15 +125,31 @@ export default function User() {
             roleId: 0,
             role: "",
             status: "Y",
+            password: "",
         })
         setIsModalOpen(true)
     }
 
     const handleEdit = (row: User) => {
         setIsAddMode(false)
-        // ดึงจาก raw data เพื่อให้ status เป็น "Y"/"N" ไม่ใช่ "Active"/"Inactive"
         const rawRow = data.find(d => d.id === row.id) ?? row
-        setEditingRow(rawRow)
+        const matchedRole = roledata.find(r => r.roleName === row.role)
+        setEditingRow({ ...rawRow, roleId: matchedRole?.id ?? 0 })
+        setIsModalOpen(true)
+    }
+
+    const handleChangePassword = (row: User) => {
+        const rawRow = data.find(d => d.id === row.id) ?? row
+
+        setIsAddMode(false)
+        setIsChangePasswordMode(true)
+
+        setEditingRow({
+            ...rawRow,
+            password: ""
+        })
+
+        setConfirmPassword("")
         setIsModalOpen(true)
     }
 
@@ -169,29 +193,88 @@ export default function User() {
     }
 
     // เพิ่ม error handling + success alert
+    // const handleSave = async () => {
+    //     if (!editingRow) return
+
+    //     const url = isAddMode
+    //         ? "/api/system/users/create"
+    //         : `/api/system/users/${editingRow.id}`
+
+    //     const method = isAddMode ? "POST" : "PUT"
+
+    //     try {
+    //         const res = await fetch(url, {
+    //             method,
+    //             headers: { "Content-Type": "application/json" },
+    //             body: JSON.stringify(editingRow),
+    //         })
+    //         setIsModalOpen(false)
+    //         const result = await res.json()
+
+
+    //         if (!res.ok) throw new Error(result.error || "บันทึกไม่สำเร็จ")
+
+    //         await Swal.fire("สำเร็จ!", "บันทึกข้อมูลเรียบร้อย", "success")
+    //         setEditingRow(null)
+    //         setRefreshTrigger(prev => prev + 1)
+
+    //     } catch (error: any) {
+    //         Swal.fire("เกิดข้อผิดพลาด", error.message || "บันทึกไม่สำเร็จ", "error")
+    //     }
+    // }
+
     const handleSave = async () => {
         if (!editingRow) return
 
-        const url = isAddMode
-            ? "/api/system/users"
-            : `/api/system/users/${editingRow.id}`
+        // เช็ค confirm password
+        if (isChangePasswordMode) {
+            if (!editingRow.password || editingRow.password !== confirmPassword) {
+                Swal.fire("ผิดพลาด", "Password ไม่ตรงกัน", "error")
+                return
+            }
+        }
 
-        const method = isAddMode ? "POST" : "PUT"
+        let url = ""
+        let method = "PUT"
+        let body: any = {}
+
+        if (isChangePasswordMode) {
+            // ใช้ API เดิม
+            url = `/api/system/users/${editingRow.id}`
+
+            // ส่งแค่ password
+            body = {
+                password: editingRow.password
+            }
+        } else {
+            url = isAddMode
+                ? "/api/system/users/create"
+                : `/api/system/users/${editingRow.id}`
+
+            method = isAddMode ? "POST" : "PUT"
+
+            body = editingRow
+        }
 
         try {
             const res = await fetch(url, {
                 method,
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(editingRow),
+                body: JSON.stringify(body),
             })
-            setIsModalOpen(false)
+
             const result = await res.json()
 
+            if (!res.ok) throw new Error(result.message || "บันทึกไม่สำเร็จ")
 
-            if (!res.ok) throw new Error(result.error || "บันทึกไม่สำเร็จ")
+            setIsModalOpen(false)
 
             await Swal.fire("สำเร็จ!", "บันทึกข้อมูลเรียบร้อย", "success")
+
             setEditingRow(null)
+            setIsChangePasswordMode(false)
+            setConfirmPassword("")
+
             setRefreshTrigger(prev => prev + 1)
 
         } catch (error: any) {
@@ -199,8 +282,13 @@ export default function User() {
         }
     }
 
+
+
     // แยก disabled condition ออกมาเพื่อลดความซ้ำซ้อน
-    const isSaveDisabled = !editingRow?.spid?.trim() || !editingRow?.username?.trim()
+    const isSaveDisabled = isChangePasswordMode
+        ? !editingRow?.password?.trim() || editingRow.password !== confirmPassword
+        : !editingRow?.spid?.trim() || !editingRow?.username?.trim() ||
+        (isAddMode && (!editingRow?.password?.trim() || editingRow.password !== confirmPassword))
 
     const table = useTable<User>({
         data: displayData,
@@ -237,6 +325,12 @@ export default function User() {
                                 className="px-2 py-0.5 text-xs bg-yellow-300 text-yellow-900 hover:bg-yellow-500 hover:text-white rounded"
                             >
                                 Edit
+                            </button>
+                            <button
+                                onClick={() => handleChangePassword(row)}
+                                className="px-2 py-0.5 text-xs bg-orange-300 text-orange-900 hover:bg-orange-500   hover:text-white rounded"
+                            >
+                                ChangPassWord
                             </button>
                             <button
                                 onClick={() => handleDelete(row.id)}
@@ -311,7 +405,13 @@ export default function User() {
             {/* ================= MODAL ================= */}
             <BaseModal
                 open={isModalOpen && !!editingRow}
-                title={isAddMode ? "Add New User" : "Edit User"}
+                title={
+                    isAddMode
+                        ? "Add New User"
+                        : isChangePasswordMode
+                            ? "Change Password"
+                            : "Edit User"
+                }
                 onClose={() => { }}
                 footer={
                     <div className="flex gap-3 justify-end">
@@ -319,15 +419,17 @@ export default function User() {
                             onClick={() => {
                                 setIsModalOpen(false)
                                 setEditingRow(null)
+                                setIsChangePasswordMode(false)
+                                setConfirmPassword("")
                             }}
-                            className="px-4 py-2 border border-gray-300 rounded-md hover:bg-red-200 hover:text-red-900 hover:border-red-200 transition-colors"
+                            className="px-4 py-2 border border-gray-300 text-gray-300  rounded-md hover:bg-red-200 hover:text-red-900 hover:border-red-200 transition-colors"
                         >
                             Cancel
                         </button>
 
                         <button
                             onClick={handleSave}
-
+                            disabled={isSaveDisabled}
                             className={`px-4 py-2 rounded-md transition-colors ${isSaveDisabled
                                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                                 : "bg-blue-500 text-white hover:bg-blue-600"
@@ -340,82 +442,137 @@ export default function User() {
             >
                 {editingRow && (
                     <div className="space-y-4">
+                        {/* SPID & Username */}
+                        {!isChangePasswordMode && (
+                            <>
+                                {[
+                                    { key: "spid" as keyof User, label: "SPID 8 Number", type: "text", placeholder: "Enter SPID Number" },
+                                    { key: "username" as keyof User, label: "Username", type: "text", placeholder: "Enter username" },
+                                ].map(({ key, label, type, placeholder }) => (
+                                    <div key={key}>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            {label} <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type={type}
+                                            value={editingRow[key]}
+                                            onChange={(e) => {
+                                                const value = e.target.value;
+                                                if (key === "spid" && value.length > 8) return;
+                                                setEditingRow({ ...editingRow, [key]: value });
+                                            }}
+                                            className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            placeholder={placeholder}
+                                        />
+                                    </div>
+                                ))}
+                            </>
+                        )}
 
-                        {/* SPID */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                SPID <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                value={editingRow.spid}
-                                onChange={(e) =>
-                                    setEditingRow({ ...editingRow, spid: e.target.value })
-                                }
-                                className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter SPID"
-                            />
-                        </div>
+                        {/* Password - แสดงเฉพาะตอน Add */}
+                        {(isAddMode || isChangePasswordMode) && (
+                            <>
+                                {/* Password */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Password <span className="text-red-500">*</span>
+                                    </label>
 
-                        {/* Username */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Username <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                value={editingRow.username}
-                                onChange={(e) =>
-                                    setEditingRow({ ...editingRow, username: e.target.value })
-                                }
-                                className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter username"
-                            />
-                        </div>
+                                    <div className="relative">
+                                        <input
+                                            type={showPassword ? "text" : "password"}
+                                            value={editingRow.password}
+                                            onChange={(e) =>
+                                                setEditingRow({ ...editingRow, password: e.target.value })
+                                            }
+                                            className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                                            placeholder="Enter Password"
+                                        />
 
-                        {/* Role Dropdown */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Role
-                            </label>
-                            <Dropdown_Input
-                                options={roledata.map(r => ({
-                                    label: r.roleName,
-                                    value: r.id
-                                }))}
-                                value={editingRow.roleId}
-                                onChange={(val) =>
-                                    setEditingRow({ ...editingRow, roleId: Number(val) })
-                                }
-                            />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="absolute right-2 top-3 px-0.5 text-sm  hover:bg-blue-100/50 text-gray-500 rounded-xs"
+                                        >
+                                            {showPassword ? (
+                                                <i className="fa-regular fa-eye-slash "></i>
+                                            ) : (
+                                                <i className="fa-regular fa-eye"></i>
+                                            )}
+                                        </button>
+                                    </div>
+                                </div>
 
-                        </div>
+                                {/* Confirm Password */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Confirm Password <span className="text-red-500">*</span>
+                                    </label>
 
-                        {/* Status Toggle */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Status
-                            </label>
+                                    <div className="relative">
+                                        <input
+                                            type={showConfirmPassword ? "text" : "password"}
+                                            value={confirmPassword}
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                            className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                                            placeholder="Confirm Password"
+                                        />
 
-                            <div className="flex items-center gap-3">
-                                <Toggle
-                                    value={editingRow.status === "Y"}
-                                    onChange={(checked) =>
-                                        setEditingRow({
-                                            ...editingRow,
-                                            status: checked ? "Y" : "N",
-                                        })
-                                    }
-                                />
-                                <span className="text-sm text-gray-600">
-                                    {editingRow.status === "Y" ? "Active" : "Inactive"}
-                                </span>
-                            </div>
-                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                            className="absolute right-2 top-3 px-0.5 text-sm  hover:bg-blue-100/50 text-gray-500 rounded-xs"
+                                        >
+                                            {showConfirmPassword ? (
+                                                <i className="fa-regular fa-eye-slash"></i>
+                                            ) : (
+                                                <i className="fa-regular fa-eye"></i>
+                                            )}
+                                        </button>
+                                    </div>
+
+                                    {confirmPassword &&
+                                        editingRow.password !== confirmPassword && (
+                                            <p className="text-sm text-red-500 mt-1">
+                                                Password ไม่ตรงกัน
+                                            </p>
+                                        )}
+                                </div>
+                            </>
+                        )}
+
+                        {!isChangePasswordMode && (
+                            <>
+                                {/* Role Dropdown */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                                    <Dropdown_Input
+                                        options={roledata.map(r => ({ label: r.roleName, value: r.id }))}
+                                        value={Number(editingRow.roleId)}
+                                        onChange={(val) => setEditingRow({ ...editingRow, roleId: Number(val) })}
+                                    />
+                                </div>
+
+                                {/* Status Toggle */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                    <div className="flex items-center gap-3">
+                                        <Toggle
+                                            value={editingRow.status === "Y"}
+                                            onChange={(checked) => setEditingRow({ ...editingRow, status: checked ? "Y" : "N" })}
+                                        />
+                                        <span className="text-sm text-gray-600">
+                                            {editingRow.status === "Y" ? "Active" : "Inactive"}
+                                        </span>
+                                    </div>
+                                </div>
+                            </>
+                        )}
 
                     </div>
-                )}
-            </BaseModal>
-        </div>
+                )
+                }
+            </BaseModal >
+        </div >
     )
 }

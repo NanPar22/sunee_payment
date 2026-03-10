@@ -366,3 +366,38 @@ export async function toggleMenuStatus(id: number) {
 
   return updatedMenu;
 }
+
+// ✅ เพิ่ม function นี้ต่อท้ายไฟล์
+export async function getSidebarMenuByRole(roleId: number) {
+  // ดึง permissions ของ role นี้
+  const roleMenus = await prisma.kaon_role_menu.findMany({
+    where: { roleId, isstatus: true, isview: true },
+    select: { menuId: true },
+  });
+
+  const allowedMenuIds = roleMenus.map((r) => r.menuId);
+
+  return prisma.kaon_menu.findMany({
+    where: {
+      isstatus: true,
+      parentId: null,
+      OR: [
+        { id: { in: allowedMenuIds } },           // parent มีสิทธิ์
+        { other_kaon_menu: { some: { id: { in: allowedMenuIds }, isstatus: true } } }, // หรือมี sub ที่มีสิทธิ์
+      ],
+    },
+    orderBy: { sortOrder: "asc" },
+    select: {
+      id: true,
+      menuName: true,
+      path: true,
+      icon: true,
+      sortOrder: true,
+      other_kaon_menu: {
+        where: { isstatus: true, id: { in: allowedMenuIds } }, // ✅ กรอง sub ตาม permission
+        select: { id: true, menuName: true, path: true, icon: true, sortOrder: true },
+        orderBy: { sortOrder: "asc" },
+      },
+    },
+  });
+}

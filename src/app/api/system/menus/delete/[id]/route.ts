@@ -9,7 +9,6 @@ export async function DELETE(
     // 🔥 ต้อง await params ก่อน
     const { id } = await context.params;
 
-    console.log("ID:", id);
 
     const numericId = parseInt(id, 10);
 

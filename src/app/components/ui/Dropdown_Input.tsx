@@ -8,10 +8,10 @@ type Option = {
 }
 
 type DropdownInputProps = {
-    options: Option[]                // ✅ ต้องเป็น array
-    value?: number                   // ✅ เก็บ id
+    options: Option[]              
+    value?: number                   
     placeholder?: string
-    onChange?: (value: number) => void  // ✅ ส่งกลับ id
+    onChange?: (value: number) => void 
     className?: string
 }
 

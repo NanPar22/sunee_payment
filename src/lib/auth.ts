@@ -14,14 +14,22 @@ export async function loginUser(username: string, password: string) {
             id: true,
             roleName: true,
             roleCode: true,
+            kaonRoleMenus: {
+              where: { isstatus: true },
+              select: {
+                menuId: true,
+                isview: true,
+                isadd: true,
+                isedit: true,
+                isdelete: true,
+              },
+            },
           },
         },
       },
     });
 
-    if (!user) {
-      return null;
-    }
+    if (!user) return null;
 
     if (!user.Password || !user.UserName) {
       await comparePassword(password, "$2a$10$abcdefghijklmnopqrstuv"); // fake hash
@@ -40,13 +48,23 @@ export async function loginUser(username: string, password: string) {
 
     const roleName = user.kaon_role?.roleName ?? "user";
 
+    const permissions = 
+      user.kaon_role?.kaonRoleMenus?.map((rm) => ({
+        menuId: rm.menuId,
+        isview: rm.isview ?? false,
+        isadd: rm.isadd ?? false,
+        isedit: rm.isedit ?? false,
+        isdelete: rm.isdelete ?? false,
+      })) ?? [];
+
     const token = signToken({
       id: user.id,
       roleId: user.kaon_role?.id ?? 0, // เพิ่มตรงนี้
       username: user.UserName,
       role: roleName,
       spid: user.SPID || undefined,
-    });
+      permissions,
+    }); 
 
     return {
       user: {

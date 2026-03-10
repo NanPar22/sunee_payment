@@ -1,4 +1,4 @@
-"use client";
+  "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 export function useLogin() {
   const router = useRouter();
 
-  const [username, setUsername] = useState("De_Angkhana");
-  const [password, setPassword] = useState("1234");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -40,6 +40,7 @@ export function useLogin() {
       }
 
       router.push("/report/info");
+      router.refresh();
     } catch (err: any) {
       setError(err.message || "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
     } finally {

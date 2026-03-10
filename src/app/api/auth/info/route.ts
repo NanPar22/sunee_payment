@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import jwt from "jsonwebtoken";
+import { verifyToken } from "@/lib/jwt";
 
 export async function GET() {
   const cookieStore = await cookies();
@@ -9,19 +9,18 @@ export async function GET() {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const payload = jwt.verify(token, process.env.JWT_SECRET!) as {
-    id: number;
-    username: string;
-    role: string;
-    roleId?: number;
-    spid?: string;
-  };
+  try {
+    const payload = verifyToken(token);
 
-  return Response.json({
-    id: payload.id,
-    username: payload.username,
-    role: payload.role,
-    roleId: payload.roleId,
-    spid: payload.spid,
-  });
+    return Response.json({
+      id: payload.id,
+      username: payload.username,
+      role: payload.role,
+      roleId: payload.roleId,
+      spid: payload.spid,
+      permissions: payload.permissions ?? [], 
+    });
+  } catch {
+    return new Response("Unauthorized", { status: 401 });
+  }
 }

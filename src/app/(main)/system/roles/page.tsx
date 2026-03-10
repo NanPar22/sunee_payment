@@ -17,6 +17,16 @@ type Roles = {
     description: string;
 }
 
+type PermissionRow = {
+    menuId: number;
+    menuName: string;
+    isview: boolean;
+    isadd: boolean;
+    isedit: boolean;
+    isdelete: boolean;
+    isstatus: boolean;
+}
+
 export default function Roles() {
     const [keyword, setKeyword] = useState("")
     const [totalPages, setTotalPages] = useState(1)
@@ -31,11 +41,17 @@ export default function Roles() {
 
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [editingRow, setEditingRow] = useState<Roles | null>(null)
-    const [editpermission, setEdipermisson] = useState<Roles | null>(null)
     const [isAddMode, setIsAddMode] = useState(false)
     const [oldRow, setOldRow] = useState<Roles | null>(null)
 
     const [data, setData] = useState<Roles[]>([])
+
+    // ================= PERMISSION STATE =================
+    const [isPermissionModalOpen, setIsPermissionModalOpen] = useState(false)
+    const [permissionRole, setPermissionRole] = useState<Roles | null>(null)
+    const [permissions, setPermissions] = useState<PermissionRow[]>([])
+    const [permissionLoading, setPermissionLoading] = useState(false)
+    const [permissionChanged, setPermissionChanged] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -90,25 +106,56 @@ export default function Roles() {
     // ================= EDIT =================
     const handleEdit = (row: Roles) => {
         setIsAddMode(false)
-
         const Row = data.find(d => d.id === row.id) ?? row
-
         setEditingRow({ ...Row })
         setOldRow({ ...Row })
         setIsModalOpen(true)
     }
 
-    // ================= EDIT =================
-    const handlePermission = (row: Roles) => {
-        setIsAddMode(false)
+    // ================= PERMISSION =================
+    const handlePermission = async (row: Roles) => {
+        setPermissionRole(row)
+        setPermissionLoading(true)
+        setPermissionChanged(false)
+        setIsPermissionModalOpen(true)
 
-        const Row = data.find(d => d.id === row.id) ?? row
-
-        setEditingRow({ ...Row })
-        setOldRow({ ...Row })
-        setIsModalOpen(true)
+        try {
+            const res = await fetch(`/api/system/roles/permission?roleId=${row.id}`)
+            if (!res.ok) throw new Error("โหลด permission ไม่สำเร็จ")
+            const data = await res.json()
+            setPermissions(data)
+        } catch (err: any) {
+            Swal.fire("ผิดพลาด", err.message, "error")
+            setIsPermissionModalOpen(false)
+        } finally {
+            setPermissionLoading(false)
+        }
     }
 
+    const handleSavePermissions = async () => {
+        if (!permissionRole) return
+        try {
+            const res = await fetch(`/api/system/roles/permission`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ roleId: permissionRole.id, permissions }),
+            })
+            const result = await res.json()
+            if (!res.ok) throw new Error(result.error || "บันทึกไม่สำเร็จ")
+            await Swal.fire({
+                title: "สำเร็จ!",
+                text: "บันทึกข้อมูลเรียบร้อย",
+                icon: "success",
+                confirmButtonText: "ตกลง",
+                customClass: { popup: "swal-zindex" }
+            })
+            setIsPermissionModalOpen(false)
+            setPermissions([])
+            setPermissionRole(null)
+        } catch (err: any) {
+            Swal.fire("ผิดพลาด", err.message, "error")
+        }
+    }
     // ================= DELETE =============
     const handleDelete = async (row: Roles | number) => {
         const id = typeof row === "number" ? row : row.id
@@ -158,7 +205,6 @@ export default function Roles() {
         !editingRow?.roleName?.trim() ||
         !isChanged
 
-    // เพิ่ม error handling + success alert
     const handleSave = async () => {
         if (!editingRow) return
 
@@ -186,9 +232,7 @@ export default function Roles() {
                 text: "บันทึกข้อมูลเรียบร้อย",
                 icon: "success",
                 confirmButtonText: "ตกลง",
-                customClass: {
-                    popup: "swal-zindex"
-                }
+                customClass: { popup: "swal-zindex" }
             })
             setIsModalOpen(false)
             setEditingRow(null)
@@ -199,8 +243,6 @@ export default function Roles() {
             Swal.fire("เกิดข้อผิดพลาด", error.message || "บันทึกไม่สำเร็จ", "error")
         }
     }
-
-
 
     const table = useTable<Roles>({
         data,
@@ -224,7 +266,6 @@ export default function Roles() {
                         </span>
                     )
                 }
-
             },
             {
                 key: "id",
@@ -262,11 +303,10 @@ export default function Roles() {
         onPageSizeChange: setPageSize,
     })
 
-
     return (
         <div className="h-full p-2 flex flex-col gap-4">
-            <div className="font-bold text-2xl text-blue-600 ">Roles Management</div>
-            <div className="flex justify-between items-center gap-2 ">
+            <div className="font-bold text-2xl text-blue-600">Roles Management</div>
+            <div className="flex justify-between items-center gap-2">
                 <div className="flex items-center gap-2">
                     <div className="w-80">
                         <Search
@@ -276,7 +316,6 @@ export default function Roles() {
                             }}
                         />
                     </div>
-                    {/* <Dropdown /> */}
                 </div>
                 <div className="flex items-center justify-center">
                     <button
@@ -304,7 +343,7 @@ export default function Roles() {
                 />
             </div>
 
-            {/* ================= MODAL ================= */}
+            {/* ================= EDIT / ADD MODAL ================= */}
             <BaseModal
                 open={isModalOpen}
                 title={isAddMode ? "Add New Roles" : "Edit Roles"}
@@ -321,11 +360,9 @@ export default function Roles() {
                         >
                             Cancel
                         </button>
-
                         <button
                             onClick={handleSave}
                             disabled={isSaveDisabled}
-
                             className={`px-4 py-2 rounded-md transition-colors ${isSaveDisabled
                                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                                 : "bg-blue-500 text-white hover:bg-blue-600"
@@ -338,7 +375,6 @@ export default function Roles() {
             >
                 {editingRow && (
                     <div className="space-y-4">
-
                         {/* Role Code */}
                         <div>
                             <label className="block text-sm font-medium mb-1 text-gray-600">
@@ -381,7 +417,7 @@ export default function Roles() {
                                 onChange={(e) =>
                                     setEditingRow({ ...editingRow, description: e.target.value })
                                 }
-                                className=" w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 rows={3}
                             />
                         </div>
@@ -391,15 +427,11 @@ export default function Roles() {
                             <label className="block text-sm font-medium mb-2 text-gray-600">
                                 Status
                             </label>
-
                             <div className="flex items-center gap-3">
                                 <Toggle
                                     value={editingRow.isstatus}
                                     onChange={(checked) =>
-                                        setEditingRow({
-                                            ...editingRow,
-                                            isstatus: checked,
-                                        })
+                                        setEditingRow({ ...editingRow, isstatus: checked })
                                     }
                                 />
                                 <span className="text-sm text-gray-600">
@@ -408,10 +440,82 @@ export default function Roles() {
                             </div>
                         </div>
                     </div>
-                )},
+                )}
             </BaseModal>
 
-            
+            {/* ================= PERMISSION MODAL ================= */}
+            <BaseModal
+                open={isPermissionModalOpen}
+                title={`Permissions — ${permissionRole?.roleName ?? ""}`}
+                onClose={() => { }}
+                footer={
+                    <div className="flex gap-3 justify-end">
+                        <button
+                            onClick={() => {
+                                setIsPermissionModalOpen(false)
+                                setPermissions([])
+                                setPermissionRole(null)
+                            }}
+                            className="px-4 py-2 border border-gray-300 rounded-md hover:bg-red-200 hover:text-red-900 hover:border-red-200 transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleSavePermissions}
+                            disabled={!permissionChanged}
+                            className={`px-4 py-2 rounded-md transition-colors ${!permissionChanged
+                                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                                : "bg-blue-500 text-white hover:bg-blue-600"
+                                }`}
+                        >
+                            Save
+                        </button>
+                    </div>
+                }
+            >
+                {permissionLoading ? (
+                    <div className="text-center py-10">Loading...</div>
+                ) : (
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm border-collapse ">
+                            <thead>
+                                <tr className="bg-blue-100 text-gray-600  ">
+                                    <th className="text-left px-3 py-2 font-medium">Menu</th>
+                                    {["View", "Add", "Edit", "Delete", "Status"].map(h => (
+                                        <th key={h} className="px-3 py-2 font-medium text-center">{h}</th>
+                                    ))}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {permissions.map((perm, idx) => (
+                                    <tr key={perm.menuId} className={idx % 2 === 0 ? "bg-white" : "bg-blue-50/50"}>
+                                        <td className="px-3 py-2 text-gray-700">{perm.menuName}</td>
+                                        {(["isview", "isadd", "isedit", "isdelete", "isstatus"] as const).map(action => (
+                                            <td key={action} className="px-3 py-2 text-center">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={perm[action]}
+                                                    onChange={(e) => {
+                                                        setPermissions(prev =>
+                                                            prev.map(p =>
+                                                                p.menuId === perm.menuId
+                                                                    ? { ...p, [action]: e.target.checked }
+                                                                    : p
+                                                            )
+                                                        )
+                                                        setPermissionChanged(true)
+                                                    }}
+                                                    className="w-4 h-4 cursor-pointer accent-blue-500"
+                                                />
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </BaseModal>
         </div>
     )
 }

@@ -1,43 +1,30 @@
 import { NextResponse } from "next/server";
-import {  getReportInfo } from "@/lib/report";
+import { getReportInfo } from "@/lib/report";
 import { cookies } from "next/headers";
-import jwt from "jsonwebtoken";
+import { verifyToken } from "@/lib/jwt"; // ✅ เปลี่ยนมาใช้ verifyToken
 
 export async function GET(req: Request) {
   try {
-    // 🔐 อ่าน token จาก cookie
     const token = (await cookies()).get("token")?.value;
 
     if (!token) {
-      return NextResponse.json(
-        { message: "Unauthorized" },
-        { status: 401 }
-      );
+      
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const payload = jwt.verify(
-      token,
-      process.env.JWT_SECRET!
-    ) as {
-      id: number;
-      username: string;
-      role: string;
-      spid?: string;
-    };
+    // ✅ ใช้ verifyToken แทน jwt.verify ตรงๆ
+    const payload = verifyToken(token);
 
     const { searchParams } = new URL(req.url);
 
     const page = Math.max(1, Number(searchParams.get("page") ?? 1));
     const pageSize = Math.min(
       100,
-      Math.max(1, Number(searchParams.get("pageSize") ?? 10))
+      Math.max(1, Number(searchParams.get("pageSize") ?? 10)),
     );
-
     const search = searchParams.get("search") || undefined;
-
     const from = searchParams.get("from");
     const to = searchParams.get("to");
-
     const dateFrom = from ? new Date(from) : undefined;
     const dateTo = to ? new Date(to) : undefined;
 
@@ -55,7 +42,7 @@ export async function GET(req: Request) {
     console.error(err);
     return NextResponse.json(
       { message: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

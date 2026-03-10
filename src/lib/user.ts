@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "../../prisma/generated/browser";
 
 export type GetUserParams = {
   page: number;
@@ -13,6 +14,7 @@ export type CreateUserParams = {
   username: string;
   roleId: number;
   status?: string;
+  password?: string;
 };
 
 export type UpdateUserParams = {
@@ -20,6 +22,7 @@ export type UpdateUserParams = {
   username?: string;
   roleId?: number;
   status?: string;
+  password?: string;
 };
 
 export async function getUsers(params: GetUserParams) {
@@ -51,7 +54,7 @@ export async function getUsers(params: GetUserParams) {
     include: { kaon_role: true },
     orderBy: { id: "desc" },
     skip: (page - 1) * pageSize,
-    take: pageSize,
+    take: pageSize, 
   });
 
   const totalItems = await prisma.kaon_servicepoint.findMany({
@@ -79,38 +82,40 @@ export async function getUsers(params: GetUserParams) {
 
 // ✅ CREATE
 export async function createUser(params: CreateUserParams) {
-  const { spid, username, roleId, status = "Y" } = params;
+  const { spid, username, roleId, status = "Y", password } = params;
 
-  const existing = await prisma.kaon_servicepoint.findFirst({
-    where: { SPID: spid },
-  });
+  try {
+    const created = await prisma.kaon_servicepoint.create({
+      data: {
+        SPID: spid,
+        UserName: username,
+        roleId: roleId,
+        IsStatus: status,
+        Password: password,
+      },
+      include: { kaon_role: true },
+    });
 
-  if (existing) {
-    throw new Error(`SPID "${spid}" already exists`);
+    return {
+      id: created.id,
+      spid: created.SPID,
+      username: created.UserName,
+      role: created.kaon_role?.roleName ?? "No Role",
+      status: created.IsStatus,
+      Password: password,
+    };
+  } catch (error: any) {
+    if (error?.code === "P2002") {
+      throw new Error(`SPID "${spid}" already exists`);
+    }
+
+    throw error;
   }
-
-  const created = await prisma.kaon_servicepoint.create({
-    data: {
-      SPID: spid,
-      UserName: username,
-      roleId: roleId,
-      IsStatus: status,
-    },
-    include: { kaon_role: true },
-  });
-
-  return {
-    id: created.id,
-    spid: created.SPID,
-    username: created.UserName,
-    role: created.kaon_role?.roleName ?? "No Role",
-    status: created.IsStatus,
-  };
 }
 
-// ✅ UPDATE
+// UPDATE
 export async function updateUser(id: number, params: UpdateUserParams) {
-  const { spid, username, roleId, status } = params;
+  const { spid, username, roleId, status, password } = params;
 
   const existing = await prisma.kaon_servicepoint.findUnique({
     where: { id },
@@ -123,10 +128,11 @@ export async function updateUser(id: number, params: UpdateUserParams) {
   const updated = await prisma.kaon_servicepoint.update({
     where: { id },
     data: {
-      ...(spid && { SPID: spid }),
-      ...(username && { UserName: username }),
-      ...(roleId && { roleId: roleId }),
-      ...(status && { IsStatus: status }),
+      ...(spid !== undefined && { SPID: spid }),
+      ...(username !== undefined && { UserName: username }),
+      ...(roleId !== undefined && { roleId }),
+      ...(status !== undefined && { IsStatus: status }),
+      ...(password !== undefined && { Password: password }), // 👈 เพิ่มตรงนี้
     },
     include: { kaon_role: true },
   });
@@ -140,6 +146,8 @@ export async function updateUser(id: number, params: UpdateUserParams) {
     status: updated.IsStatus,
   };
 }
+
+
 
 // ✅ DELETE
 export async function deleteUser(id: number) {
