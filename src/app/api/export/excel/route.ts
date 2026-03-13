@@ -2,6 +2,23 @@ import { NextResponse } from "next/server";
 import ExcelJS from "exceljs";
 
 export const runtime = "nodejs";
+const formatRow = (row: any) => ({
+  ...row,
+  dateTime: row.dateTime
+    ? new Date(row.dateTime).toLocaleString("th-TH", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      })
+    : "-",
+  qrContent:
+    row.qrContent?.length > 40
+      ? row.qrContent.substring(0, 40) + "..."
+      : (row.qrContent ?? ""),
+});
 
 export async function POST(req: Request) {
   try {
@@ -20,7 +37,7 @@ export async function POST(req: Request) {
       width: 20,
     }));
 
-    data.forEach((row: any) => worksheet.addRow(row));
+    data.forEach((row: any) => worksheet.addRow(formatRow(row)));
 
     worksheet.getRow(1).font = { bold: true };
 

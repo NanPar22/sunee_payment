@@ -92,3 +92,8 @@ export type kaon_role_menu = Prisma.kaon_role_menuModel
  * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
  */
 export type kaon_servicepoint = Prisma.kaon_servicepointModel
+/**
+ * Model kaon_permission
+ * 
+ */
+export type kaon_permission = Prisma.kaon_permissionModel

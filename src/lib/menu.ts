@@ -371,7 +371,11 @@ export async function toggleMenuStatus(id: number) {
 export async function getSidebarMenuByRole(roleId: number) {
   // ดึง permissions ของ role นี้
   const roleMenus = await prisma.kaon_role_menu.findMany({
-    where: { roleId, isstatus: true, isview: true },
+    where: { roleId,
+      permissions: {
+        contains: "1"
+      },
+    },
     select: { menuId: true },
   });
 

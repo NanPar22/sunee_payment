@@ -1,6 +1,21 @@
 import { prisma } from "@/lib/prisma";
 import { comparePassword } from "./password";
 import { signToken } from "./jwt";
+import { json } from "stream/consumers";
+
+const parsePermisions = (raw: string | null | undefined): number[] => {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed.map(Number);
+    return [];
+  } catch (error) {
+    return raw
+      .split(",")
+      .map(Number)
+      .filter((n) => !isNaN(n));
+  }
+};
 
 export async function loginUser(username: string, password: string) {
   try {
@@ -15,13 +30,14 @@ export async function loginUser(username: string, password: string) {
             roleName: true,
             roleCode: true,
             kaonRoleMenus: {
-              where: { isstatus: true },
               select: {
                 menuId: true,
-                isview: true,
-                isadd: true,
-                isedit: true,
-                isdelete: true,
+                permissions: true,
+                menu: {
+                  select: {
+                    path: true,
+                  },
+                },
               },
             },
           },
@@ -37,7 +53,6 @@ export async function loginUser(username: string, password: string) {
     }
 
     let ok = false;
-
     if (user.Password.startsWith("$2")) {
       ok = await comparePassword(password, user.Password);
     } else {
@@ -48,13 +63,11 @@ export async function loginUser(username: string, password: string) {
 
     const roleName = user.kaon_role?.roleName ?? "user";
 
-    const permissions = 
+    const permissions =
       user.kaon_role?.kaonRoleMenus?.map((rm) => ({
         menuId: rm.menuId,
-        isview: rm.isview ?? false,
-        isadd: rm.isadd ?? false,
-        isedit: rm.isedit ?? false,
-        isdelete: rm.isdelete ?? false,
+        path: rm.menu?.path ?? null,
+        permissions: parsePermisions(rm.permissions),
       })) ?? [];
 
     const token = signToken({
@@ -64,7 +77,7 @@ export async function loginUser(username: string, password: string) {
       role: roleName,
       spid: user.SPID || undefined,
       permissions,
-    }); 
+    });
 
     return {
       user: {

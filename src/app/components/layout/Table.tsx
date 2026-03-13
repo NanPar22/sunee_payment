@@ -87,7 +87,7 @@ export function Table<T extends object>({ table }: TableProps<T>) {
                         <tr>
                             <td
                                 colSpan={columns.length}
-                                className="px-4 py-6 text-center text-gray-500"
+                                className="px-2 py-1 text-center text-gray-500"
                             >
                                 <div className="flex items-center justify-center h-full">
                                     <p className="bg-red-100/20 px-5 py-0.5 border border-red-600 rounded-sm">
@@ -107,10 +107,10 @@ export function Table<T extends object>({ table }: TableProps<T>) {
                                     const value = row[col.key]
 
                                     return (
-                                        <td key={key} className="px-4 py-1.5 w-10 text-t">
+                                        <td key={key} className="px-2 py-1  w-10 text-xs">
                                             {key === "qrContent" ? (
                                                 <button
-                                                    className="px-2 py-1 text-sm text-white bg-blue-500 rounded-sm hover:bg-blue-600"
+                                                    className="px-2 py-1 text-xs text-white bg-blue-500 rounded-sm hover:bg-blue-600"
                                                     onClick={() => openTextModal("QR Content", value)}
                                                 >
                                                     เปิดอ่าน
@@ -119,7 +119,7 @@ export function Table<T extends object>({ table }: TableProps<T>) {
                                                 <p className={`${getRespMsgClass(value)} font-medium border px-2 rounded-sm w-max`}>
                                                     {String(value ?? "_")}
                                                 </p>
-                                            ) : col.render ? (  // ✅ เพิ่ม
+                                            ) : col.render ? (  
                                                 col.render(value as string | number, row)
                                             ) : (
                                                 String(value ?? "")

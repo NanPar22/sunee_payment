@@ -9,6 +9,7 @@ import { Toggle } from "@/app/components/ui/Toggle"
 import { useTable } from "@/hooks/useTable"
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2"
+import { usePermission } from "@/hooks/usePermission"
 
 type ChildRow = {
     id: number
@@ -59,6 +60,8 @@ export default function Menu() {
     const [refreshTrigger, setRefreshTrigger] = useState(0)
     const [originalRow, setOriginalRow] = useState<TableRow | null>(null)
 
+    // ✅ ทุกหน้าใช้เหมือนกันหมด
+    const { canAdd, canEdit, canDelete } = usePermission()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -327,18 +330,22 @@ export default function Menu() {
                 render: (_, row) => (
                     <div className="flex justify-start items-center">
                         <div className="flex gap-2">
-                            <button
-                                onClick={() => handleEdit(row)}
-                                className="px-2 py-0.5 text-xs bg-yellow-300 text-yellow-900 hover:bg-yellow-500 hover:text-white  rounded"
-                            >
-                                Edit
-                            </button>
-                            <button
-                                onClick={() => handleDelete(row.id)}
-                                className="px-2 py-0.5 text-xs bg-red-400 text-red-900 hover:bg-red-600 hover:text-white rounded"
-                            >
-                                Delete
-                            </button>
+                            {canEdit && (
+                                <button
+                                    onClick={() => handleEdit(row)}
+                                    className="px-2 py-0.5 text-xs bg-yellow-300 text-yellow-900 hover:bg-yellow-500 hover:text-white  rounded"
+                                >
+                                    Edit
+                                </button>
+                            )}
+                            {canDelete && (
+                                <button
+                                    onClick={() => handleDelete(row.id)}
+                                    className="px-2 py-0.5 text-xs bg-red-400 text-red-900 hover:bg-red-600 hover:text-white rounded"
+                                >
+                                    Delete
+                                </button>
+                            )}
                         </div>
                     </div>
                 ),
@@ -385,15 +392,17 @@ export default function Menu() {
                     />
                 </div>
                 <div className="flex items-center justify-center  ">
-                    <button
-                        onClick={handleAdd}
-                        className="border px-2 h-6 rounded-sm flex justify-center items-center gap-1 text-blue-500 hover:bg-blue-500/10  "
-                    >
-                        <i className="fa-solid fa-plus text-xs"></i>
-                        <div className="text-sm ">
-                            Add
-                        </div>
-                    </button>
+                    {canAdd && (
+                        <button
+                            onClick={handleAdd}
+                            className="border px-2 h-6 rounded-sm flex justify-center items-center gap-1 text-blue-500 hover:bg-blue-500/10  "
+                        >
+                            <i className="fa-solid fa-plus text-xs"></i>
+                            <div className="text-sm ">
+                                Add
+                            </div>
+                        </button>
+                    )}
                 </div>
             </div>
 
@@ -437,13 +446,13 @@ export default function Menu() {
                                 !isChanged()
                             }
                             className={`px-4 py-2 rounded-md transition-colors
-                    ${!editingRow?.menuName ||
+                        ${!editingRow?.menuName ||
                                     editingRow.menuName.trim() === "" ||
                                     !isChanged()
                                     ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                                     : "bg-blue-500 text-white hover:bg-blue-600"
                                 }
-                `}
+                    `}
                         >
                             {isAddMode ? "Create" : "Save"}
                         </button>
@@ -529,7 +538,7 @@ export default function Menu() {
 
                         {/* Sort Order */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="blป_ock text-sm font-medium text-gray-700 mb-1">
                                 Sort Order
                             </label>
                             <input

@@ -362,16 +362,12 @@ model kaon_role {
 }
 
 model kaon_role_menu {
-  id       Int       @id @default(autoincrement())
-  roleId   Int
-  menuId   Int
-  isview   Boolean?  @default(false)
-  isadd    Boolean?  @default(false)
-  isedit   Boolean?  @default(false)
-  isdelete Boolean?  @default(false)
-  isstatus Boolean?  @default(true)
-  menu     kaon_menu @relation(fields: [menuId], references: [id], onUpdate: Restrict, map: "fk_role_menu_menu")
-  role     kaon_role @relation(fields: [roleId], references: [id], onUpdate: Restrict, map: "fk_role_menu_role")
+  id          Int       @id @default(autoincrement())
+  roleId      Int
+  menuId      Int
+  permissions String?   @db.LongText
+  menu        kaon_menu @relation(fields: [menuId], references: [id], onUpdate: Restrict, map: "fk_role_menu_menu")
+  role        kaon_role @relation(fields: [roleId], references: [id], onUpdate: Restrict, map: "fk_role_menu_role")
 
   @@unique([roleId, menuId], map: "roleId")
   @@index([menuId], map: "fk_role_menu_menu")
@@ -400,4 +396,9 @@ model kaon_servicepoint {
   kaon_role       kaon_role? @relation(fields: [roleId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_servicepoint_role")
 
   @@index([roleId], map: "fk_servicepoint_role")
+}
+
+model kaon_permission {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(100)
 }

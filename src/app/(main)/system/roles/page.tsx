@@ -20,11 +20,7 @@ type Roles = {
 type PermissionRow = {
     menuId: number;
     menuName: string;
-    isview: boolean;
-    isadd: boolean;
-    isedit: boolean;
-    isdelete: boolean;
-    isstatus: boolean;
+    permissions: number[];
 }
 
 export default function Roles() {
@@ -490,16 +486,29 @@ export default function Roles() {
                                 {permissions.map((perm, idx) => (
                                     <tr key={perm.menuId} className={idx % 2 === 0 ? "bg-white" : "bg-blue-50/50"}>
                                         <td className="px-3 py-2 text-gray-700">{perm.menuName}</td>
-                                        {(["isview", "isadd", "isedit", "isdelete", "isstatus"] as const).map(action => (
-                                            <td key={action} className="px-3 py-2 text-center">
+
+                                        {/* ✅ แก้ตรงนี้ */}
+                                        {[
+                                            { id: 1, key: "isview" },
+                                            { id: 2, key: "isadd" },
+                                            { id: 3, key: "isedit" },
+                                            { id: 4, key: "isdelete" },
+                                            { id: 5, key: "isstatus" },
+                                        ].map(({ id, key }) => (
+                                            <td key={key} className="px-3 py-2 text-center">
                                                 <input
                                                     type="checkbox"
-                                                    checked={perm[action]}
+                                                    checked={perm.permissions.includes(id)}
                                                     onChange={(e) => {
                                                         setPermissions(prev =>
                                                             prev.map(p =>
                                                                 p.menuId === perm.menuId
-                                                                    ? { ...p, [action]: e.target.checked }
+                                                                    ? {
+                                                                        ...p,
+                                                                        permissions: e.target.checked
+                                                                            ? [...p.permissions, id]
+                                                                            : p.permissions.filter(x => x !== id)
+                                                                    }
                                                                     : p
                                                             )
                                                         )
@@ -509,6 +518,7 @@ export default function Roles() {
                                                 />
                                             </td>
                                         ))}
+
                                     </tr>
                                 ))}
                             </tbody>

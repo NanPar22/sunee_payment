@@ -78,7 +78,22 @@ export default function TrackingPage() {
         data,
         columns: [
             { key: "saleman", label: "Saleman" },
-            { key: "dateTime", label: "Date Time" },
+            {
+                key: "dateTime",
+                label: "Date Time",
+                render: (value: string | number) => {
+                    if (!value) return "-"
+                    const date = new Date(value as string)
+                    return date.toLocaleString("th-TH", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                    })
+                }
+            },
             { key: "ref1", label: "Ref 1" },
             { key: "ref2", label: "Ref 2" },
             { key: "docno", label: "Doc No", sortable: true },
@@ -86,7 +101,11 @@ export default function TrackingPage() {
             { key: "cusName", label: "Customer" },
             { key: "bankRef", label: "Bank" },
             { key: "respMsg", label: "Status" },
-            { key: "qrContent", label: "QR Content" }
+            {
+                key: "qrContent",
+                label: "QR Content",
+                className: "max-w-[200px] break-all whitespace-normal"
+            }
         ],
         page,
         pageSize,
@@ -139,3 +158,4 @@ export default function TrackingPage() {
         </div>
     )
 }
+    

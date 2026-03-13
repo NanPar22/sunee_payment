@@ -398,7 +398,8 @@ export const ModelName = {
   kaon_menu: 'kaon_menu',
   kaon_role: 'kaon_role',
   kaon_role_menu: 'kaon_role_menu',
-  kaon_servicepoint: 'kaon_servicepoint'
+  kaon_servicepoint: 'kaon_servicepoint',
+  kaon_permission: 'kaon_permission'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "kaon_channel" | "kaon_chashier" | "kaon_checklistlog" | "kaon_checklistlog_approval" | "kaon_checklistlog_bak" | "kaon_checklistlog_data" | "kaon_checklistlog_inquiry" | "kaon_program" | "kaon_reference" | "kaon_servicepoint123" | "kaon_user" | "kaon_menu" | "kaon_role" | "kaon_role_menu" | "kaon_servicepoint"
+    modelProps: "kaon_channel" | "kaon_chashier" | "kaon_checklistlog" | "kaon_checklistlog_approval" | "kaon_checklistlog_bak" | "kaon_checklistlog_data" | "kaon_checklistlog_inquiry" | "kaon_program" | "kaon_reference" | "kaon_servicepoint123" | "kaon_user" | "kaon_menu" | "kaon_role" | "kaon_role_menu" | "kaon_servicepoint" | "kaon_permission"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1408,6 +1409,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    kaon_permission: {
+      payload: Prisma.$kaon_permissionPayload<ExtArgs>
+      fields: Prisma.kaon_permissionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.kaon_permissionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_permissionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.kaon_permissionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_permissionPayload>
+        }
+        findFirst: {
+          args: Prisma.kaon_permissionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_permissionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.kaon_permissionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_permissionPayload>
+        }
+        findMany: {
+          args: Prisma.kaon_permissionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_permissionPayload>[]
+        }
+        create: {
+          args: Prisma.kaon_permissionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_permissionPayload>
+        }
+        createMany: {
+          args: Prisma.kaon_permissionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.kaon_permissionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_permissionPayload>
+        }
+        update: {
+          args: Prisma.kaon_permissionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_permissionPayload>
+        }
+        deleteMany: {
+          args: Prisma.kaon_permissionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.kaon_permissionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.kaon_permissionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$kaon_permissionPayload>
+        }
+        aggregate: {
+          args: Prisma.Kaon_permissionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateKaon_permission>
+        }
+        groupBy: {
+          args: Prisma.kaon_permissionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Kaon_permissionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.kaon_permissionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Kaon_permissionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1832,11 +1899,7 @@ export const Kaon_role_menuScalarFieldEnum = {
   id: 'id',
   roleId: 'roleId',
   menuId: 'menuId',
-  isview: 'isview',
-  isadd: 'isadd',
-  isedit: 'isedit',
-  isdelete: 'isdelete',
-  isstatus: 'isstatus'
+  permissions: 'permissions'
 } as const
 
 export type Kaon_role_menuScalarFieldEnum = (typeof Kaon_role_menuScalarFieldEnum)[keyof typeof Kaon_role_menuScalarFieldEnum]
@@ -1864,6 +1927,14 @@ export const Kaon_servicepointScalarFieldEnum = {
 } as const
 
 export type Kaon_servicepointScalarFieldEnum = (typeof Kaon_servicepointScalarFieldEnum)[keyof typeof Kaon_servicepointScalarFieldEnum]
+
+
+export const Kaon_permissionScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+} as const
+
+export type Kaon_permissionScalarFieldEnum = (typeof Kaon_permissionScalarFieldEnum)[keyof typeof Kaon_permissionScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2185,6 +2256,13 @@ export const kaon_roleOrderByRelevanceFieldEnum = {
 export type kaon_roleOrderByRelevanceFieldEnum = (typeof kaon_roleOrderByRelevanceFieldEnum)[keyof typeof kaon_roleOrderByRelevanceFieldEnum]
 
 
+export const kaon_role_menuOrderByRelevanceFieldEnum = {
+  permissions: 'permissions'
+} as const
+
+export type kaon_role_menuOrderByRelevanceFieldEnum = (typeof kaon_role_menuOrderByRelevanceFieldEnum)[keyof typeof kaon_role_menuOrderByRelevanceFieldEnum]
+
+
 export const kaon_servicepointOrderByRelevanceFieldEnum = {
   SPID: 'SPID',
   p_refer1: 'p_refer1',
@@ -2203,6 +2281,13 @@ export const kaon_servicepointOrderByRelevanceFieldEnum = {
 } as const
 
 export type kaon_servicepointOrderByRelevanceFieldEnum = (typeof kaon_servicepointOrderByRelevanceFieldEnum)[keyof typeof kaon_servicepointOrderByRelevanceFieldEnum]
+
+
+export const kaon_permissionOrderByRelevanceFieldEnum = {
+  name: 'name'
+} as const
+
+export type kaon_permissionOrderByRelevanceFieldEnum = (typeof kaon_permissionOrderByRelevanceFieldEnum)[keyof typeof kaon_permissionOrderByRelevanceFieldEnum]
 
 
 
@@ -2362,6 +2447,7 @@ export type GlobalOmitConfig = {
   kaon_role?: Prisma.kaon_roleOmit
   kaon_role_menu?: Prisma.kaon_role_menuOmit
   kaon_servicepoint?: Prisma.kaon_servicepointOmit
+  kaon_permission?: Prisma.kaon_permissionOmit
 }
 
 /* Types for Logging */

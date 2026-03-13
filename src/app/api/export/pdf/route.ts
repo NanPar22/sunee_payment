@@ -7,6 +7,20 @@ type Column = {
   key: string;
   label: string;
 };
+const formatRow = (row: any) => ({
+  ...row,
+  dateTime: row.dateTime
+    ? new Date(row.dateTime).toLocaleString("th-TH", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      })
+    : "-",
+  qrContent: row.qrContent ?? "",
+});
 
 export async function POST(req: Request) {
   const { columns, data }: { columns: Column[]; data: any[] } =
@@ -26,13 +40,14 @@ export async function POST(req: Request) {
   `;
 
   const tbody = data
-    .map(
-      (row) => `
-        <tr>
-          ${columns.map((c) => `<td>${row[c.key] ?? ""}</td>`).join("")}
-        </tr>
-      `,
-    )
+    .map((row) => {
+      const formatted = formatRow(row);
+      return `
+      <tr>
+        ${columns.map((c) => `<td>${formatted[c.key] ?? ""}</td>`).join("")}
+      </tr>
+    `;
+    })
     .join("");
 
   await page.setContent(`
@@ -43,7 +58,7 @@ export async function POST(req: Request) {
         <style>
           body {
             font-family: Arial, sans-serif;
-            padding: 18px;
+            padding: 1px;
           }
           h1 {
             text-align: center;
@@ -58,18 +73,23 @@ export async function POST(req: Request) {
           }
           th, td {
             border: 1px solid #333;
-            padding: 8px;
-            font-size: 10px;
-            text-align: left;
+            padding: 2px;
+            font-size: 8px;
+            text-align: center;
+            white-space: nowrap;
+          }
+          td:last-child, th:last-child {
+          white-space: normal;
+          word-break: break-all;
+          max-width: 160px;
           }
           th {
-            background: #f0f0f0;
+            background: #f0f0f0;  
           }
         </style>
       </head>
       <body>
         <h1>Report</h1>
-
         <table>
           <thead>${thead}</thead>
           <tbody>${tbody}</tbody>
@@ -94,7 +114,7 @@ export async function POST(req: Request) {
   // ✅ จุดสำคัญ: แปลง Uint8Array → Buffer
   const pdfBuffer = Buffer.from(pdfUint8);
 
-  return new NextResponse(pdfBuffer, {
+  return new NextResponse(pdfBuffer, {  
     headers: {
       "Content-Type": "application/pdf",
       "Content-Disposition": 'attachment; filename="report.pdf"',

@@ -1,4 +1,6 @@
 import { getAllPermissionByRole, upsertPermissionBulk } from "@/lib/permision";
+import { revalidateTag } from "next/cache";
+
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -30,6 +32,9 @@ export async function POST(req: NextRequest) {
     }
 
     const result = await upsertPermissionBulk(roleId, permissions);
+
+    revalidateTag(`permissions-${roleId}`, "default");
+
     return NextResponse.json(result);
   } catch (error) {
     return NextResponse.json(

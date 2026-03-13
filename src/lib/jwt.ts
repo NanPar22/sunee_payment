@@ -2,10 +2,8 @@ import jwt, { JwtPayload as DefaultJwtPayload } from "jsonwebtoken";
 
 export interface MenuPermission {
   menuId: number;
-  isview: boolean;
-  isadd: boolean;
-  isedit: boolean;
-  isdelete: boolean;
+  path: string | null;
+  permissions: number[]; 
 }
 
 export interface JwtPayload {
