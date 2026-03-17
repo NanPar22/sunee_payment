@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { updateRole, deleteRole,} from "@/lib/role";
+import { updateRole, deleteRole } from "@/lib/role";
 
 // ================= PUT =================
 export async function PUT(
@@ -18,13 +18,14 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { roleCode, roleName, description, isstatus } = body;
+    const { roleCode, roleName, description, isstatus, icon } = body;
 
     const role = await updateRole(roleId, {
       roleCode,
       roleName,
       description,
       isstatus,
+      icon,
     });
 
     return NextResponse.json({

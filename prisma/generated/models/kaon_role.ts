@@ -40,6 +40,7 @@ export type Kaon_roleMinAggregateOutputType = {
   roleName: string | null
   isstatus: boolean | null
   description: string | null
+  icon: string | null
 }
 
 export type Kaon_roleMaxAggregateOutputType = {
@@ -48,6 +49,7 @@ export type Kaon_roleMaxAggregateOutputType = {
   roleName: string | null
   isstatus: boolean | null
   description: string | null
+  icon: string | null
 }
 
 export type Kaon_roleCountAggregateOutputType = {
@@ -56,6 +58,7 @@ export type Kaon_roleCountAggregateOutputType = {
   roleName: number
   isstatus: number
   description: number
+  icon: number
   _all: number
 }
 
@@ -74,6 +77,7 @@ export type Kaon_roleMinAggregateInputType = {
   roleName?: true
   isstatus?: true
   description?: true
+  icon?: true
 }
 
 export type Kaon_roleMaxAggregateInputType = {
@@ -82,6 +86,7 @@ export type Kaon_roleMaxAggregateInputType = {
   roleName?: true
   isstatus?: true
   description?: true
+  icon?: true
 }
 
 export type Kaon_roleCountAggregateInputType = {
@@ -90,6 +95,7 @@ export type Kaon_roleCountAggregateInputType = {
   roleName?: true
   isstatus?: true
   description?: true
+  icon?: true
   _all?: true
 }
 
@@ -185,6 +191,7 @@ export type Kaon_roleGroupByOutputType = {
   roleName: string
   isstatus: boolean | null
   description: string | null
+  icon: string | null
   _count: Kaon_roleCountAggregateOutputType | null
   _avg: Kaon_roleAvgAggregateOutputType | null
   _sum: Kaon_roleSumAggregateOutputType | null
@@ -216,6 +223,7 @@ export type kaon_roleWhereInput = {
   roleName?: Prisma.StringFilter<"kaon_role"> | string
   isstatus?: Prisma.BoolNullableFilter<"kaon_role"> | boolean | null
   description?: Prisma.StringNullableFilter<"kaon_role"> | string | null
+  icon?: Prisma.StringNullableFilter<"kaon_role"> | string | null
   kaonRoleMenus?: Prisma.Kaon_role_menuListRelationFilter
   kaon_servicepoint?: Prisma.Kaon_servicepointListRelationFilter
 }
@@ -226,6 +234,7 @@ export type kaon_roleOrderByWithRelationInput = {
   roleName?: Prisma.SortOrder
   isstatus?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  icon?: Prisma.SortOrderInput | Prisma.SortOrder
   kaonRoleMenus?: Prisma.kaon_role_menuOrderByRelationAggregateInput
   kaon_servicepoint?: Prisma.kaon_servicepointOrderByRelationAggregateInput
   _relevance?: Prisma.kaon_roleOrderByRelevanceInput
@@ -240,6 +249,7 @@ export type kaon_roleWhereUniqueInput = Prisma.AtLeast<{
   roleName?: Prisma.StringFilter<"kaon_role"> | string
   isstatus?: Prisma.BoolNullableFilter<"kaon_role"> | boolean | null
   description?: Prisma.StringNullableFilter<"kaon_role"> | string | null
+  icon?: Prisma.StringNullableFilter<"kaon_role"> | string | null
   kaonRoleMenus?: Prisma.Kaon_role_menuListRelationFilter
   kaon_servicepoint?: Prisma.Kaon_servicepointListRelationFilter
 }, "id">
@@ -250,6 +260,7 @@ export type kaon_roleOrderByWithAggregationInput = {
   roleName?: Prisma.SortOrder
   isstatus?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  icon?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.kaon_roleCountOrderByAggregateInput
   _avg?: Prisma.kaon_roleAvgOrderByAggregateInput
   _max?: Prisma.kaon_roleMaxOrderByAggregateInput
@@ -266,6 +277,7 @@ export type kaon_roleScalarWhereWithAggregatesInput = {
   roleName?: Prisma.StringWithAggregatesFilter<"kaon_role"> | string
   isstatus?: Prisma.BoolNullableWithAggregatesFilter<"kaon_role"> | boolean | null
   description?: Prisma.StringNullableWithAggregatesFilter<"kaon_role"> | string | null
+  icon?: Prisma.StringNullableWithAggregatesFilter<"kaon_role"> | string | null
 }
 
 export type kaon_roleCreateInput = {
@@ -273,6 +285,7 @@ export type kaon_roleCreateInput = {
   roleName: string
   isstatus?: boolean | null
   description?: string | null
+  icon?: string | null
   kaonRoleMenus?: Prisma.kaon_role_menuCreateNestedManyWithoutRoleInput
   kaon_servicepoint?: Prisma.kaon_servicepointCreateNestedManyWithoutKaon_roleInput
 }
@@ -283,6 +296,7 @@ export type kaon_roleUncheckedCreateInput = {
   roleName: string
   isstatus?: boolean | null
   description?: string | null
+  icon?: string | null
   kaonRoleMenus?: Prisma.kaon_role_menuUncheckedCreateNestedManyWithoutRoleInput
   kaon_servicepoint?: Prisma.kaon_servicepointUncheckedCreateNestedManyWithoutKaon_roleInput
 }
@@ -292,6 +306,7 @@ export type kaon_roleUpdateInput = {
   roleName?: Prisma.StringFieldUpdateOperationsInput | string
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kaonRoleMenus?: Prisma.kaon_role_menuUpdateManyWithoutRoleNestedInput
   kaon_servicepoint?: Prisma.kaon_servicepointUpdateManyWithoutKaon_roleNestedInput
 }
@@ -302,6 +317,7 @@ export type kaon_roleUncheckedUpdateInput = {
   roleName?: Prisma.StringFieldUpdateOperationsInput | string
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kaonRoleMenus?: Prisma.kaon_role_menuUncheckedUpdateManyWithoutRoleNestedInput
   kaon_servicepoint?: Prisma.kaon_servicepointUncheckedUpdateManyWithoutKaon_roleNestedInput
 }
@@ -312,6 +328,7 @@ export type kaon_roleCreateManyInput = {
   roleName: string
   isstatus?: boolean | null
   description?: string | null
+  icon?: string | null
 }
 
 export type kaon_roleUpdateManyMutationInput = {
@@ -319,6 +336,7 @@ export type kaon_roleUpdateManyMutationInput = {
   roleName?: Prisma.StringFieldUpdateOperationsInput | string
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type kaon_roleUncheckedUpdateManyInput = {
@@ -327,6 +345,7 @@ export type kaon_roleUncheckedUpdateManyInput = {
   roleName?: Prisma.StringFieldUpdateOperationsInput | string
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type kaon_roleOrderByRelevanceInput = {
@@ -341,6 +360,7 @@ export type kaon_roleCountOrderByAggregateInput = {
   roleName?: Prisma.SortOrder
   isstatus?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  icon?: Prisma.SortOrder
 }
 
 export type kaon_roleAvgOrderByAggregateInput = {
@@ -353,6 +373,7 @@ export type kaon_roleMaxOrderByAggregateInput = {
   roleName?: Prisma.SortOrder
   isstatus?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  icon?: Prisma.SortOrder
 }
 
 export type kaon_roleMinOrderByAggregateInput = {
@@ -361,6 +382,7 @@ export type kaon_roleMinOrderByAggregateInput = {
   roleName?: Prisma.SortOrder
   isstatus?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  icon?: Prisma.SortOrder
 }
 
 export type kaon_roleSumOrderByAggregateInput = {
@@ -412,6 +434,7 @@ export type kaon_roleCreateWithoutKaonRoleMenusInput = {
   roleName: string
   isstatus?: boolean | null
   description?: string | null
+  icon?: string | null
   kaon_servicepoint?: Prisma.kaon_servicepointCreateNestedManyWithoutKaon_roleInput
 }
 
@@ -421,6 +444,7 @@ export type kaon_roleUncheckedCreateWithoutKaonRoleMenusInput = {
   roleName: string
   isstatus?: boolean | null
   description?: string | null
+  icon?: string | null
   kaon_servicepoint?: Prisma.kaon_servicepointUncheckedCreateNestedManyWithoutKaon_roleInput
 }
 
@@ -445,6 +469,7 @@ export type kaon_roleUpdateWithoutKaonRoleMenusInput = {
   roleName?: Prisma.StringFieldUpdateOperationsInput | string
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kaon_servicepoint?: Prisma.kaon_servicepointUpdateManyWithoutKaon_roleNestedInput
 }
 
@@ -454,6 +479,7 @@ export type kaon_roleUncheckedUpdateWithoutKaonRoleMenusInput = {
   roleName?: Prisma.StringFieldUpdateOperationsInput | string
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kaon_servicepoint?: Prisma.kaon_servicepointUncheckedUpdateManyWithoutKaon_roleNestedInput
 }
 
@@ -462,6 +488,7 @@ export type kaon_roleCreateWithoutKaon_servicepointInput = {
   roleName: string
   isstatus?: boolean | null
   description?: string | null
+  icon?: string | null
   kaonRoleMenus?: Prisma.kaon_role_menuCreateNestedManyWithoutRoleInput
 }
 
@@ -471,6 +498,7 @@ export type kaon_roleUncheckedCreateWithoutKaon_servicepointInput = {
   roleName: string
   isstatus?: boolean | null
   description?: string | null
+  icon?: string | null
   kaonRoleMenus?: Prisma.kaon_role_menuUncheckedCreateNestedManyWithoutRoleInput
 }
 
@@ -495,6 +523,7 @@ export type kaon_roleUpdateWithoutKaon_servicepointInput = {
   roleName?: Prisma.StringFieldUpdateOperationsInput | string
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kaonRoleMenus?: Prisma.kaon_role_menuUpdateManyWithoutRoleNestedInput
 }
 
@@ -504,6 +533,7 @@ export type kaon_roleUncheckedUpdateWithoutKaon_servicepointInput = {
   roleName?: Prisma.StringFieldUpdateOperationsInput | string
   isstatus?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kaonRoleMenus?: Prisma.kaon_role_menuUncheckedUpdateManyWithoutRoleNestedInput
 }
 
@@ -553,6 +583,7 @@ export type kaon_roleSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   roleName?: boolean
   isstatus?: boolean
   description?: boolean
+  icon?: boolean
   kaonRoleMenus?: boolean | Prisma.kaon_role$kaonRoleMenusArgs<ExtArgs>
   kaon_servicepoint?: boolean | Prisma.kaon_role$kaon_servicepointArgs<ExtArgs>
   _count?: boolean | Prisma.Kaon_roleCountOutputTypeDefaultArgs<ExtArgs>
@@ -566,9 +597,10 @@ export type kaon_roleSelectScalar = {
   roleName?: boolean
   isstatus?: boolean
   description?: boolean
+  icon?: boolean
 }
 
-export type kaon_roleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "roleCode" | "roleName" | "isstatus" | "description", ExtArgs["result"]["kaon_role"]>
+export type kaon_roleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "roleCode" | "roleName" | "isstatus" | "description" | "icon", ExtArgs["result"]["kaon_role"]>
 export type kaon_roleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kaonRoleMenus?: boolean | Prisma.kaon_role$kaonRoleMenusArgs<ExtArgs>
   kaon_servicepoint?: boolean | Prisma.kaon_role$kaon_servicepointArgs<ExtArgs>
@@ -587,6 +619,7 @@ export type $kaon_rolePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     roleName: string
     isstatus: boolean | null
     description: string | null
+    icon: string | null
   }, ExtArgs["result"]["kaon_role"]>
   composites: {}
 }
@@ -963,6 +996,7 @@ export interface kaon_roleFieldRefs {
   readonly roleName: Prisma.FieldRef<"kaon_role", 'String'>
   readonly isstatus: Prisma.FieldRef<"kaon_role", 'Boolean'>
   readonly description: Prisma.FieldRef<"kaon_role", 'String'>
+  readonly icon: Prisma.FieldRef<"kaon_role", 'String'>
 }
     
 

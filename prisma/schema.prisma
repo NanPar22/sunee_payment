@@ -357,6 +357,7 @@ model kaon_role {
   roleName          String              @db.VarChar(500)
   isstatus          Boolean?            @default(true)
   description       String?             @db.Text
+  icon              String?
   kaonRoleMenus     kaon_role_menu[]
   kaon_servicepoint kaon_servicepoint[]
 }

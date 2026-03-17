@@ -14,7 +14,10 @@ type MenuItem = {
 
 type UserInfo = {
     username: string
-    role: string
+    roles: {
+        roleName: string
+        icon: string | null
+    }[]
 }
 
 export default function Sidebar() {
@@ -30,7 +33,10 @@ export default function Sidebar() {
             fetch("/api/auth/info", { credentials: "include" }).then(r => r.json()),
         ]).then(([menuData, infoData]) => {
             if (menuData.success) setMenus(menuData.data)
-            if (infoData.username) setUser({ username: infoData.username, role: infoData.role }) // ✅ เพิ่ม
+            if (infoData.username) setUser({
+                username: infoData.username,
+                roles: infoData.roles ?? []
+            })
         })
     }, [])
 
@@ -47,15 +53,17 @@ export default function Sidebar() {
         <aside className="h-screen w-64 bg-linear-to-br from-blue-400 to-blue-600 px-2 pt-2 rounded-r-3xl shadow-sidebar font-main flex flex-col gap-0.5">
             {/* Profile */}
             <div className="w-full h-15 p-2 bg-white rounded-[14px] flex gap-2 border border-[#B3E5FC]">
-                <div className="w-[25%] flex justify-center items-center object-cover">
-                    <img src="https://freesvg.org/img/abstract-user-flat-3.png" alt="" className="h-10 w-10 object-cover" />
+                <div className="w-[20%] flex justify-center items-center object-cover bg-blue-50    rounded-full ">
+                    {user?.roles?.[0]?.icon && (
+                        <i className={`fa-solid ${user.roles[0].icon} text-2xl text-blue-600  `} />
+                    )}
                 </div>
                 <div className="w-[55%] flex flex-col justify-center items-start gap-0.5">
                     <h1 className="font-main font-bold text-lg w-full">
                         {user?.username ?? "..."} {/* ✅ แสดง username */}
                     </h1>
                     <p className="font-main text-xs w-full">
-                        {user?.role ?? "..."} {/* ✅ แสดง role */}
+                        {user?.roles?.[0]?.roleName ?? "..."}
                     </p>
                 </div>
                 <div className="w-[20%] flex flex-col justify-center items-center gap-1">

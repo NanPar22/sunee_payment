@@ -15,6 +15,7 @@ type Roles = {
     roleName: string;
     isstatus: boolean;
     description: string;
+    icon: string;
 }
 
 type PermissionRow = {
@@ -91,6 +92,7 @@ export default function Roles() {
             roleName: "",
             description: "",
             isstatus: true,
+            icon: "",
         }
 
         setEditingRow({ ...emptyData })
@@ -192,7 +194,8 @@ export default function Roles() {
             editingRow.roleCode !== oldRow.roleCode ||
             editingRow.roleName !== oldRow.roleName ||
             editingRow.description !== oldRow.description ||
-            editingRow.isstatus !== oldRow.isstatus
+            editingRow.isstatus !== oldRow.isstatus ||
+            editingRow.icon !== oldRow.icon
         )
     }, [editingRow, oldRow, isAddMode])
 
@@ -243,12 +246,25 @@ export default function Roles() {
     const table = useTable<Roles>({
         data,
         columns: [
-            { key: "roleName", label: "Name" },
+            {
+                key: "roleName",
+                label: "Name",
+                render: (value, row: Roles) => (
+                    <div className="flex items-center gap-2">
+                        {row.icon
+                            ? <i className={`fa-solid ${row.icon} text-blue-600 w-4`} />
+                            : <i className="fa-solid fa-shield text-gray-300 w-4" />
+                        }
+                        <span>{value}</span>
+                    </div>
+                )
+            },
             { key: "roleCode", label: "Code" },
             { key: "description", label: "Description" },
+
             {
                 key: "isstatus",
-                label: "Status",
+                label: "Status",    
                 render: (value) => {
                     const statusValue = value ? "Active" : "Inactive"
                     return (
@@ -401,6 +417,30 @@ export default function Roles() {
                                 className="focus-input"
                                 placeholder="Enter role name"
                             />
+                        </div>
+
+                        {/* Icon */}
+                        <div>
+                            <label className="block text-sm font-medium mb-1 text-gray-600">
+                                Icon <span className="text-xs text-gray-400">(Font Awesome class)</span>
+                            </label>
+                            <div className="flex gap-2 items-center">
+                                <div className="w-9 h-9 flex items-center justify-center border border-gray-300 rounded-md bg-gray-50 text-blue-500">
+                                    {editingRow.icon
+                                        ? <i className={`fa-solid ${editingRow.icon} text-lg`} />
+                                        : <i className="fa-solid fa-shield text-gray-300 text-lg" />
+                                    }
+                                </div>
+                                <input
+                                    type="text"
+                                    value={editingRow.icon}
+                                    onChange={(e) =>
+                                        setEditingRow({ ...editingRow, icon: e.target.value })
+                                    }
+                                    className="focus-input flex-1"
+                                    placeholder="fa-shield, fa-user-shield, fa-key ..."
+                                />
+                            </div>
                         </div>
 
                         {/* Description */}

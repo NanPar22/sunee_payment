@@ -28,7 +28,7 @@ export function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    // ✅ เช็คจาก path ใน token ไม่ต้องสนใจว่าขึ้นต้นด้วยอะไร
+    //  เช็คจาก path ใน token ไม่ต้องสนใจว่าขึ้นต้นด้วยอะไร
     const menuPerm = payload.permissions?.find((p: any) => p.path === pathname);
 
     // path นี้อยู่ใน menu → ตรวจ view

@@ -14,10 +14,7 @@ const formatRow = (row: any) => ({
         second: "2-digit",
       })
     : "-",
-  qrContent:
-    row.qrContent?.length > 40
-      ? row.qrContent.substring(0, 40) + "..."
-      : (row.qrContent ?? ""),
+  qrContent: row.qrContent ?? "",
 });
 
 export async function POST(req: Request) {
@@ -37,7 +34,9 @@ export async function POST(req: Request) {
       width: 20,
     }));
 
-    data.forEach((row: any) => worksheet.addRow(formatRow(row)));
+    data.forEach((row: any) => {
+     const newRow = worksheet.addRow(formatRow(row))
+    });
 
     worksheet.getRow(1).font = { bold: true };
 

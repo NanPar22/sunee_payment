@@ -93,8 +93,13 @@ export default function Actions({ columns, data }: Props) {
     <div className="h-6 w-6 p-1 flex items-center justify-center">
       <button
         onClick={() => setOpen(!open)}
-        className="bg-blue-300/50 px-0.5 rounded-sm"
+        className="relative bg-blue-300/50 px-1 pt-1 rounded-sm"
       >
+        {loading && (
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-600 rounded-full  flex items-center justify-center animate-bounce">
+            <i className="fa-solid fa-arrow-down-long text-[8px] text-white "></i>
+          </div>
+        )}
         <i className="fa-solid fa-file-arrow-down text-blue-600"></i>
       </button>
 
@@ -126,11 +131,6 @@ export default function Actions({ columns, data }: Props) {
         </ul>
       )}
 
-      {loading && (
-        <div className="absolute top-8 text-[10px] text-gray-400">
-          exporting...
-        </div>
-      )}
     </div>
   );
 }

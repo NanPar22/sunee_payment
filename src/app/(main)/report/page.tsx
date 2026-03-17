@@ -9,6 +9,7 @@ import { Table } from "@/app/components/layout/Table"
 import { useTable } from "@/hooks/useTable"
 
 type Row = {
+    id: number
     saleman: string
     docno: string
     ref1: string
@@ -37,7 +38,7 @@ export default function TrackingPage() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
-    // fetch GET list
+    // fetch GET list   
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -59,6 +60,7 @@ export default function TrackingPage() {
                 if (!res.ok) throw new Error("โหลดข้อมูลไม่สำเร็จ")
 
                 const json = await res.json()
+                console.log("API ITEMS:", json.items)   // 👈 เพิ่มบรรทัดนี้
                 setData(json.items)
                 setTotalPages(json.totalPages)
             } catch (e: any) {
@@ -158,4 +160,3 @@ export default function TrackingPage() {
         </div>
     )
 }
-    

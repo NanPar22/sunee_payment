@@ -15,6 +15,19 @@ export async function GET() {
   try {
     const payload = verifyToken(token);
 
+    // ✅ ดึง role จาก DB
+    const roles = await prisma.kaon_role.findMany({
+      where: {
+        id: payload.roleId, // หรือเปลี่ยนเป็น userId ถ้ามีหลาย role
+      },
+      select: {
+        id: true,
+        roleCode: true,
+        roleName: true,
+        icon: true,
+      },
+    });
+
     // ✅ ดึงจาก DB พร้อม cache ต่อ roleId
     const getPermissions = unstable_cache(
       async (roleId: number) => {
@@ -33,7 +46,7 @@ export async function GET() {
         }));
       },
       [`permissions-${payload.roleId}`],
-      { tags: [`permissions-${payload.roleId}`] }
+      { tags: [`permissions-${payload.roleId}`] },
     );
 
     const permissions = await getPermissions(payload.roleId);
@@ -41,9 +54,8 @@ export async function GET() {
     return Response.json({
       id: payload.id,
       username: payload.username,
-      role: payload.role,
       roleId: payload.roleId,
-      spid: payload.spid,
+      roles,
       permissions, // ✅ ใช้จาก DB แทน token
     });
   } catch {

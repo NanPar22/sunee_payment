@@ -1889,7 +1889,8 @@ export const Kaon_roleScalarFieldEnum = {
   roleCode: 'roleCode',
   roleName: 'roleName',
   isstatus: 'isstatus',
-  description: 'description'
+  description: 'description',
+  icon: 'icon'
 } as const
 
 export type Kaon_roleScalarFieldEnum = (typeof Kaon_roleScalarFieldEnum)[keyof typeof Kaon_roleScalarFieldEnum]
@@ -2250,7 +2251,8 @@ export type kaon_menuOrderByRelevanceFieldEnum = (typeof kaon_menuOrderByRelevan
 export const kaon_roleOrderByRelevanceFieldEnum = {
   roleCode: 'roleCode',
   roleName: 'roleName',
-  description: 'description'
+  description: 'description',
+  icon: 'icon'
 } as const
 
 export type kaon_roleOrderByRelevanceFieldEnum = (typeof kaon_roleOrderByRelevanceFieldEnum)[keyof typeof kaon_roleOrderByRelevanceFieldEnum]

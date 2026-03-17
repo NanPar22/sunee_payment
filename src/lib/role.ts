@@ -1,4 +1,4 @@
-  // lib/role.ts
+// lib/role.ts
 import { prisma } from "@/lib/prisma";
 import { id } from "date-fns/locale";
 
@@ -13,6 +13,7 @@ export type RoleItem = {
   roleName: string;
   isstatus: boolean;
   description: string;
+  icon: string;
 };
 
 export type CreateRole = {
@@ -20,6 +21,7 @@ export type CreateRole = {
   roleName: string;
   isstatus: boolean;
   description: string;
+  icon: string;
 };
 
 export async function getRoleList(params: {
@@ -61,7 +63,7 @@ export async function getRoleList(params: {
 }
 
 export async function createRole(params: CreateRole) {
-  const { roleCode, roleName, isstatus, description } = params;
+  const { roleCode, roleName, isstatus, description, icon } = params;
 
   if (!roleCode?.trim() || !roleName?.trim()) {
     throw new Error("Role code and role name are required");
@@ -73,6 +75,7 @@ export async function createRole(params: CreateRole) {
         roleCode: roleCode.trim(),
         roleName: roleName.trim(),
         description: description?.trim(),
+        icon: icon?.trim() || null,
         isstatus,
       },
     });
@@ -87,7 +90,7 @@ export async function createRole(params: CreateRole) {
 }
 
 export async function updateRole(id: number, params: CreateRole) {
-  const { roleCode, roleName, isstatus, description } = params;
+  const { roleCode, roleName, isstatus, description, icon } = params;
 
   if (!roleCode?.trim() || !roleName?.trim()) {
     throw new Error("Role code and role name are required");
@@ -100,6 +103,7 @@ export async function updateRole(id: number, params: CreateRole) {
         roleCode: roleCode.trim(),
         roleName: roleName.trim(),
         description: description?.trim(),
+        icon: icon?.trim() || null,
         isstatus,
       },
     });

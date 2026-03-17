@@ -17,7 +17,7 @@ type TableProps<T> = {
     }
 }
 
-export function Table<T extends object>({ table }: TableProps<T>) {
+export function Table<T extends {id: number}>({ table }: TableProps<T>) {
     const { columns, data, onSort, sortKey, sortOrder } = table
 
     const openTextModal = (title: string, value?: unknown) => {
@@ -56,8 +56,8 @@ export function Table<T extends object>({ table }: TableProps<T>) {
     }
 
     return (
-        <div className="h-full overflow-y-auto rounded-lg shadow-sm">
-            <table className="w-full h-full border-collapse">
+        <div className=" max-h-190 overflow-y-auto rounded-lg shadow-sm">
+            <table className="w-full   border-collapse">
                 <thead className="bg-blue-600 sticky top-0">
                     <tr>
                         {columns.map(col => (
@@ -99,7 +99,7 @@ export function Table<T extends object>({ table }: TableProps<T>) {
                     ) : (
                         data.map((row, i) => (
                             <tr
-                                key={i}
+                                 key={row.id} 
                                 className={`text-black hover:bg-gray-50 ${i % 2 === 0 ? "bg-white" : "bg-blue-50"}`}
                             >
                                 {columns.map(col => {

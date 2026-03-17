@@ -1,15 +1,16 @@
 import { prisma } from "@/lib/prisma";
 
-  export type GetReportParams = {
-    page: number;
-    pageSize: number;
-    search?: string;
-    dateFrom?: Date;
-    dateTo?: Date;
-    spid?: string;
-  };
+export type GetReportParams = {
+  page: number;
+  pageSize: number;
+  search?: string;
+  dateFrom?: Date;
+  dateTo?: Date;
+  spid?: string;
+};
 
-export type ReportItem = {
+  export type ReportItem = {
+    id: number;
   saleman: string;
   docno: string;
   ref1: string | null;
@@ -54,6 +55,7 @@ export async function getReport(params: GetReportParams) {
   const rawItems = await prisma.kaon_checklistlog.findMany({
     where,
     select: {
+      id: true,
       saleman: true,
       docno: true,
       ref1: true,
@@ -72,6 +74,7 @@ export async function getReport(params: GetReportParams) {
   });
 
   const items = rawItems.map((i) => ({
+    id: i.id,
     saleman: i.saleman,
     docno: i.docno,
     ref1: i.ref1,
@@ -85,10 +88,10 @@ export async function getReport(params: GetReportParams) {
     qrContent: i.qrContent,
   }));
 
-    // นับจำนวนทั้งหมด
-    const total = await prisma.kaon_checklistlog.count({
-      where,
-    });
+  // นับจำนวนทั้งหมด
+  const total = await prisma.kaon_checklistlog.count({
+    where,
+  });
 
   return {
     items,
@@ -130,6 +133,7 @@ export async function getReportInfo(params: GetReportParams) {
   const rawItems = await prisma.kaon_checklistlog.findMany({
     where,
     select: {
+      id: true,
       saleman: true,
       docno: true,
       ref1: true,
@@ -145,6 +149,7 @@ export async function getReportInfo(params: GetReportParams) {
   });
 
   const items = rawItems.map((i) => ({
+    id: i.id,
     saleman: i.saleman,
     docno: i.docno,
     ref1: i.ref1,
