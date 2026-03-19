@@ -24,7 +24,7 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white px-8 py-10 rounded-3xl shadow-lg w-full max-w-md flex flex-col gap-5 justify-center items-center"
+      className="bg-white sm:px-8 sm:py-10 px-4 pt-10  sm:rounded-3xl rounded-t-3xl  shadow-lg w-full sm:max-w-md  flex flex-col gap-8 sm:justify-center items-center  "
     >
       {/* Avatar */}
       <div className="w-20 bg-linear-to-br from-blue-400 to-blue-600 h-20 rounded-full flex items-center justify-center text-white text-3xl shadow-lg">
@@ -107,7 +107,7 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={isLoading}
-        className="btn-main w-full py-3 rounded-[14px] bg-linear-to-r from-blue-500 to-blue-600 text-white font-medium text-xl hover:from-blue-600 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+        className="btn-main w-full py-3 rounded-[14px] bg-linear-to-r from-blue-500 to-blue-600 text-white font-medium  text-base hover:from-blue-600 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
       >
         {isLoading ? (
           <span className="flex items-center justify-center gap-2">
