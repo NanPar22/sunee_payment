@@ -67,11 +67,19 @@ export default function Sidebar() {
     const [error, setError] = useState<string | null>(null)
     const [isCollapsed, setIsCollapsed] = useState(true)
 
-    // Auto-collapse based on screen size
+    // สถานะเปิด/ปิด sidebar บนมือถือ
+    const [isMobileOpen, setIsMobileOpen] = useState(false)
+    // ตรวจว่าเป็น mobile หรือไม่
+    const [isMobile, setIsMobile] = useState(false)
+
+    // Auto-collapse based on screen size + ตั้งค่า isMobile
     useEffect(() => {
         const mediaQuery = window.matchMedia("(min-width: 640px)")
         const handleChange = (e: MediaQueryListEvent | MediaQueryList) => {
             setIsCollapsed(!e.matches)
+            setIsMobile(!e.matches)
+            // ปิด mobile drawer เมื่อ resize ขึ้นไป desktop
+            if (e.matches) setIsMobileOpen(false)
         }
         handleChange(mediaQuery)
         mediaQuery.addEventListener("change", handleChange)
@@ -119,6 +127,11 @@ export default function Sidebar() {
             })
     }, [])
 
+    // ปิด mobile sidebar เมื่อเปลี่ยนหน้า
+    useEffect(() => {
+        setIsMobileOpen(false)
+    }, [pathname])
+
     const handleLogout = async () => {
         if (isLoggingOut) return
         setIsLoggingOut(true)
@@ -138,8 +151,19 @@ export default function Sidebar() {
 
     const isActivePath = (path: string | null) => {
         if (!path) return false
-        if (path === "/") return pathname === "/"
-        return pathname === path || pathname.startsWith(path + "/")
+        const clean = (p: string) => p.split("?")[0].replace(/\/+$/, "")
+        const current = clean(pathname)
+        const target = clean(path)
+        // exact
+        if (current === target) return true
+        // parent match (สำคัญมาก)
+        if (current.startsWith(target + "/")) return true
+        return false
+    }
+
+    const hasActiveChild = (item: MenuItem) => {
+        if (!item.other_kaon_menu) return false
+        return item.other_kaon_menu.some(sub => isActivePath(sub.path))
     }
 
     const handleToggle = () => {
@@ -148,32 +172,35 @@ export default function Sidebar() {
         if (!isCollapsed) setOpenMenu(null)
     }
 
-    return (
-        <aside
-            className={`h-screen bg-linear-to-br from-blue-400 to-blue-600 p-2 rounded-r-3xl shadow-sidebar font-main flex flex-col gap-0.5 transition-all duration-300 ease-in-out ${isCollapsed ? "w-18" : "w-18 sm:w-64"
-                }`}
-        >
+    // ---- JSX ของ sidebar (ใช้ร่วมกันระหว่าง mobile drawer และ desktop) ----
+    const renderSidebar = (collapsed: boolean) => (
+        <>
             {/* Header */}
-            <div className="flex justify-between items-center h-10  px-2 rounded-sm overflow-hidden">
-                {!isCollapsed && (
-                    <span className="text-xl font-semibold whitespace-nowrap overflow-hidden">
-                        Sunee_Payment
-                    </span>
+            <div className="flex justify-between items-center h-16 ">
+                {!collapsed && (
+                    <div className="flex items-center gap-2 h-full">
+                        <div className="bg-white/90   w-[24%] p-0.5 rounded-lg drop-shadow-sm drop-shadow-blue-100">
+                            <img src="/img/Logo.png" alt="Logo" className="object-cover" />
+                        </div>
+                        <span className="text-xl font-semibold bg-linear-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                            Sunee <br /> Payment
+                        </span>
+                    </div>
                 )}
                 <button
-                    aria-label={isCollapsed ? "ขยาย sidebar" : "ย่อ sidebar"}
-                    onClick={handleToggle}
-                    className={`shrink-0 ${isCollapsed ? "mx-auto" : ""}`}
+                    aria-label={isMobile ? "ปิดเมนู" : collapsed ? "ขยาย sidebar" : "ย่อ sidebar"}
+                    onClick={isMobile ? () => setIsMobileOpen(false) : handleToggle}
+                    className={`shrink-0 ${collapsed && !isMobile ? "mx-auto" : ""}`}
                 >
                     <i
-                        className={`fa-solid ${isCollapsed ? "fa-bars" : "fa-xmark"} text-blue-600 bg-linear-to-br from-blue-200 to-blue-400 py-0.5  rounded-sm transition-all duration-300`}
+                        className={`fa-solid ${isMobile || !collapsed ? "fa-xmark" : "fa-bars"} text-blue-600 text-lg bg-white/50 drop-shadow-xs drop-shadow-white/60  py-0.5 p-1 rounded-sm transition-all duration-300`}
                     />
                 </button>
             </div>
 
             {/* Divider */}
             <div className="flex justify-center">
-                <div className={`h-0.5 bg-white my-1 rounded-full transition-all duration-300 ${isCollapsed ? "w-8" : "w-50"}`} />
+                <div className={`h-0.5 bg-white m-1 mb-3   rounded-full transition-all duration-300 ${collapsed ? "w-8" : "w-50"}`} />
             </div>
 
             {/* Menu */}
@@ -182,20 +209,21 @@ export default function Sidebar() {
                 className="flex flex-col gap-0.5 overflow-y-auto flex-1 pb-2"
             >
                 {isLoading ? (
-                    <MenuSkeleton collapsed={isCollapsed} />
+                    <MenuSkeleton collapsed={collapsed} />
                 ) : error ? (
                     <div className="text-white/80 text-sm text-center px-2 py-4">
                         <i className="fa-solid fa-triangle-exclamation mb-1 block" aria-hidden="true" />
-                        {!isCollapsed && error}
+                        {!collapsed && error}
                     </div>
                 ) : menus.length === 0 ? (
                     <div className="text-white/60 text-sm text-center px-2 py-4">
-                        {!isCollapsed && "ไม่พบเมนู"}
+                        {!collapsed && "ไม่พบเมนู"}
                     </div>
                 ) : (
                     menus.map((item) => {
-                        const isOpen = openMenu === item.menuName
+                        const isChildActive = hasActiveChild(item)
                         const hasSub = item.other_kaon_menu && item.other_kaon_menu.length > 0
+                        const isOpen = openMenu === item.menuName
 
                         return (
                             <div key={item.id}>
@@ -205,22 +233,23 @@ export default function Sidebar() {
                                         aria-expanded={isOpen}
                                         aria-haspopup="true"
                                         aria-controls={`submenu-${item.id}`}
-                                        title={isCollapsed ? item.menuName : undefined}
-                                        className={`w-full rounded-sm py-1.5 px-2 flex gap-1 items-center text-white hover:bg-blue-800/60 transition-colors duration-150 ${isCollapsed ? "justify-center" : ""
-                                            }`}
+                                        title={collapsed ? item.menuName : undefined}
+                                        className={`w-full rounded-sm py-1.5 px-2 flex gap-1 items-center text-white transition-colors duration-150 
+                                            ${isChildActive ? "bg-blue-800/60" : "hover:bg-blue-800/60"} 
+                                            ${collapsed ? "justify-center" : ""}`}
                                     >
-                                        <div className={`flex justify-center relative ${isCollapsed ? "" : "w-[20%]"}`}>
+                                        <div className={`flex justify-center relative ${collapsed ? "" : "w-[20%]"}`}>
                                             {item.icon && (
                                                 <i className={`fa-solid ${item.icon} text-[18px]`} aria-hidden="true" />
                                             )}
-                                            {isCollapsed && (
+                                            {collapsed && (
                                                 <i
                                                     className={`fa-solid fa-caret-down text-[8px] absolute -bottom-1 -right-1 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
                                                     aria-hidden="true"
                                                 />
                                             )}
                                         </div>
-                                        {!isCollapsed && (
+                                        {!collapsed && (
                                             <>
                                                 <div className="w-[70%] font-extralight text-left">
                                                     {item.menuName}
@@ -238,16 +267,16 @@ export default function Sidebar() {
                                     <Link
                                         href={item.path ?? "#"}
                                         aria-current={isActivePath(item.path) ? "page" : undefined}
-                                        title={isCollapsed ? item.menuName : undefined}
+                                        title={collapsed ? item.menuName : undefined}
                                         className={`w-full rounded-sm py-1.5 px-2 flex gap-1 items-center text-white transition-colors duration-150 ${isActivePath(item.path) ? "bg-blue-800/60" : "hover:bg-blue-800/60"
-                                            } ${isCollapsed ? "justify-center" : ""}`}
+                                            } ${collapsed ? "justify-center" : ""}`}
                                     >
-                                        <div className={`flex justify-center ${isCollapsed ? "" : "w-[20%]"}`}>
+                                        <div className={`flex justify-center ${collapsed ? "" : "w-[20%]"}`}>
                                             {item.icon && (
                                                 <i className={`fa-solid ${item.icon} text-xl`} aria-hidden="true" />
                                             )}
                                         </div>
-                                        {!isCollapsed && (
+                                        {!collapsed && (
                                             <div className="w-[75%] font-extralight">
                                                 {item.menuName}
                                             </div>
@@ -262,24 +291,24 @@ export default function Sidebar() {
                                         role="region"
                                         aria-label={`submenu ของ ${item.menuName}`}
                                         className={`flex flex-col gap-1 overflow-hidden transition-all duration-200 ${isOpen ? "mt-1 max-h-96 opacity-100" : "max-h-0 opacity-0"
-                                            } ${isCollapsed ? "" : "ml-10"}`}
+                                            } ${collapsed ? "" : "ml-10"}`}
                                     >
                                         {item.other_kaon_menu!.map((sub) => (
                                             <Link
                                                 key={sub.id}
                                                 href={sub.path ?? "#"}
                                                 aria-current={isActivePath(sub.path) ? "page" : undefined}
-                                                title={isCollapsed ? sub.menuName : undefined}
+                                                title={collapsed ? sub.menuName : undefined}
                                                 className={`rounded text-white/90 transition-colors duration-150 hover:bg-blue-700/60 flex items-center gap-2 ${isActivePath(sub.path) ? "bg-blue-700/70" : ""
-                                                    } ${isCollapsed ? "justify-center py-1.5 px-2" : "text-sm px-2 py-1"}`}
+                                                    } ${collapsed ? "justify-center py-1.5 px-2" : "text-sm px-2 py-1"}`}
                                             >
                                                 {sub.icon && (
                                                     <i
-                                                        className={`fa-solid ${sub.icon} ${isCollapsed ? "text-sm" : "text-sm"}`}
+                                                        className={`fa-solid ${sub.icon} ${collapsed ? "text-sm" : "text-sm"}`}
                                                         aria-hidden="true"
                                                     />
                                                 )}
-                                                {!isCollapsed && sub.menuName}
+                                                {!collapsed && sub.menuName}
                                             </Link>
                                         ))}
                                     </div>
@@ -292,9 +321,9 @@ export default function Sidebar() {
 
             {/* Profile */}
             {isLoading ? (
-                <ProfileSkeleton collapsed={isCollapsed} />
-            ) : isCollapsed ? (
-                // Icon-only profile
+                <ProfileSkeleton collapsed={collapsed} />
+            ) : collapsed && !isMobile ? (
+                // Icon-only profile (desktop collapsed เท่านั้น)
                 <div className="flex flex-col items-center gap-1 pb-1">
                     <div
                         className="w-10 h-10 flex justify-center items-center bg-white rounded-lg"
@@ -362,6 +391,58 @@ export default function Sidebar() {
                     </div>
                 </div>
             )}
-        </aside>
+        </>
+    )
+
+    return (
+        <>
+            {/* ======== MOBILE: ปุ่ม Hamburger ======== */}
+            {isMobile && !isMobileOpen && (
+                <button
+                    aria-label="เปิดเมนู"
+                    onClick={() => setIsMobileOpen(true)}
+                    className="fixed top-2 left-3 z-50 w-10 h-10 flex items-center justify-center bg-linear-to-br from-blue-400 to-blue-600 text-white rounded-full shadow-xs shadow-blue-600
+                    "
+                >
+                    {user?.roles?.[0]?.icon ? (
+                        <i
+                            className={`fa-solid ${user.roles[0].icon}`}
+                            aria-hidden="true"
+                        />
+                    ) : (
+                        <i className="fa-solid fa-bars" />
+                    )}
+                </button>
+            )}
+
+            {/* ======== MOBILE: Backdrop overlay ======== */}
+            {isMobile && isMobileOpen && (
+                <div
+                    className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+                    onClick={() => setIsMobileOpen(false)}
+                    aria-hidden="true"
+                />
+            )}
+
+            {/* ======== MOBILE: Drawer Sidebar ======== */}
+            {isMobile && (
+                <aside
+                    className={`fixed top-0 left-0 z-50 h-screen w-64 bg-linear-to-br from-blue-400 to-blue-600 p-2 rounded-r-3xl shadow-sidebar font-main flex flex-col gap-0.5 transition-transform duration-300 ease-in-out ${isMobileOpen ? "translate-x-0" : "-translate-x-full"
+                        }`}
+                >
+                    {renderSidebar(false)}
+                </aside>
+            )}
+
+            {/* ======== DESKTOP: Static Sidebar ======== */}
+            {!isMobile && (
+                <aside
+                    className={`h-screen bg-linear-to-br from-blue-400 to-blue-600 p-2 rounded-r-3xl shadow-sidebar font-main flex flex-col gap-0.5 transition-all duration-300 ease-in-out ${isCollapsed ? "w-16" : "w-64"
+                        }`}
+                >
+                    {renderSidebar(isCollapsed)}
+                </aside>
+            )}
+        </>
     )
 }

@@ -55,9 +55,9 @@ export function Table<T extends {id: number}>({ table }: TableProps<T>) {
         return "text-red-500 bg-red-100/50"
     }
 
-    return (
-        <div className=" max-h-190 overflow-y-auto rounded-lg shadow-sm">
-            <table className="w-full   border-collapse">
+    return ( 
+        <div className="h-full overflow-y-auto rounded-lg shadow-sm ">
+            <table className="w-full border-collapse">
                 <thead className="bg-blue-600 sticky top-0">
                     <tr>
                         {columns.map(col => (

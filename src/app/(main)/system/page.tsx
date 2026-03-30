@@ -1,449 +1,440 @@
-"use client"
+'use client'
 
-import { Table } from "@/app/components/layout/Table"
-import Dropdown from "@/app/components/ui/Dropdown"
-import { Pagination } from "@/app/components/ui/Pagination"
-import Search from "@/app/components/ui/Search"
-import { useTable } from "@/hooks/useTable"
-import { useEffect, useMemo, useState } from "react"
+import Link from "next/link"
+import { useRouter, usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
 
-import { Sql } from "@prisma/client/runtime/client"
-import Swal from "sweetalert2"
-import { Toggle } from "@/app/components/ui/Toggle"
-import BaseModal from "@/app/components/layout/BaseModel"
-import Dropdown_Input from "@/app/components/ui/Dropdown_Input"
-
-type RoleItem = {
+type MenuItem = {
     id: number
-    roleCode: string
-    roleName: string
+    menuName: string
+    path: string | null
+    icon: string | null
+    other_kaon_menu?: MenuItem[]
 }
 
-type User = {
-    id: number
-    spid: string
+type UserInfo = {
     username: string
-    role: string
-    status: string
+    roles: {
+        roleName: string
+        icon: string | null
+    }[]
 }
 
+// Skeleton loader สำหรับ menu item
+function MenuSkeleton({ collapsed }: { collapsed: boolean }) {
+    return (
+        <div className="animate-pulse flex flex-col gap-0.5">
+            {[...Array(5)].map((_, i) => (
+                <div
+                    key={i}
+                    className={`h-10 bg-blue-300/40 rounded-sm ${collapsed ? "w-10 mx-auto" : "w-full"}`}
+                />
+            ))}
+        </div>
+    )
+}
 
+// Skeleton loader สำหรับ profile
+function ProfileSkeleton({ collapsed }: { collapsed: boolean }) {
+    if (collapsed) {
+        return (
+            <div className="w-10 h-10 mx-auto bg-blue-300/40 rounded-lg animate-pulse" />
+        )
+    }
+    return (
+        <div className="w-full h-15 p-2 bg-white rounded-[14px] flex gap-2 border border-[#B3E5FC] animate-pulse">
+            <div className="w-[20%] bg-blue-100 rounded-lg" />
+            <div className="w-[55%] flex flex-col justify-center gap-1.5">
+                <div className="h-4 bg-blue-100 rounded w-3/4" />
+                <div className="h-3 bg-blue-100 rounded w-1/2" />
+            </div>
+            <div className="w-[20%] flex flex-col justify-center items-center gap-1">
+                <div className="h-4 bg-blue-100 rounded w-full" />
+                <div className="h-4 bg-blue-100 rounded w-full" />
+            </div>
+        </div>
+    )
+}
 
-export default function User() {
-    const [keyword, setKeyword] = useState("")
-    const [totalPages, setTotalPages] = useState(1)
-    const [loading, setLoading] = useState(false)
+export default function Sidebar() {
+    const router = useRouter()
+    const pathname = usePathname()
+
+    const [openMenu, setOpenMenu] = useState<string | null>(null)
+    const [menus, setMenus] = useState<MenuItem[]>([])
+    const [user, setUser] = useState<UserInfo | null>(null)
+
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoggingOut, setIsLoggingOut] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const [isCollapsed, setIsCollapsed] = useState(true)
 
-    const [page, setPage] = useState(1)
-    const [pageSize, setPageSize] = useState(20)
+    // สถานะเปิด/ปิด sidebar บนมือถือ
+    const [isMobileOpen, setIsMobileOpen] = useState(false)
 
-    const [data, setData] = useState<User[]>([])
-    const [roledata, setRoledata] = useState<RoleItem[]>([])
-    const [selectedRole, setSelectedRole] = useState<string>("All")
-
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [editingRow, setEditingRow] = useState<User | null>(null)
-    const [isAddMode, setIsAddMode] = useState(false)
-
-    const [refreshTrigger, setRefreshTrigger] = useState(0)
-
-
-
-
-
-    /* =========================
-        โหลด Role
-    ========================= */
+    // Auto-collapse based on screen size
     useEffect(() => {
-        const fetchRoles = async () => {
-            try {
-                const res = await fetch("/api/system/roles?page=1&pageSize=100")
-                const json = await res.json()
-                setRoledata(json.data || [])
-            } catch (err) {
-                console.error(err)
-            }
+        const mediaQuery = window.matchMedia("(min-width: 640px)")
+        const handleChange = (e: MediaQueryListEvent | MediaQueryList) => {
+            setIsCollapsed(!e.matches)
         }
-
-        fetchRoles()
+        handleChange(mediaQuery)
+        mediaQuery.addEventListener("change", handleChange)
+        return () => mediaQuery.removeEventListener("change", handleChange)
     }, [])
 
-    // useMemo ป้องกันสร้างใหม่ทุก render
-    const roleOptions = useMemo(() => [
-        "All",
-        ...roledata.map((role) => role.roleName),
-    ], [roledata])
-
-
-    /* =========================
-        โหลด Users
-    ========================= */
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                setLoading(true)
-                setError(null)
+        setIsLoading(true)
+        setError(null)
 
-                const searchParam = keyword
-                    ? `&search=${encodeURIComponent(keyword)}`
-                    : ""
+        Promise.all([
+            fetch("/api/system/menus/sidebar")
+                .then(r => {
+                    if (!r.ok) throw new Error("Failed to load menus")
+                    return r.json()
+                })
+                .catch(() => ({ success: false, data: [] })),
 
-                // const roleId =
-                //     selectedRole !== "All"
-                //         ? roledata.find(r => r.roleName === selectedRole)?.id
-                //         : null
+            fetch("/api/auth/info", { credentials: "include" })
+                .then(r => {
+                    if (!r.ok) throw new Error("Failed to load user info")
+                    return r.json()
+                })
+                .catch(() => null),
+        ])
+            .then(([menuData, infoData]) => {
+                if (menuData.success) {
+                    setMenus(menuData.data)
+                } else {
+                    setError("ไม่สามารถโหลดเมนูได้")
+                }
 
-                const roleParam = selectedRole !== "All"
-                    ? `&role=${encodeURIComponent(selectedRole)}`
-                    : ""
-
-                const res = await fetch(
-                    `/api/system/users?page=${page}&pageSize=${pageSize}${searchParam}${roleParam}`
-                )
-
-                const json = await res.json()
-
-                setData(json.items || [])
-                setTotalPages(json.totalPages || 1)
-            } catch (err) {
-                setError("Failed to fetch users")
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        fetchUsers()
-    }, [selectedRole, page, pageSize, keyword, refreshTrigger])
-
-    const displayData = data.map(row => ({
-        ...row,
-        status: row.status === "Y" ? "Active" : "Inactive"
-    }))
-
-    const handleAdd = () => {
-        setIsAddMode(true)
-        setEditingRow({
-            id: 0,
-            spid: "",
-            username: "",
-            role: "",
-            status: "Y",
-        })
-        setIsModalOpen(true) // << เพิ่มบรรทัดนี้
-    }
-
-    const handleEdit = (row: User) => {
-        setIsAddMode(false)
-        const rawRow = data.find(d => d.id === row.id) ?? row
-        setEditingRow(row)
-        setIsModalOpen(true)
-    }
-
-    const handleDelete = async (row: any, hardDelete = false) => {
-        const id = Number(row?.id ?? row)
-
-        if (!Number.isInteger(id) || id <= 0) {
-            Swal.fire("ID ไม่ถูกต้อง", "", "error")
-            return
-        }
-
-        const confirm = await Swal.fire({
-            title: hardDelete ? "ยืนยันการลบถาวร?" : "ยืนยันการลบ?",
-            text: hardDelete ? "ข้อมูลจะถูกลบถาวร" : "ข้อมูลจะถูกปิดการใช้งาน",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "ยืนยัน",
-            cancelButtonText: "ยกเลิก",
-        })
-
-        if (!confirm.isConfirmed) return
-
-        try {
-            const res = await fetch(
-                `/api/system/users/${id}${hardDelete ? "?hard=true" : ""}`,
-                { method: "DELETE" }
-            )
-
-            const result = await res.json()
-
-            if (!res.ok || !result.success) {
-                throw new Error(result.error || "ลบไม่สำเร็จ")
-            }
-
-            await Swal.fire("สำเร็จ!", result.message, "success")
-
-            setRefreshTrigger(prev => prev + 1)
-
-        } catch (error: any) {
-            Swal.fire("เกิดข้อผิดพลาด", error.message || "ลบไม่สำเร็จ", "error")
-        }
-    }
-
-    async function handleSave() {
-        if (!editingRow) return
-
-        const url = isAddMode
-            ? "/api/system/users"
-            : `/api/system/users/${editingRow.id}`
-
-        const method = isAddMode ? "POST" : "PUT"
-
-        try {
-            const res = await fetch(url, {
-                method,
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(editingRow),
+                if (infoData?.username) {
+                    setUser({
+                        username: infoData.username,
+                        roles: infoData.roles ?? [],
+                    })
+                }
             })
-            setIsModalOpen(false)
-            const result = await res.json()
+            .catch(() => {
+                setError("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง")
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+    }, [])
 
+    // ปิด mobile sidebar เมื่อเปลี่ยนหน้า
+    useEffect(() => {
+        setIsMobileOpen(false)
+    }, [pathname])
 
-            if (!res.ok) throw new Error(result.error || "บันทึกไม่สำเร็จ")
-
-            await Swal.fire("สำเร็จ!", "บันทึกข้อมูลเรียบร้อย", "success")
-            setEditingRow(null)
-            setRefreshTrigger(prev => prev + 1)
-
-        } catch (error: any) {
-            Swal.fire("เกิดข้อผิดพลาด", error.message || "บันทึกไม่สำเร็จ", "error")
+    const handleLogout = async () => {
+        if (isLoggingOut) return
+        setIsLoggingOut(true)
+        try {
+            await fetch("/api/auth/logout", {
+                method: "POST",
+                credentials: "include",
+            })
+            router.push("/login")
+            router.refresh()
+        } catch {
+            router.push("/login")
+        } finally {
+            setIsLoggingOut(false)
         }
     }
 
+    const isActivePath = (path: string | null) => {
+        if (!path) return false
+        const clean = (p: string) => p.split("?")[0].replace(/\/+$/, "")
+        const current = clean(pathname)
+        const target = clean(path)
+        if (current === target) return true
+        if (current.startsWith(target + "/")) return true
+        return false
+    }
 
-    // แยก disabled condition ออกมาเพื่อลดความซ้ำซ้อน
-    const isSaveDisabled = !editingRow?.spid?.trim() || !editingRow?.username?.trim()
+    const hasActiveChild = (item: MenuItem) => {
+        if (!item.other_kaon_menu) return false
+        return item.other_kaon_menu.some(sub => isActivePath(sub.path))
+    }
 
-    const table = useTable<User>({
-        data: displayData,
-        columns: [
-            { key: "spid", label: "ID" },
-            { key: "username", label: "Username" },
-            { key: "role", label: "Role" },
-            {
-                key: "status",
-                label: "Status",
-                render: (value, row) => {
-                    const statusValue = (row?.status ?? value ?? "") as string
-                    const isActive = statusValue === "Active"
-                    return (
-                        <span
-                            className={`px-2 py-1 rounded text-xs font-medium ${isActive
-                                ? "bg-green-200 text-green-700"
-                                : "bg-gray-100 text-gray-600"
-                                }`}
-                        >
-                            {isActive ? "Active" : "Inactive"}
-                        </span>
-                    )
-                },
-            },
-            {
-                key: "id",
-                label: "Actions",
-                render: (_, row: User) => (
-                    <div className="flex justify-start items-center">
-                        <div className="flex gap-2">
-                            <button
-                                onClick={() => handleEdit(row)}
-                                className="px-2 py-0.5 text-xs bg-yellow-300 text-yellow-900 hover:bg-yellow-500 hover:text-white rounded"
-                            >
-                                Edit
-                            </button>
-                            <button
-                                onClick={() => handleDelete(row.id)}
-                                className="px-2 py-0.5 text-xs bg-red-400 text-red-900 hover:bg-red-600 hover:text-white rounded"
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-                ),
-            },
-        ],
-        page,
-        pageSize,
-        totalPages,
-        onPageChange: setPage,
-        onPageSizeChange: setPageSize,
-    })
+    const handleToggle = () => {
+        setIsCollapsed(prev => !prev)
+        // ปิด submenu ที่เปิดอยู่เมื่อ collapse
+        if (!isCollapsed) setOpenMenu(null)
+    }
 
     return (
-        <div className="h-full p-4 flex flex-col gap-4">
-            <div className="font-bold text-blue-600 text-2xl">
-                User Management
-            </div>
-
-            <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                    <div className="w-80">
-                        <Search
-                            onSearch={(v) => {
-                                setKeyword(v)
-                                setPage(1)
-                            }}
-                        />
-                    </div>
-
-                    <Dropdown
-                        value={selectedRole}
-                        options={roleOptions}
-                        onChange={setSelectedRole}
-                        className="w-32"
+        <div>
+            <button
+                onClick={() => setIsMobileOpen(true)}
+                className="sm:hidden fixed top-2 left-2 z-10 bg-blue-600 text-white  text-xl w-10 h-10 rounded-full shadow-sm shadow-white/20 flex justify-center items-center"
+            >
+                {user?.roles?.[0]?.icon ? (
+                    <i
+                        className={`fa-solid ${user.roles[0].icon}`}
+                        aria-hidden="true"
                     />
-                </div>
+                ) : (
+                    <i className="fa-solid fa-bars" />
+                )}
+            </button>
 
-                <div className="flex items-center justify-center  ">
-                    <button
-                        onClick={handleAdd}
-                        className="border px-2 h-6 rounded-sm flex justify-center items-center gap-1 text-blue-500 hover:bg-blue-500/10  "
-                    >
-                        <i className="fa-solid fa-plus text-xs"></i>
-                        <div className="text-sm ">
-                            Add
+            <div
+                className={`hidden sm:flex h-screen bg-linear-to-br from-blue-400 to-blue-600 p-2 rounded-r-3xl shadow-sidebar font-main  flex-col gap-0.5 transition-all duration-300 ease-in-out ${isCollapsed ? "w-16" : "w-64"}  max-xl:absolute max-xl:top-0 max-xl:left-0 max-xl:z-10   "
+                }`}
+            >
+                {/* Header */}
+                <div className="flex justify-between items-center h-10  ">
+                    {!isCollapsed && (
+                        <div className="flex items-center gap-2 bg-amber-800 h-full  ">
+                            <div className="bg-amber-300 h-full  w-[16%] p-1 rounded-full ">
+                                <img src="/img/Logo.png" alt="Logo" className="object-cover " />
+                            </div>
+                            <span className="text-sm font-semibold whitespace-nowrap overflow-hidden">
+                                Sunee Payment
+                            </span>
                         </div>
+                    )}
+                    <button
+                        aria-label={isCollapsed ? "ขยาย sidebar" : "ย่อ sidebar"}
+                        onClick={handleToggle}
+                        className={`shrink-0  ${isCollapsed ? "mx-auto" : ""} bg-white/50    rounded-sm shadow-sm shadow-white/20  transition-all duration-300 w-6`}
+                    >
+                        <i
+                            className={`fa-solid ${isCollapsed ? "fa-bars" : "fa-xmark"} text-blue-100 `}
+                        />
                     </button>
                 </div>
-            </div>
 
-            <div className="flex-1 flex flex-col justify-between">
-                <div>
-                    {loading && <div className="text-center py-10">Loading...</div>}
-                    {error && <div className="text-center text-red-500">{error}</div>}
-                    {!loading && !error && <Table table={table} />}
+                {/* Divider */}
+                <div className="flex justify-center">
+                    <div className={`h-0.5 bg-white my-1 rounded-full transition-all duration-300 ${isCollapsed ? "w-8" : "w-50"}`} />
                 </div>
 
-                <Pagination
-                    page={page}
-                    pageSize={pageSize}
-                    totalPages={totalPages}
-                    onPageChange={setPage}
-                    onPageSizeChange={setPageSize}
-                />
-            </div>
+                {/* Menu */}
+                <nav
+                    aria-label="เมนูหลัก"
+                    className="flex flex-col gap-0.5 overflow-y-auto flex-1 pb-2"
+                >
+                    {isLoading ? (
+                        <MenuSkeleton collapsed={isCollapsed} />
+                    ) : error ? (
+                        <div className="text-white/80 text-sm text-center px-2 py-4">
+                            <i className="fa-solid fa-triangle-exclamation mb-1 block" aria-hidden="true" />
+                            {!isCollapsed && error}
+                        </div>
+                    ) : menus.length === 0 ? (
+                        <div className="text-white/60 text-sm text-center px-2 py-4">
+                            {!isCollapsed && "ไม่พบเมนู"}
+                        </div>
+                    ) : (
+                        menus.map((item) => {
+                            const isChildActive = hasActiveChild(item)
+                            const hasSub = item.other_kaon_menu && item.other_kaon_menu.length > 0
+                            const isOpen = openMenu === item.menuName
 
-            {/* ================= MODAL ================= */}
-            <BaseModal
-                open={isModalOpen && !!editingRow}
-                title={isAddMode ? "Add New User" : "Edit User"}
-                onClose={() => {
-                    setIsModalOpen(false)
-                    setEditingRow(null)
-                }}
-                footer={
-                    <div className="flex gap-3 justify-end">
-                        <button
-                            onClick={() => {
-                                setIsModalOpen(false)
-                                setEditingRow(null)
-                            }}
-                            className="px-4 py-2 border border-gray-300 rounded-md hover:bg-red-200 hover:text-red-900 hover:border-red-200 transition-colors"
-                        >
-                            Cancel
-                        </button>
+                            return (
+                                <div key={item.id}>
+                                    {hasSub ? (
+                                        <button
+                                            onClick={() => setOpenMenu(isOpen ? null : item.menuName)}
+                                            aria-expanded={isOpen}
+                                            aria-haspopup="true"
+                                            aria-controls={`submenu-${item.id}`}
+                                            title={isCollapsed ? item.menuName : undefined}
+                                            className={`w-full rounded-sm py-1.5 px-2 flex gap-1 items-center text-white transition-colors duration-150 
+                                            ${isChildActive ? "bg-blue-800/60" : "hover:bg-blue-800/60"} 
+                                            ${isCollapsed ? "justify-center" : ""}`}
+                                        >
+                                            <div className={`flex justify-center relative ${isCollapsed ? "" : "w-[20%]"}`}>
+                                                {item.icon && (
+                                                    <i className={`fa-solid ${item.icon} text-[18px]`} aria-hidden="true" />
+                                                )}
+                                                {isCollapsed && (
+                                                    <i
+                                                        className={`fa-solid fa-caret-down text-[8px] absolute -bottom-1 -right-1 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                                                        aria-hidden="true"
+                                                    />
+                                                )}
+                                            </div>
+                                            {!isCollapsed && (
+                                                <>
+                                                    <div className="w-[70%] font-extralight text-left">
+                                                        {item.menuName}
+                                                    </div>
+                                                    <div className="w-[10%] flex justify-center">
+                                                        <i
+                                                            className={`fa-solid fa-caret-right transition-transform duration-200 ${isOpen ? "rotate-90" : ""}`}
+                                                            aria-hidden="true"
+                                                        />
+                                                    </div>
+                                                </>
+                                            )}
+                                        </button>
+                                    ) : (
+                                        <Link
+                                            href={item.path ?? "#"}
+                                            aria-current={isActivePath(item.path) ? "page" : undefined}
+                                            title={isCollapsed ? item.menuName : undefined}
+                                            className={`w-full rounded-sm py-1.5 px-2 flex gap-1 items-center text-white transition-colors duration-150 ${isActivePath(item.path) ? "bg-blue-800/60" : "hover:bg-blue-800/60"
+                                                } ${isCollapsed ? "justify-center" : ""}`}
+                                        >
+                                            <div className={`flex justify-center ${isCollapsed ? "" : "w-[20%]"}`}>
+                                                {item.icon && (
+                                                    <i className={`fa-solid ${item.icon} text-xl`} aria-hidden="true" />
+                                                )}
+                                            </div>
+                                            {!isCollapsed && (
+                                                <div className="w-[75%] font-extralight">
+                                                    {item.menuName}
+                                                </div>
+                                            )}
+                                        </Link>
+                                    )}
 
-                        <button
-                            onClick={handleSave}
-                            disabled={
-                                !editingRow?.spid ||
-                                !editingRow?.username ||
-                                editingRow.spid.trim() === "" ||
-                                editingRow.username.trim() === ""
-                            }
-                            className={`px-4 py-2 rounded-md transition-colors
-                             ${!editingRow?.spid ||
-                                    !editingRow?.username ||
-                                    editingRow.spid.trim() === "" ||
-                                    editingRow.username.trim() === ""
-                                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                                    : "bg-blue-500 text-white hover:bg-blue-600"
-                                }
-                `}
+                                    {/* Submenu — icon-only เมื่อ collapsed, full เมื่อ expanded */}
+                                    {hasSub && (
+                                        <div
+                                            id={`submenu-${item.id}`}
+                                            role="region"
+                                            aria-label={`submenu ของ ${item.menuName}`}
+                                            className={`flex flex-col gap-1 overflow-hidden transition-all duration-200 ${isOpen ? "mt-1 max-h-96 opacity-100" : "max-h-0 opacity-0"
+                                                } ${isCollapsed ? "" : "ml-10"}`}
+                                        >
+                                            {item.other_kaon_menu!.map((sub) => (
+                                                <Link
+                                                    key={sub.id}
+                                                    href={sub.path ?? "#"}
+                                                    aria-current={isActivePath(sub.path) ? "page" : undefined}
+                                                    title={isCollapsed ? sub.menuName : undefined}
+                                                    className={`rounded text-white/90 transition-colors duration-150 hover:bg-blue-700/60 flex items-center gap-2 ${isActivePath(sub.path) ? "bg-blue-700/70" : ""
+                                                        } ${isCollapsed ? "justify-center py-1.5 px-2" : "text-sm px-2 py-1"}`}
+                                                >
+                                                    {sub.icon && (
+                                                        <i
+                                                            className={`fa-solid ${sub.icon} ${isCollapsed ? "text-sm" : "text-sm"}`}
+                                                            aria-hidden="true"
+                                                        />
+                                                    )}
+                                                    {!isCollapsed && sub.menuName}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            )
+                        })
+                    )}
+                </nav>
+
+                {/* Profile */}
+                {isLoading ? (
+                    <ProfileSkeleton collapsed={isCollapsed} />
+                ) : isCollapsed ? (
+                    // Icon-only profile
+                    <div className="flex flex-col items-center gap-1 pb-1">
+                        <div
+                            className="w-10 h-10 flex justify-center items-center bg-white rounded-lg"
+                            title={user?.username}
                         >
-                            {isAddMode ? "Create" : "Save"}
+                            {user?.roles?.[0]?.icon ? (
+                                <i className={`fa-solid ${user.roles[0].icon} text-xl text-blue-600`} aria-hidden="true" />
+                            ) : (
+                                <i className="fa-solid fa-user text-xl text-blue-300" aria-hidden="true" />
+                            )}
+                        </div>
+                        <button
+                            onClick={handleLogout}
+                            disabled={isLoggingOut}
+                            aria-label="ออกจากระบบ"
+                            title="ออกจากระบบ"
+                            className="w-10 h-7 flex items-center justify-center bg-white/90 rounded-lg text-blue-600 hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {isLoggingOut ? (
+                                <i className="fa-solid fa-spinner fa-spin text-sm" aria-hidden="true" />
+                            ) : (
+                                <i className="fa-solid fa-right-from-bracket text-sm" aria-hidden="true" />
+                            )}
                         </button>
                     </div>
-                }
-            >
-                {editingRow && (
-                    <div className="space-y-4">
-
-                        {/* SPID */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                SPID <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                value={editingRow.spid}
-                                onChange={(e) =>
-                                    setEditingRow({ ...editingRow, spid: e.target.value })
-                                }
-                                className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter SPID"
-                            />
+                ) : (
+                    // Full profile
+                    <div className="w-full h-15 p-2 bg-white rounded-[14px] flex gap-2 border border-[#B3E5FC]">
+                        <div className="w-[20%] flex justify-center items-center bg-blue-50 rounded-lg">
+                            {user?.roles?.[0]?.icon ? (
+                                <i className={`fa-solid ${user.roles[0].icon} text-2xl text-blue-600`} aria-hidden="true" />
+                            ) : (
+                                <i className="fa-solid fa-user text-2xl text-blue-300" aria-hidden="true" />
+                            )}
                         </div>
-
-                        {/* Username */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Username <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                value={editingRow.username}
-                                onChange={(e) =>
-                                    setEditingRow({ ...editingRow, username: e.target.value })
-                                }
-                                className="w-full text-gray-500 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter username"
-                            />
+                        <div className="w-[55%] flex flex-col justify-center items-start gap-0.5">
+                            <h1 className="font-main font-bold text-lg w-full truncate" title={user?.username}>
+                                {user?.username ?? "ผู้ใช้งาน"}
+                            </h1>
+                            <p className="font-main text-xs w-full truncate text-gray-500" title={user?.roles?.[0]?.roleName}>
+                                {user?.roles?.[0]?.roleName ?? "ไม่มีสิทธิ์"}
+                            </p>
                         </div>
-
-                        {/* Role Dropdown */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Role
-                            </label>
-                                {/* <Dropdown_Input
-                                    options={roleOptions}
-                                    value={editingRow.role}
-                                    onChange={(val) =>
-                                        setEditingRow({
-                                            ...editingRow,
-                                            role: val,
-                                        })
-                                    }
-                                /> */}
-                        </div>
-
-                        {/* Status Toggle */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Status
-                            </label>
-
-                            <div className="flex items-center gap-3">
-                                <Toggle
-                                    value={editingRow.status === "Y"}
-                                    onChange={(checked) =>
-                                        setEditingRow({
-                                            ...editingRow,
-                                            status: checked ? "Y" : "N",
-                                        })
-                                    }
-                                />
-
-                                <span className="text-sm text-gray-600">
-                                    {editingRow.status === "Y" ? "Active" : "Inactive"}
-                                </span>
-
+                        <div className="w-[20%] flex flex-col justify-center items-center gap-1">
+                            <div className="flex gap-1 justify-between items-center w-full h-[60%]">
+                                <button aria-label="ตั้งค่า">
+                                    <i className="fa-solid fa-gear" aria-hidden="true" />
+                                </button>
+                                <button aria-label="ตั้งค่า">
+                                    <i className="fa-solid fa-gear" aria-hidden="true" />
+                                </button>
                             </div>
+                            <button
+                                onClick={handleLogout}
+                                disabled={isLoggingOut}
+                                aria-label="ออกจากระบบ"
+                                className="btn-logout text-[12px] font-sans disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isLoggingOut ? (
+                                    <i className="fa-solid fa-spinner fa-spin text-[10px]" aria-hidden="true" />
+                                ) : (
+                                    "logout"
+                                )}
+                            </button>
                         </div>
-
                     </div>
                 )}
-            </BaseModal>
+            </div>
+
+            {/* MobliSidebar */}
+            {isMobileOpen && (
+                <div
+                    className="fixed inset-0 bg-black/40 z-30 sm:hidden"
+                    onClick={() => setIsMobileOpen(false)}
+                >
+                    <div className={`h-screen bg-linear-to-br from-blue-400 to-blue-600 p-2 rounded-r-3xl shadow-sidebar font-main  flex-col gap-0.5 transition-all duration-300 ease-in-out  w-64  max-xl:absolute z-50   "
+                }`}>
+                        {/* Header */}
+                        <div className="flex justify-between items-center h-10  ">
+                            {!isCollapsed && (
+                                <div className="flex items-center gap-2 bg-amber-800 h-full  ">
+                                    <div className="bg-amber-300 h-full  w-[16%] p-1 rounded-full ">
+                                        <img src="/img/Logo.png" alt="Logo" className="object-cover " />
+                                    </div>
+                                    <span className="text-sm font-semibold whitespace-nowrap overflow-hidden">
+                                        Sunee Payment
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    {/* Divider */}
+                    <div className="flex justify-center">
+                        <div className={`h-0.5 bg-white my-1 rounded-full transition-all duration-300 ${isCollapsed ? "w-8" : "w-50"}`} />
+                    </div>
+
+                </div>
+            )}
+
 
         </div>
     )

@@ -1,8 +1,5 @@
 import { useState } from "react"
 
-// =====================
-// types
-// =====================
 type PageItem = number | "..."
 
 type PaginationProps = {
@@ -13,52 +10,32 @@ type PaginationProps = {
     onPageSizeChange?: (size: number) => void
 }
 
-// =====================
-// helper
-// =====================
 export function getPaginationPages(
     page: number,
     totalPages: number
 ): PageItem[] {
     if (totalPages <= 0) return []
-
     if (totalPages === 1) return [1]
-
     if (totalPages === 2) return [1, 2]
 
     const pages: PageItem[] = []
-    const window = 1 // แสดงรอบ page ข้างละ 1
+    const window = 1
 
-    // ---------- หน้าแรก ----------
     pages.push(1)
 
-    // ---------- ซ้ายของ window ----------
-    if (page - window > 2) {
-        pages.push("...")
-    }
+    if (page - window > 2) pages.push("...")
 
-    // ---------- กลาง (window รอบ page) ----------
     const start = Math.max(2, page - window)
     const end = Math.min(totalPages - 1, page + window)
+    for (let i = start; i <= end; i++) pages.push(i)
 
-    for (let i = start; i <= end; i++) {
-        pages.push(i)
-    }
+    if (page + window < totalPages - 1) pages.push("...")
 
-    // ---------- ขวาของ window ----------
-    if (page + window < totalPages - 1) {
-        pages.push("...")
-    }
-
-    // ---------- หน้าสุดท้าย ----------
     pages.push(totalPages)
 
     return pages
 }
 
-// =====================
-// component
-// =====================
 export function Pagination({
     page,
     pageSize,
@@ -67,12 +44,11 @@ export function Pagination({
     onPageSizeChange
 }: PaginationProps) {
     const pages = getPaginationPages(page, totalPages)
-
     const sizes = [10, 15, 20, 50, 100]
     const [open, setOpen] = useState(false)
 
     return (
-        <div className="flex items-center justify-between gap-2 shadow-sm rounded-sm text-black p-2 w-full">
+        <div className="flex flex-wrap items-center justify-between gap-2 shadow-sm rounded-sm text-black p-2 w-full">
             {/* page size */}
             <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-600">แสดง</span>
@@ -81,7 +57,7 @@ export function Pagination({
                     <button
                         type="button"
                         onClick={() => setOpen(o => !o)}
-                        className="w-full border px-2  rounded-sm bg-white flex items-center justify-center"
+                        className="w-full border px-2 rounded-sm bg-white flex items-center justify-center"
                     >
                         {pageSize}
                         <i
@@ -113,7 +89,7 @@ export function Pagination({
             </div>
 
             {/* pagination */}
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
                 {/* Prev */}
                 <button
                     disabled={page === 1}
@@ -123,8 +99,15 @@ export function Pagination({
                     Prev
                 </button>
 
-                {/* Page numbers */}
-                <div className="flex gap-0.5">
+                {/* Mobile: แสดงแค่หน้าปัจจุบัน */}
+                <div className="flex gap-0.5 sm:hidden">
+                    <button className="px-3 py-1 rounded bg-blue-600 text-white">
+                        {page}
+                    </button>
+                </div>
+
+                {/* Desktop: แสดง page numbers เต็ม */}
+                <div className="hidden sm:flex gap-0.5">
                     {pages.map((p, i) =>
                         p === "..." ? (
                             <span
@@ -137,7 +120,7 @@ export function Pagination({
                             <button
                                 key={`page-${p}-${i}`}
                                 onClick={() => onPageChange(p)}
-                                className={`px-3 py-1  rounded
+                                className={`px-3 py-1 rounded
                                 ${p === page
                                         ? "bg-blue-600 text-white"
                                         : "hover:bg-gray-100"}`}
@@ -159,4 +142,4 @@ export function Pagination({
             </div>
         </div>
     )
-}
+}       

@@ -37,7 +37,7 @@ export default function TrackingPage() {
     const [totalPages, setTotalPages] = useState(1)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
-
+ 
     // fetch GET list   
     useEffect(() => {
         const fetchData = async () => {
@@ -142,8 +142,8 @@ export default function TrackingPage() {
                 <Actions columns={table.columns} data={data} />
             </div>
 
-            <div className="w-full h-[95%] flex flex-col justify-between">
-                <div >
+            <div className="w-full flex-1 min-h-0 flex flex-col justify-between gap-4">
+                <div className="flex-1 min-h-0 " >
                     {loading && <div className="text-center py-10">Loading...</div>}
                     {error && <div className="text-center text-red-500">{error}</div>}
                     {!loading && !error && <Table table={table} />}

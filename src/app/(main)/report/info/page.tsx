@@ -9,6 +9,7 @@ import { Table } from "@/app/components/layout/Table"
 import { useTable } from "@/hooks/useTable"
 
 type Row = {
+    id: number
     docno: string
     ref1: string | null
     ref2: string | null
@@ -110,9 +111,9 @@ export default function TrackingPage() {
         <div className="h-full p-2 flex flex-col gap-2">
             <div className="font-bold text-2xl">Tracking</div>
 
-            <div className="h-8 flex items-center justify-between gap-10">
-                <div className="flex gap-2">
-                    <div className="w-80">
+            <div className=" flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                    <div className="w-180">
                         <Search
                             onSearch={(v) => {
                                 setKeyword(v)
@@ -131,12 +132,10 @@ export default function TrackingPage() {
                         }}
                     />
                 </div>
-
                 <Actions columns={table.columns} data={data} />
             </div>
-
-            <div className="w-full h-[95%] flex flex-col justify-between">
-                <div className="">
+            <div className="w-full h-[98%] flex flex-col  justify-between ">
+                <div className="h-[96%]" >
                     {loading && <div className="text-center py-10">Loading...</div>}
                     {error && <div className="text-center text-red-500">{error}</div>}
                     {!loading && !error && <Table table={table} />}

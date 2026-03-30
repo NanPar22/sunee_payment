@@ -38,7 +38,7 @@ export function proxy(request: NextRequest) {
         return NextResponse.redirect(new URL("/login", request.url));
       }
     }
-  }
+  } 
 
   // ---- API Routes ----
   const isPublic = PUBLIC_API.some((p) => pathname.startsWith(p));
