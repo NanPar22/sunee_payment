@@ -37,7 +37,7 @@ export default function TrackingPage() {
     const [totalPages, setTotalPages] = useState(1)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
- 
+
     // fetch GET list   
     useEffect(() => {
         const fetchData = async () => {
@@ -105,7 +105,7 @@ export default function TrackingPage() {
             { key: "respMsg", label: "Status" },
             {
                 key: "qrContent",
-                label: "QR Content",
+                label: "QR",
                 className: "max-w-[200px] break-all whitespace-normal"
             }
         ],
@@ -118,7 +118,7 @@ export default function TrackingPage() {
 
     return (
         <div className="h-full p-2 flex flex-col gap-2">
-            <div className="font-bold text-2xl">Tracking</div>
+            <div className="font-bold text-2xl  max-lg:text-center xl:text-left ">Tracking</div>
 
             <div className="h-8 flex items-center justify-between gap-10">
                 <div className="flex gap-2">

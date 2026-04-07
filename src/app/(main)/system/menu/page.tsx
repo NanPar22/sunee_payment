@@ -63,6 +63,8 @@ export default function Menu() {
     // ✅ ทุกหน้าใช้เหมือนกันหมด
     const { canAdd, canEdit, canDelete } = usePermission()
 
+    const [openActionId, setOpenActionId] = useState<number | null>(null)
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -303,7 +305,7 @@ export default function Menu() {
                     return (
                         <div className="flex items-center gap-2">
                             <i className={`fa-solid ${value}`}></i>
-                            <span>{value}</span>
+                            <span className="max-lg:hidden">{value}</span>
                         </div>
                     )
                 }
@@ -315,12 +317,22 @@ export default function Menu() {
                 render: (value) => {
                     const statusValue = typeof value === 'string' ? value : '';
                     return (
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${statusValue === "Active"
-                            ? "bg-green-200 text-green-700"
-                            : "bg-gray-100 text-gray-600"
-                            }`}>
-                            {statusValue}
-                        </span>
+                        <div className="flex items-center max-lg:justify-center gap-2">
+                            {/* Mobile: แสดงเฉพาะไอคอน */}
+                            <div className="lg:hidden">
+                                <i className={`fa-solid fa-circle text-xs ${statusValue === "Active" ? "text-green-500" : "text-gray-400"}`}></i>
+                            </div>
+
+                            {/* Desktop: แสดง status text */}
+                            <span
+                                className={`px-2 py-1 rounded text-xs max-lg:text-[1px] font-medium hidden lg:inline ${statusValue === "Active"
+                                    ? "bg-green-200 text-green-700"
+                                    : "bg-gray-100 text-gray-600"
+                                    }`}
+                            >
+                                {statusValue}
+                            </span>
+                        </div>
                     )
                 }
             },
@@ -329,7 +341,8 @@ export default function Menu() {
                 label: "Actions",
                 render: (_, row) => (
                     <div className="flex justify-start items-center">
-                        <div className="flex gap-2">
+                        {/* Desktop */}
+                        <div className="hidden sm:flex gap-2">
                             {canEdit && (
                                 <button
                                     onClick={() => handleEdit(row)}
@@ -347,6 +360,43 @@ export default function Menu() {
                                 </button>
                             )}
                         </div>
+
+                        {/* Mobile */}
+                        <div className="sm:hidden max-lg:text-center w-full ">
+                            <button
+                                onClick={() => setOpenActionId(openActionId === row.id ? null : row.id)}
+                                className=""
+                            >
+                                <i className="fa-solid fa-ellipsis-v"></i>
+                            </button>
+
+                            {openActionId === row.id && (
+                                <>
+                                    <div className="fixed inset-0 z-30" onClick={() => setOpenActionId(null)} />
+                                    <div className="absolute flex flex-col gap-0.5 right-0 mt-1 p-1 bg-white border border-gray-200 rounded-lg shadow-lg z-40">
+                                        {canEdit && (
+                                            <button
+                                                onClick={() => handleEdit(row)}
+                                                className="px-2 py-0.5 text-xs bg-yellow-300 text-yellow-900 hover:bg-yellow-500 hover:text-white  rounded"
+                                            >
+                                                Edit
+                                            </button>
+                                        )}
+                                        {canDelete && (
+                                            <button
+                                                onClick={() => handleDelete(row.id)}
+                                                className="px-2 py-0.5 text-xs bg-red-400 text-red-900 hover:bg-red-600 hover:text-white rounded"
+                                            >
+                                                Delete
+                                            </button>
+                                        )}
+                                    </div>
+                                </>
+                            )
+
+                            }
+
+                        </div>
                     </div>
                 ),
             },
@@ -360,10 +410,10 @@ export default function Menu() {
 
     return (
         <div className="h-full  p-2 flex flex-col gap-4">
-            <div className="font-bold text-blue-600  text-2xl">Menu Management</div>
+            <div className="font-bold text-blue-600  text-2xl  max-lg:text-center xl:text-left ">Menu Management</div>
             <div className="flex items-center justify-between  ">
-                <div className="flex items-center gap-2">
-                    <div className="w-80">
+                <div className="flex items-center gap-2 max-lg:gap-1">
+                    <div className="w-80 max-lg:w-45">
                         <Search
                             onSearch={(v) => {
                                 setKeyword(v)
@@ -460,7 +510,7 @@ export default function Menu() {
                 }
             >
                 {editingRow && (
-                    <div className="space-y-4">
+                    <div className="space-y-4 max-lg:space-y-2">
 
                         {/* Menu Name */}
                         <div>

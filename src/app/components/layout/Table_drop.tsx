@@ -31,15 +31,15 @@ export function Table_Drop<T extends { id: number }>({ table }: TableProps<T>) {
     }
 
     return (
-        <div className="h-full overflow-y-auto rounded-lg shadow-sm">
-            <table className="w-full border-collapse table-fixed">
-                <thead className="bg-blue-600 sticky top-0">
+        <div className="h-full overflow-y-auto rounded-lg shadow-sm ">
+            <table className="w-full border-collapse">
+                <thead className="bg-blue-600 max-lg:text-xs sticky top-0">
                     <tr>
                         {columns.map(col => (
                             <th
                                 key={String(col.key)}
                                 onClick={() => col.sortable && onSort(col.key)}
-                                className={`px-2 py-2 text-left text-white ${col.sortable ? "cursor-pointer" : ""
+                                className={`px-2 max-lg:px-1 py-2 text-left  text-white ${col.sortable ? "cursor-pointer" : ""
                                     }`}
                             >
                                 <span className="flex items-center gap-1">
@@ -56,7 +56,7 @@ export function Table_Drop<T extends { id: number }>({ table }: TableProps<T>) {
                         <tr>
                             <td
                                 colSpan={columns.length}
-                                className="px-4 py-6 text-center text-gray-500"
+                                className="px-4 max-lg:px-1 py-6 text-center text-gray-500"
                             >
                                 ไม่พบข้อมูล
                             </td>
@@ -68,14 +68,14 @@ export function Table_Drop<T extends { id: number }>({ table }: TableProps<T>) {
 
                             return (
                                 <Fragment key={row.id}>
-                                    <tr className={`text-black hover:bg-gray-50 ${i % 2 === 0 ? "bg-white" : "bg-blue-50"
+                                    <tr className={`text-black hover:bg-gray-50 max-lg:text-xs ${i % 2 === 0 ? "bg-white" : "bg-blue-50"
                                         }`}>
                                         {columns.map(col => {
                                             const key = String(col.key)
                                             const value = row[col.key]
 
                                             return (
-                                                <td key={key} className="px-2 py-1.5">
+                                                <td key={key} className="px-2 max-lg:px-1 py-1.5">
                                                     {col.key === "menuName" && hasChildren ? (
                                                         <div className="flex items-center gap-2">
                                                             {col.render
@@ -104,33 +104,28 @@ export function Table_Drop<T extends { id: number }>({ table }: TableProps<T>) {
                                     </tr>
 
                                     {isOpen && hasChildren && (
-                                        <tr>
-                                            <td colSpan={columns.length} className="p-0">
-                                                <table className="w-full table-fixed">
-                                                    <tbody>
-                                                        {row.children?.map(child => (
-                                                            <tr key={child.id} className="bg-blue-50/50 hover:bg-blue-100 text-gray-700">
-                                                                {columns.map(col => {
-                                                                    const key = String(col.key)
-                                                                    const value = child[col.key]
-                                                                    return (
-                                                                        <td
-                                                                            key={key}
-                                                                            className={`px-2 py-1.5 ${col.key === "menuName" ? "pl-10" : ""
-                                                                                }`}
-                                                                        >
-                                                                            {col.render
-                                                                                ? col.render(value, child)
-                                                                                : String(value ?? "")}
-                                                                        </td>
-                                                                    )
-                                                                })}
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
+                                        row.children?.map((child) => (
+                                            <tr
+                                                key={child.id}
+                                                className="bg-blue-50/50 hover:bg-blue-100 text-gray-700  max-lg:text-xs relative"
+                                            >
+                                                {columns.map(col => {
+                                                    const key = String(col.key)
+                                                    const value = child[col.key]
+                                                    return (
+                                                        <td
+                                                            key={key}
+                                                            className={`px-2 max-lg:px-1 py-1.5 ${col.key === "menuName" ? "pl-8 max-lg:pl-6" : ""
+                                                                }`}
+                                                        >
+                                                            {col.render
+                                                                ? col.render(value, child)
+                                                                : String(value ?? "")}
+                                                        </td>
+                                                    )
+                                                })}
+                                            </tr>
+                                        ))
                                     )}
                                 </Fragment>
                             )

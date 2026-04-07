@@ -109,7 +109,9 @@ export default function TrackingPage() {
 
     return (
         <div className="h-full p-2 flex flex-col gap-2">
-            <div className="font-bold text-2xl">Tracking</div>
+            <div className="font-bold text-2xl  max-lg:text-center xl:text-left ">
+                Tracking
+            </div>
 
             <div className=" flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">

@@ -74,7 +74,7 @@ export default function Sidebar() {
 
     // Auto-collapse based on screen size + ตั้งค่า isMobile
     useEffect(() => {
-        const mediaQuery = window.matchMedia("(min-width: 640px)")
+        const mediaQuery = window.matchMedia("(min-width: 1025px)")
         const handleChange = (e: MediaQueryListEvent | MediaQueryList) => {
             setIsCollapsed(!e.matches)
             setIsMobile(!e.matches)
@@ -84,6 +84,21 @@ export default function Sidebar() {
         handleChange(mediaQuery)
         mediaQuery.addEventListener("change", handleChange)
         return () => mediaQuery.removeEventListener("change", handleChange)
+    }, [])
+
+    useEffect(() => {
+        const handleResize = () => {
+            const width = window.innerWidth
+            // 768px = iPad and above = desktop layout
+            const isDesktop = width >= 768
+            setIsCollapsed(!isDesktop)
+            setIsMobile(!isDesktop)
+            if (isDesktop) setIsMobileOpen(false)
+        }
+
+        handleResize()
+        window.addEventListener("resize", handleResize)
+        return () => window.removeEventListener("resize", handleResize)
     }, [])
 
     useEffect(() => {
@@ -176,7 +191,7 @@ export default function Sidebar() {
     const renderSidebar = (collapsed: boolean) => (
         <>
             {/* Header */}
-            <div className="flex justify-between items-center h-16 ">
+            <div className="flex justify-between items-center h-14 ">
                 {!collapsed && (
                     <div className="flex items-center gap-2 h-full">
                         <div className="bg-white/90   w-[24%] p-0.5 rounded-lg drop-shadow-sm drop-shadow-blue-100">
@@ -193,14 +208,14 @@ export default function Sidebar() {
                     className={`shrink-0 ${collapsed && !isMobile ? "mx-auto" : ""}`}
                 >
                     <i
-                        className={`fa-solid ${isMobile || !collapsed ? "fa-xmark" : "fa-bars"} text-blue-600 text-lg bg-white/50 drop-shadow-xs drop-shadow-white/60  py-0.5 p-1 rounded-sm transition-all duration-300`}
+                        className={`fa-solid ${isMobile || !collapsed ? "fa-xmark" : "fa-bars"} text-blue-600 text-lg bg-white/50 drop-shadow-xs drop-shadow-white/60  py-0.5  rounded-sm transition-all duration-300`}
                     />
                 </button>
             </div>
 
             {/* Divider */}
             <div className="flex justify-center">
-                <div className={`h-0.5 bg-white m-1 mb-3   rounded-full transition-all duration-300 ${collapsed ? "w-8" : "w-50"}`} />
+                <div className={`h-0.5 bg-white m-1 my-3  rounded-full transition-all duration-300 ${collapsed ? "w-8" : "w-50"}`} />
             </div>
 
             {/* Menu */}
@@ -401,7 +416,7 @@ export default function Sidebar() {
                 <button
                     aria-label="เปิดเมนู"
                     onClick={() => setIsMobileOpen(true)}
-                    className="fixed top-2 left-3 z-50 w-10 h-10 flex items-center justify-center bg-linear-to-br from-blue-400 to-blue-600 text-white rounded-full shadow-xs shadow-blue-600
+                    className="fixed top-1 left-2 z-50 w-10 h-10 flex items-center justify-center bg-linear-to-br from-blue-400 to-blue-600 text-white rounded-full shadow-xs shadow-blue-600
                     "
                 >
                     {user?.roles?.[0]?.icon ? (

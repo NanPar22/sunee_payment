@@ -32,7 +32,7 @@ export function Table<T extends {id: number}>({ table }: TableProps<T>) {
     `,
             icon: "info",
             showCancelButton: true,
-            confirmButtonText: "📋 Copy",
+            confirmButtonText: "Copy",
             cancelButtonText: "ปิด",
         }).then(result => {
             if (result.isConfirmed) {
@@ -57,26 +57,18 @@ export function Table<T extends {id: number}>({ table }: TableProps<T>) {
 
     return ( 
         <div className="h-full overflow-y-auto rounded-lg shadow-sm ">
-            <table className="w-full border-collapse">
-                <thead className="bg-blue-600 sticky top-0">
+            <table className="w-full border-collapse ">
+                <thead className="bg-blue-600  sticky top-0 max-lg:text-xs">
                     <tr>
                         {columns.map(col => (
                             <th
                                 key={String(col.key)}
                                 onClick={() => col.sortable && onSort(col.key)}
-                                className={`px-4 py-2 text-left ${col.sortable ? "cursor-pointer" : ""}`}
+                                className={`px-4 max-lg:px-1 py-2 text-left ${col.sortable ? "cursor-pointer" : ""}`}
                             >
                                 <span className="flex items-center gap-1">
                                     {col.label}
-                                    {col.sortable && (
-                                        <span className="inline-block w-4 text-center text-xs opacity-70">
-                                            {sortKey === col.key
-                                                ? sortOrder === "asc"
-                                                    ? "▲"
-                                                    : "▼"
-                                                : "▲▼"}
-                                        </span>
-                                    )}
+                                    {col.sortable }
                                 </span>
                             </th>
                         ))}
@@ -100,14 +92,14 @@ export function Table<T extends {id: number}>({ table }: TableProps<T>) {
                         data.map((row, i) => (
                             <tr
                                  key={row.id} 
-                                className={`text-black hover:bg-gray-50 ${i % 2 === 0 ? "bg-white" : "bg-blue-50"}`}
+                                className={`text-black hover:bg-gray-50  ${i % 2 === 0 ? "bg-white" : "bg-blue-50"}`}
                             >
                                 {columns.map(col => {
                                     const key = String(col.key)
                                     const value = row[col.key]
 
                                     return (
-                                        <td key={key} className="px-2 py-1  w-10 text-xs">
+                                        <td key={key} className="px-2 max-lg:px-1  py-1  w-10 text-xs max-lg:text-[10px]">
                                             {key === "qrContent" ? (
                                                 <button
                                                     className="px-2 py-1 text-xs text-white bg-blue-500 rounded-sm hover:bg-blue-600"

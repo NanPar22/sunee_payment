@@ -50,6 +50,8 @@ export default function Roles() {
     const [permissionLoading, setPermissionLoading] = useState(false)
     const [permissionChanged, setPermissionChanged] = useState(false)
 
+    const [openActionId, setOpenActionId] = useState<number | null>(null)
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -264,18 +266,26 @@ export default function Roles() {
 
             {
                 key: "isstatus",
-                label: "Status",    
+                label: "Status",
                 render: (value) => {
                     const statusValue = value ? "Active" : "Inactive"
                     return (
-                        <span
-                            className={`px-2 py-1 rounded text-xs font-medium ${value
-                                ? "bg-green-200 text-green-700"
-                                : "bg-gray-100 text-gray-600"
-                                }`}
-                        >
-                            {statusValue}
-                        </span>
+                        <div className="flex items-center max-lg:justify-center gap-2">
+                            {/* Mobile: แสดงเฉพาะไอคอน */}
+                            <div className="lg:hidden">
+                                <i className={`fa-solid fa-circle text-xs ${value ? "text-green-500" : "text-gray-400"}`}></i>
+                            </div>
+
+                            {/* Desktop: แสดง status text */}
+                            <span
+                                className={`px-2 py-1 rounded text-xs font-medium hidden lg:inline ${value
+                                    ? "bg-green-200 text-green-700"
+                                    : "bg-gray-100 text-gray-600"
+                                    }`}
+                            >
+                                {statusValue}
+                            </span>
+                        </div>
                     )
                 }
             },
@@ -284,7 +294,8 @@ export default function Roles() {
                 label: "Actions",
                 render: (_, row: Roles) => (
                     <div className="flex justify-start items-center">
-                        <div className="flex gap-2">
+                        {/* Desktop */}
+                        <div className="hidden sm:flex gap-2">
                             <button
                                 onClick={() => handleEdit(row)}
                                 className="px-2 py-0.5 text-xs bg-yellow-300 text-yellow-900 hover:bg-yellow-500 hover:text-white rounded"
@@ -304,6 +315,42 @@ export default function Roles() {
                                 Permission
                             </button>
                         </div>
+                        {/* Mobile */}
+                        <div className="sm:hidden">
+                            <button
+                                onClick={() => setOpenActionId(openActionId === row.id ? null : row.id)}
+                                className="px-2 py-1 text-lg text-gray-600 hover:bg-gray-100 rounded"
+
+                            >
+                                <i className="fa-solid fa-ellipsis-v"></i>
+                            </button>
+
+                            {openActionId === row.id && (
+                                <>
+                                    <div className="fixed inset-0  z-30" onClick={() => setOpenActionId(null)} />
+                                    <div className="absolute right-2  space-y-1  bg-white border border-gray-200 rounded-lg shadow-lg z-40 p-1 flex flex-col justify-center">
+                                        <button
+                                            onClick={() => { handleEdit(row); setOpenActionId(null) }}
+                                            className="px-2 py-0.5 text-xs bg-yellow-300 text-yellow-900 hover:bg-yellow-500 hover:text-white rounded"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => { handleDelete(row.id); setOpenActionId(null) }}
+                                            className="px-2 py-0.5 text-xs bg-red-400 text-red-900 hover:bg-red-600 hover:text-white rounded"
+                                        >
+                                            Delete
+                                        </button>
+                                        <button
+                                            onClick={() => { handlePermission(row); setOpenActionId(null) }}
+                                            className="px-2 py-0.5 text-xs bg-blue-400 text-blue-900 hover:bg-blue-600 hover:text-white rounded"
+                                        >
+                                            Permission
+                                        </button>
+                                    </div>
+                                </>
+                            )}
+                        </div>
                     </div>
                 ),
             },
@@ -317,10 +364,10 @@ export default function Roles() {
 
     return (
         <div className="h-full p-2 flex flex-col gap-4">
-            <div className="font-bold text-2xl text-blue-600">Roles Management</div>
+            <div className="font-bold text-2xl text-blue-600  max-lg:text-center xl:text-left ">Roles Management</div>
             <div className="flex justify-between items-center gap-2">
                 <div className="flex items-center gap-2">
-                    <div className="w-80">
+                    <div className="w-80 max-lg:w-60 ">
                         <Search
                             onSearch={(v) => {
                                 setKeyword(v)

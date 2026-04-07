@@ -290,6 +290,8 @@ export default function User() {
         : !editingRow?.spid?.trim() || !editingRow?.username?.trim() ||
         (isAddMode && (!editingRow?.password?.trim() || editingRow.password !== confirmPassword))
 
+    const [openActionId, setOpenActionId] = useState<number | null>(null)
+
     const table = useTable<User>({
         data: displayData,
         columns: [
@@ -303,14 +305,22 @@ export default function User() {
                     const statusValue = (row?.status ?? value ?? "") as string
                     const isActive = statusValue === "Active"
                     return (
-                        <span
-                            className={`px-2 py-1 rounded text-xs font-medium ${isActive
-                                ? "bg-green-200 text-green-700"
-                                : "bg-gray-100 text-gray-600"
-                                }`}
-                        >
-                            {isActive ? "Active" : "Inactive"}
-                        </span>
+                        <div className="flex  items-center max-lg:justify-center gap-2">
+                            {/* Mobile: แสดงเฉพาะไอคอน */}
+                            <div className="lg:hidden" >
+                                <i className={`fa-solid fa-circle text-xs   ${isActive ? "text-green-500" : "text-gray-400"}`}></i>
+                            </div>
+
+                            {/* Desktop: แสดง status text */}
+                            <span
+                                className={`px-2 py-1 rounded text-xs font-medium hidden lg:inline ${isActive
+                                    ? "bg-green-200 text-green-700"
+                                    : "bg-gray-100 text-gray-600"
+                                    }`}
+                            >
+                                {isActive ? "Active" : "Inactive"}
+                            </span>
+                        </div>
                     )
                 },
             },
@@ -318,26 +328,54 @@ export default function User() {
                 key: "id",
                 label: "Actions",
                 render: (_, row: User) => (
-                    <div className="flex justify-start items-center">
-                        <div className="flex gap-2">
-                            <button
-                                onClick={() => handleEdit(row)}
-                                className="px-2 py-0.5 text-xs bg-yellow-300 text-yellow-900 hover:bg-yellow-500 hover:text-white rounded"
-                            >
+                    <div className="relative flex max-lg:justify-center">
+                        {/* Desktop */}
+                        <div className="hidden sm:flex gap-2">
+                            <button onClick={() => handleEdit(row)} className="px-2 py-0.5 text-xs bg-yellow-300 text-yellow-900 hover:bg-yellow-500 hover:text-white rounded">
                                 Edit
                             </button>
-                            <button
-                                onClick={() => handleChangePassword(row)}
-                                className="px-2 py-0.5 text-xs bg-orange-300 text-orange-900 hover:bg-orange-500   hover:text-white rounded"
-                            >
-                                ChangPassWord
+                            <button onClick={() => handleChangePassword(row)} className="px-2 py-0.5 text-xs bg-orange-300 text-orange-900 hover:bg-orange-500 hover:text-white rounded">
+                                Change Password
                             </button>
-                            <button
-                                onClick={() => handleDelete(row.id)}
-                                className="px-2 py-0.5 text-xs bg-red-400 text-red-900 hover:bg-red-600 hover:text-white rounded"
-                            >
+                            <button onClick={() => handleDelete(row.id)} className="px-2 py-0.5 text-xs bg-red-400 text-red-900 hover:bg-red-600 hover:text-white rounded">
                                 Delete
                             </button>
+                        </div>
+
+                        {/* Mobile */}
+                        <div className="sm:hidden max-lg:text-center   ">
+                            <button
+                                onClick={() => setOpenActionId(openActionId === row.id ? null : row.id)}
+                                className="px-2 py-1 text-lg text-gray-600 hover:bg-gray-100 rounded"
+                            >
+                                <i className="fa-solid fa-ellipsis-v"></i>
+                            </button>
+
+                            {openActionId === row.id && (
+                                <>
+                                    <div className="fixed inset-0 z-30" onClick={() => setOpenActionId(null)} />
+                                    <div className="absolute right-0   p-1  text-xs  max-lg:text-[10px] hover:bg-yellow-500 hover:text-white bg-white  border border-gray-200 rounded-lg shadow-lg z-40 flex flex-col gap-1 justify-center">
+                                        <button
+                                            onClick={() => { handleEdit(row); setOpenActionId(null) }}
+                                           className="px-2 py-0.5   bg-yellow-300 text-yellow-900 hover:bg-yellow-500  rounded"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => { handleChangePassword(row); setOpenActionId(null) }}
+                                            className="px-2 py-0.5  bg-orange-300 text-orange-900 hover:bg-orange-500  rounded  whitespace-nowrap  "
+                                        >
+                                            Change Password
+                                        </button>
+                                        <button
+                                            onClick={() => { handleDelete(row.id); setOpenActionId(null) }}
+                                            className="px-2 py-0.5  bg-red-400 text-red-900 hover:bg-red-600  rounded"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
                 ),
@@ -352,13 +390,13 @@ export default function User() {
 
     return (
         <div className="h-full p-2 flex flex-col gap-4">
-            <div className="font-bold text-blue-600 text-2xl">
+            <div className="font-bold text-blue-600 text-2xl max-lg:text-center xl:text-left">
                 User Management
             </div>
 
             <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                    <div className="w-80">
+                <div className="flex items-center gap-1">
+                    <div className="w-80 max-lg:w-40">
                         <Search
                             onSearch={(v) => {
                                 setKeyword(v)
@@ -371,7 +409,7 @@ export default function User() {
                         value={selectedRole}
                         options={roleOptions}
                         onChange={setSelectedRole}
-                        className="w-32"
+                        className="w-26 "
                     />
                 </div>
 
@@ -386,8 +424,8 @@ export default function User() {
                 </div>
             </div>
 
-            <div className="flex-1 flex flex-col justify-between">
-                <div>
+            <div className="w-full flex-1 min-h-0 flex flex-col justify-between gap-4">
+                <div className="flex-1 min-h-0">
                     {loading && <div className="text-center py-10">Loading...</div>}
                     {error && <div className="text-center text-red-500">{error}</div>}
                     {!loading && !error && <Table table={table} />}
@@ -441,7 +479,7 @@ export default function User() {
                 }
             >
                 {editingRow && (
-                    <div className="space-y-4">
+                    <div className="space-y-4 max-lg:space-y-2">
                         {/* SPID & Username */}
                         {!isChangePasswordMode && (
                             <>
