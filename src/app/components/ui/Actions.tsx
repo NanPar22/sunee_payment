@@ -121,13 +121,13 @@ export default function Actions({ columns, data }: Props) {
             Export Excel
           </li>
 
-          <li
+          {/* <li
             onClick={printPage}
             className="hover:bg-blue-300/50 rounded-xs cursor-pointer p-1 flex gap-1 items-center"
           >
             <i className="fa-solid fa-print"></i>
             Print
-          </li>
+          </li> */}
         </ul>
       )}
 

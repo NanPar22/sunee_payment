@@ -11,7 +11,7 @@ export default function Search({ onSearch }: SearchProps) {
   const [value, setValue] = useState("")
 
   return (
-    <div className="flex gap-0.5 rounded-sm border border-blue-500 w-full h-6 p-0.5 ">
+    <div className="flex gap-0.5 rounded-sm border border-blue-300 w-full h-6 p-0.5  ">
       <input
         placeholder="ค้นหา"
         type="search"

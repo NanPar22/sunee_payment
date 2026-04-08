@@ -118,11 +118,13 @@ export default function TrackingPage() {
 
     return (
         <div className="h-full p-2 flex flex-col gap-2">
-            <div className="font-bold text-2xl  max-lg:text-center xl:text-left ">Tracking</div>
+            <div className="font-bold text-blue-600 text-2xl max-lg:text-center xl:text-left">
+                Reports
+            </div>
 
             <div className="h-8 flex items-center justify-between gap-10">
                 <div className="flex gap-2">
-                    <div className="w-80">
+                    <div className="w-80 max-lg:w-40">
                         <Search
                             onSearch={(v) => {
                                 setKeyword(v)
@@ -131,13 +133,16 @@ export default function TrackingPage() {
                         />
                     </div>
 
-                    <DatePickers
-                        onChange={(f, t) => {
-                            setFrom(f)
-                            setTo(t)
-                            setPage(1)
-                        }}
-                    />
+                    <div className="   ">
+                        <DatePickers
+                            onChange={(f, t) => {
+                                setFrom(f)
+                                setTo(t)
+                                setPage(1)
+                            }}
+                        />
+                    </div>
+
                 </div>
                 <Actions columns={table.columns} data={data} />
             </div>

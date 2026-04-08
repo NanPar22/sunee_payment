@@ -409,7 +409,7 @@ export default function User() {
                         value={selectedRole}
                         options={roleOptions}
                         onChange={setSelectedRole}
-                        className="w-26 "
+                        className="w-32 max-lg:w-24 max-lg"
                     />
                 </div>
 

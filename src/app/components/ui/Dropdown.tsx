@@ -18,11 +18,11 @@ export default function Dropdown<T extends string | number>({
     const [open, setOpen] = useState(false)
 
     return (
-        <div className={`relative h-6 text-sm ${className}`}>
+        <div className={`relative h-6 text-sm max-lg:text-[10px] ${className}`}>
             <button
                 type="button"
                 onClick={() => setOpen(o => !o)}
-                className="w-full h-full border border-blue-500 text-blue-500 px-2 rounded-sm flex items-center justify-between  gap-1"
+                className="w-full h-full border border-blue-300 text-blue-500 px-2 rounded-sm flex items-center justify-between  gap-1"
             >
                 {value}
                 <i
