@@ -1,4 +1,4 @@
-  "use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -38,8 +38,15 @@ export function useLogin() {
       if (!response.ok) {
         throw new Error(data?.message || "เข้าสู่ระบบไม่สำเร็จ");
       }
+      // ตรวจสอบว่ามีสิทหรือไม่
+      const hasPermission =
+        data?.hasPermission || data?.permission || data?.role;
 
-      router.push("/report/info");
+      if (hasPermission) {
+        router.push("/report/info");
+      } else {
+        router.push("/report");
+      }
       router.refresh();
     } catch (err: any) {
       setError(err.message || "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
